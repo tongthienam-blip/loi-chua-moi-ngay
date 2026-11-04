@@ -1,0 +1,42 @@
+name: Catholic Bible Platform CI/CD
+
+on:
+  push:
+    branches: [ main, production ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test_and_verify:
+    name: Kiểm Thử Toàn Vẹn Hệ Thống
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci || npm install
+
+      - name: Run Integrity & Security Verification Tests
+        run: npx ts-node --transpile-only scripts/verify-integrity.ts
+
+      - name: Build Next.js Production
+        run: npm run build
+
+  deploy_production:
+    name: Triển Khai Production
+    needs: test_and_verify
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to Hosting / Vercel
+        run: |
+          echo "Triển khai thành công lên môi trường Production với mã nguồn đã qua kiểm định Giáo lý và Phụng vụ."

@@ -1,0 +1,236 @@
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap');
+
+*, *::before, *::after {
+  font-family: 'Be Vietnam Pro', system-ui, -apple-system, sans-serif !important;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-serif: var(--font-lora), 'Lora', 'Merriweather', var(--font-be-vietnam-pro), serif;
+  --font-sans: var(--font-be-vietnam-pro), 'Be Vietnam Pro', 'Inter', 'Roboto', sans-serif;
+  
+  /* Bảng màu Công giáo trang nghiêm */
+  --bg-parchment: #FAF7F2;
+  --bg-parchment-soft: #F4EFE6;
+  --bg-card: #FFFFFF;
+  --text-primary: #2D1E18;
+  --text-secondary: #5D4037;
+  --text-muted: #8D6E63;
+  --border-color: #E8DFC8;
+  
+  --color-burgundy: #8B1E2D;
+  --color-burgundy-hover: #701124;
+  --color-gold: #C59B27;
+  --color-gold-light: #FBF4E2;
+}
+
+.theme-sepia {
+  --bg-parchment: #F4ECD8;
+  --bg-parchment-soft: #EAE0C8;
+  --bg-card: #FAF4E8;
+  --text-primary: #382414;
+  --text-secondary: #5F432B;
+  --text-muted: #82664E;
+  --border-color: #DFCDB3;
+}
+
+.theme-dark {
+  --bg-parchment: #1A1412;
+  --bg-parchment-soft: #251D1A;
+  --bg-card: #2B211D;
+  --text-primary: #F5EBE6;
+  --text-secondary: #D7CCC8;
+  --text-muted: #A1887F;
+  --border-color: #3E302A;
+  --color-burgundy: #D84A5B;
+  --color-burgundy-hover: #E26D7C;
+  --color-gold: #E5BE53;
+  --color-gold-light: #3D321A;
+}
+
+html, body {
+  display: block;
+  visibility: visible !important;
+  opacity: 1 !important;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "kern" 1, "liga" 1;
+}
+
+body {
+  display: flex !important;
+  flex-direction: column !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  background-color: var(--bg-parchment);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  min-height: 100vh;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6, strong, b {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Kiểu chữ Kinh Thánh trang trọng */
+.font-scripture {
+  font-family: var(--font-serif);
+  line-height: 1.85;
+}
+
+/* Thanh cuộn tinh tế */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #D7CCC8;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #A1887F;
+}
+
+/* Hiệu ứng hào quang phụng vụ */
+.sacred-glow {
+  box-shadow: 0 0 25px -5px rgba(197, 155, 39, 0.25);
+}
+
+.wine-glow {
+  box-shadow: 0 4px 20px -2px rgba(139, 30, 45, 0.15);
+}
+
+/* Hiệu ứng lấp lánh tỏa sáng sau Lời Chúa & Hào quang thiêng liêng */
+@keyframes sacredRadiance {
+  0%, 100% {
+    opacity: 0.45;
+    transform: scale(0.98);
+    filter: drop-shadow(0 0 12px rgba(197, 155, 39, 0.35));
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.03);
+    filter: drop-shadow(0 0 24px rgba(197, 155, 39, 0.7));
+  }
+}
+
+@keyframes sacredFloat {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes divineShimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-sacred-radiance {
+  animation: sacredRadiance 4s ease-in-out infinite;
+}
+
+.animate-sacred-float {
+  animation: sacredFloat 5s ease-in-out infinite;
+}
+
+.animate-divine-shimmer {
+  background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(242,225,169,0.4) 50%, rgba(255,255,255,0) 100%);
+  background-size: 200% 100%;
+  animation: divineShimmer 3.5s infinite;
+}
+
+.sacred-card-hover {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.sacred-card-hover:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px -8px rgba(139, 30, 45, 0.12), 0 0 20px -4px rgba(197, 155, 39, 0.2);
+}
+
+/* Hiệu ứng hạt ánh sáng lấp lánh (Floating Sparks / Shimmer) */
+@keyframes sparkTwinkle {
+  0%, 100% {
+    opacity: 0.15;
+    transform: scale(0.6) translateY(0);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.25) translateY(-4px);
+    filter: drop-shadow(0 0 6px rgba(197, 155, 39, 0.8));
+  }
+}
+
+.animate-spark-1 { animation: sparkTwinkle 2.8s ease-in-out infinite; }
+.animate-spark-2 { animation: sparkTwinkle 3.4s ease-in-out 0.8s infinite; }
+.animate-spark-3 { animation: sparkTwinkle 2.2s ease-in-out 1.5s infinite; }
+.animate-spark-4 { animation: sparkTwinkle 3.1s ease-in-out 0.4s infinite; }
+
+/* Hiệu ứng viền vàng kim phóng to (Golden Border Hover Pulse) */
+.sacred-gold-hover {
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+}
+
+.sacred-gold-hover:hover {
+  transform: translateY(-4px) scale(1.006);
+  border-color: #C59B27 !important;
+  box-shadow: 0 14px 35px -8px rgba(139, 30, 45, 0.15), 0 0 25px -2px rgba(197, 155, 39, 0.35) !important;
+}
+
+/* Stagger cascade animation cho các thẻ khi xuất hiện */
+@keyframes cascadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.cascade-1 { animation: cascadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.05s both; }
+.cascade-2 { animation: cascadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both; }
+.cascade-3 { animation: cascadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.25s both; }
+.cascade-4 { animation: cascadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.35s both; }
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}/* Ép tất cả các thẻ dùng font serif hiển thị chuẩn tiếng Việt */
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&display=swap');
+
+.font-serif, h1, h2, h3, h4, .serif {
+  font-family: 'Lora', Georgia, Cambria, 'Times New Roman', Times, serif !important;
+}

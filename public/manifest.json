@@ -1,0 +1,48 @@
+{
+  "name": "Lời Chúa Mỗi Ngày - Kinh Thánh Công Giáo",
+  "short_name": "Lời Chúa",
+  "description": "Nền tảng đọc, học hỏi, nghiên cứu và sống Lời Chúa theo truyền thống Hội Thánh Công giáo",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FAF7F2",
+  "theme_color": "#8B1E2D",
+  "orientation": "portrait-primary",
+  "lang": "vi-VN",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Bài Đọc Hôm Nay",
+      "url": "/phung-vu",
+      "description": "Xem các bài đọc phụng vụ Thánh Lễ hôm nay"
+    },
+    {
+      "name": "73 Sách Kinh Thánh",
+      "url": "/kinh-thanh",
+      "description": "Thư viện 73 cuốn sách Cựu Ước và Tân Ước"
+    },
+    {
+      "name": "Trợ Lý Thần Học AI",
+      "url": "/tro-ly-ai",
+      "description": "Tra cứu thần học và Kinh Thánh Công giáo"
+    },
+    {
+      "name": "Kế Hoạch Đọc",
+      "url": "/ke-hoach-doc",
+      "description": "Theo dõi kế hoạch đọc Kinh Thánh hằng ngày"
+    }
+  ],
+  "categories": ["books", "education", "lifestyle"]
+}

@@ -1,0 +1,9 @@
+{
+  "/nghien-cuu/page": "app/nghien-cuu/page.js",
+  "/phung-vu/page": "app/phung-vu/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/giao-ly/page": "app/giao-ly/page.js",
+  "/kinh-thanh/[bookId]/page": "app/kinh-thanh/[bookId]/page.js",
+  "/page": "app/page.js",
+  "/tao-anh/page": "app/tao-anh/page.js"
+}
