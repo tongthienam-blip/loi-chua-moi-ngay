@@ -27,9 +27,38 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: 'Lời Chúa Mỗi Ngày - Nền Tảng Kinh Thánh Công Giáo Toàn Diện',
-  description: 'Nền tảng đọc, học hỏi, nghiên cứu và sống Lời Chúa theo truyền thống Hội Thánh Công giáo. 73 sách Kinh Thánh, Bài đọc Phụng vụ hằng ngày, Giáo lý Hội Thánh và Nghiên cứu Thần học.',
+  metadataBase: new URL('https://loi-chua-moi-ngay.vercel.app'),
+  title: 'Lời Chúa Mỗi Ngày - Nền Tảng Kinh Thánh & Phụng Vụ Công Giáo Toàn Diện',
+  description: 'Nền tảng đọc, học hỏi, nghiên cứu và sống Lời Chúa theo truyền thống Hội Thánh Công giáo. Trọn bộ 73 sách Kinh Thánh, Bài đọc Phụng vụ hằng ngày, Giáo lý Hội Thánh 2.865 điều và Văn kiện Huấn quyền.',
   manifest: '/manifest.json',
+  openGraph: {
+    title: 'Lời Chúa Mỗi Ngày - Nền Tảng Kinh Thánh & Phụng Vụ Công Giáo',
+    description: 'Khám phá trọn bộ 73 Sách Kinh Thánh, Lịch Phụng Vụ & Lời Chúa hằng ngày, 2.865 điều Giáo Lý Hội Thánh Công Giáo và Văn Kiện Huấn Quyền.',
+    url: 'https://loi-chua-moi-ngay.vercel.app',
+    siteName: 'Lời Chúa Mỗi Ngày',
+    locale: 'vi_VN',
+    type: 'website',
+    images: [
+      {
+        url: 'https://images.unsplash.com/photo-1544717305-2782549b5136?q=80&w=1920&auto=format&fit=crop',
+        width: 1920,
+        height: 1080,
+        alt: 'Lời Chúa Mỗi Ngày - Nền Tảng Kinh Thánh & Phụng Vụ Công Giáo',
+      },
+      {
+        url: '/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Lời Chúa Mỗi Ngày',
+      }
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Lời Chúa Mỗi Ngày - Nền Tảng Kinh Thánh & Phụng Vụ Công Giáo',
+    description: 'Khám phá trọn bộ 73 Sách Kinh Thánh, Lịch Phụng Vụ & Lời Chúa hằng ngày, 2.865 điều Giáo Lý Hội Thánh Công Giáo và Văn Kiện Huấn Quyền.',
+    images: ['https://images.unsplash.com/photo-1544717305-2782549b5136?q=80&w=1920&auto=format&fit=crop'],
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',

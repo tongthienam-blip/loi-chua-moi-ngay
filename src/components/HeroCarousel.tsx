@@ -36,8 +36,8 @@ export const HERO_SLIDES: SlideItem[] = [
     subtitle: 'Một không gian đọc, suy niệm và khám phá kho tàng đức tin Công giáo.',
     btnText: 'KHÁM PHÁ KINH THÁNH',
     btnHref: '/kinh-thanh/mat-theu',
-    imageUrl: 'https://images.unsplash.com/photo-1543807535-eceef0bc6599?q=85&w=1800&auto=format&fit=crop',
-    imageAlt: 'Ánh sáng thiên đình chiếu qua cửa kính màu thánh đường cổ kính',
+    imageUrl: 'https://images.unsplash.com/photo-1544717305-2782549b5136?q=80&w=1920&auto=format&fit=crop',
+    imageAlt: 'Quyển Kinh Thánh mở rộng dưới ánh nến ấm áp trang nghiêm nơi Thánh đường',
     icon: <BookOpen className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#E5BE53]" />
   },
   // SLIDE 1 CHUYÊN BỆT - KHÁM PHÁ KINH THÁNH
