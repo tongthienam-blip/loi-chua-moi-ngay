@@ -3,6 +3,7 @@ import { Lora, Be_Vietnam_Pro } from 'next/font/google';
 import './globals.css';
 import { Navbar } from '@/components/Navbar';
 import { BottomNav } from '@/components/BottomNav';
+import { Footer } from '@/components/Footer';
 
 const lora = Lora({
   subsets: ['latin', 'vietnamese'],
@@ -20,7 +21,7 @@ const beVietnamPro = Be_Vietnam_Pro({
 });
 
 export const viewport: Viewport = {
-  themeColor: '#8B1E2D',
+  themeColor: '#762F3A',
   width: 'device-width',
   initialScale: 1,
 };
@@ -60,11 +61,12 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={`${beVietnamPro.className} bg-[#FAF7F2] text-[#2D1E18] min-h-screen flex flex-col antialiased selection:bg-[#8B1E2D]/20 selection:text-[#8B1E2D] font-sans`}>
+      <body className={`${beVietnamPro.className} bg-[#F7F4EE] text-[#403A34] min-h-screen flex flex-col antialiased selection:bg-[#762F3A]/20 selection:text-[#762F3A] font-sans`}>
         <Navbar />
         <main className="flex-1 pb-20 md:pb-12">
           {children}
         </main>
+        <Footer />
         <BottomNav />
       </body>
     </html>

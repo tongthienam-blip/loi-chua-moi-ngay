@@ -33,33 +33,44 @@ export default function AboutPage() {
           </p>
         </div>
 
-        {/* Developer Card - Lucas Nguyen */}
-        <div className="bg-white dark:bg-[#241C18] rounded-3xl p-6 sm:p-10 border border-[#E7E0D5] dark:border-[#3E302A] shadow-sacred relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-48 h-48 bg-radial-gradient from-[#B39A70]/15 via-transparent to-transparent blur-3xl pointer-events-none" />
+        {/* Developer Card - Lucas Nguyen (Royal Gilded Editorial Card) */}
+        <div className="bg-white dark:bg-[#241C18] rounded-3xl p-6 sm:p-10 border border-[#E7E0D5] dark:border-[#3E302A] shadow-sacred relative overflow-hidden sacred-card-hover">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-radial-gradient from-[#B39A70]/20 via-transparent to-transparent blur-3xl pointer-events-none" />
 
           <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6 pb-8 border-b border-[#E7E0D5] dark:border-[#3E302A]">
-            <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-3xl bg-gradient-to-br from-[#762F3A] to-[#5E252E] text-white flex items-center justify-center font-serif text-3xl sm:text-4xl font-bold shadow-md shrink-0">
-              ☩
+            {/* Gilded Avatar Frame */}
+            <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-3xl bg-gradient-to-br from-[#762F3A] via-[#5E252E] to-[#40181F] text-white flex items-center justify-center font-serif text-3xl sm:text-4xl font-bold shadow-xl border-2 border-[#B39A70] ring-4 ring-[#B39A70]/25 shrink-0 select-none">
+              <span className="text-[#F7F4EE] drop-shadow-md">☩</span>
             </div>
             
-            <div className="text-center sm:text-left space-y-2 flex-1">
-              <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
-                <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#403A34] dark:text-[#F7F4EE]">
+            <div className="text-center sm:text-left space-y-3 flex-1">
+              <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2.5">
+                <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#403A34] dark:text-[#F7F4EE] tracking-tight">
                   Lucas Nguyen
                 </h2>
-                <span className="px-3 py-1 rounded-full bg-[#B39A70]/15 text-[#B39A70] dark:text-[#E5BE53] text-xs font-bold">
+                <span className="px-3.5 py-1 rounded-full bg-[#B39A70]/15 text-[#762F3A] dark:text-[#E5BE53] border border-[#B39A70]/30 text-xs font-bold shadow-xs">
                   Người sáng lập & Phát triển dự án
                 </span>
               </div>
+
+              {/* Lời Giới Thiệu Chính Thức */}
               <p className="text-xs sm:text-sm text-[#736B63] dark:text-[#D7CCC8] leading-relaxed break-words text-justify sm:text-left">
                 Là người sáng lập và phát triển dự án Lời Chúa Mỗi Ngày, tôi mong muốn xây dựng một không gian học hỏi và khám phá kho tàng đức tin Công giáo, nơi mọi người có thể đến gần hơn với Lời Chúa qua việc đọc, suy niệm và nghiên cứu. Với thao thức phục vụ cộng đoàn Dân Chúa, dự án hướng đến việc kết nối Kinh Thánh, Giáo lý và giáo huấn của Hội Thánh trong một nền tảng thống nhất, dễ tiếp cận, có chiều sâu và trung thành với truyền thống đức tin Công giáo.
               </p>
 
+              {/* Trích dẫn linh đạo phục vụ */}
+              <div className="p-3.5 rounded-2xl bg-[#F7F4EE] dark:bg-[#1A1412] border-l-4 border-[#B39A70] text-xs text-[#5D4037] dark:text-[#D7CCC8] italic font-serif">
+                &ldquo;Ước chi Lời Đức Kitô ngự giữa anh em thật dồi dào, để anh em đem tất cả sự khôn ngoan mà dạy dỗ và khuyên nhủ lẫn nhau.&rdquo;
+                <span className="block text-[11px] font-sans font-semibold text-[#B39A70] not-italic mt-1">
+                  &mdash; Thư Thánh Phaolô gửi tín hữu Côlôxê (Cl 3,16)
+                </span>
+              </div>
+
               {/* Contact Pills */}
-              <div className="pt-3 flex flex-wrap items-center justify-center sm:justify-start gap-3">
+              <div className="pt-2 flex flex-wrap items-center justify-center sm:justify-start gap-3">
                 <a
                   href="mailto:anhtuan.employ202@gmail.com"
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#F7F4EE] hover:bg-[#762F3A] text-[#403A34] hover:text-white dark:bg-[#1A1412] dark:hover:bg-[#762F3A] dark:text-[#F7F4EE] border border-[#E7E0D5] dark:border-[#3E302A] text-xs font-semibold transition"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#F7F4EE] hover:bg-[#762F3A] text-[#403A34] hover:text-white dark:bg-[#1A1412] dark:hover:bg-[#762F3A] dark:text-[#F7F4EE] border border-[#E7E0D5] dark:border-[#3E302A] text-xs font-semibold shadow-xs transition"
                 >
                   <Mail className="w-4 h-4 text-[#762F3A] dark:text-[#E5BE53]" />
                   <span>anhtuan.employ202@gmail.com</span>
@@ -67,7 +78,7 @@ export default function AboutPage() {
 
                 <a
                   href="tel:0368727316"
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#F7F4EE] hover:bg-[#762F3A] text-[#403A34] hover:text-white dark:bg-[#1A1412] dark:hover:bg-[#762F3A] dark:text-[#F7F4EE] border border-[#E7E0D5] dark:border-[#3E302A] text-xs font-semibold transition"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#F7F4EE] hover:bg-[#762F3A] text-[#403A34] hover:text-white dark:bg-[#1A1412] dark:hover:bg-[#762F3A] dark:text-[#F7F4EE] border border-[#E7E0D5] dark:border-[#3E302A] text-xs font-semibold shadow-xs transition"
                 >
                   <Phone className="w-4 h-4 text-[#B39A70] dark:text-[#E5BE53]" />
                   <span>0368727316</span>

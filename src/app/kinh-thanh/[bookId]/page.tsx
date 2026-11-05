@@ -28,7 +28,8 @@ import {
   CornerDownRight,
   ShieldCheck,
   Upload,
-  Heart
+  Heart,
+  X
 } from 'lucide-react';
 import { CATHOLIC_BIBLE_BOOKS } from '@/data/catholic-books';
 import { getChapterData } from '@/data/sample-verses';
@@ -101,6 +102,26 @@ function BibleReaderContent() {
   const [jumpAddress, setJumpAddress] = useState('');
   const [jumpError, setJumpError] = useState('');
   const [copiedVerseId, setCopiedVerseId] = useState<string | null>(null);
+
+  // Classical 73 Books Library Drawer State
+  const [showDrawer, setShowDrawer] = useState(false);
+  const [drawerSearch, setDrawerSearch] = useState('');
+  const [drawerTestament, setDrawerTestament] = useState<'ALL' | 'OLD' | 'NEW'>('ALL');
+
+  const filteredDrawerBooks = useMemo(() => {
+    return CATHOLIC_BIBLE_BOOKS.filter((b) => {
+      const matchTestament = drawerTestament === 'ALL' || b.testament === drawerTestament;
+      if (!matchTestament) return false;
+      if (!drawerSearch.trim()) return true;
+      const q = drawerSearch.toLowerCase().trim();
+      return (
+        b.name.toLowerCase().includes(q) ||
+        b.abbreviation.toLowerCase().includes(q) ||
+        b.latinName.toLowerCase().includes(q) ||
+        b.categoryName.toLowerCase().includes(q)
+      );
+    });
+  }, [drawerSearch, drawerTestament]);
 
   // Book Navigation Index dựa trên sách hiện tại
   const currentBookIndex = useMemo(() => {
@@ -360,21 +381,32 @@ function BibleReaderContent() {
             </div>
           </div>
 
-          {/* Scripture Verses in Focus Mode */}
-          <div className="space-y-6 font-serif">
-            {currentChapter.verses.map((verse) => (
-              <p
-                key={verse.id}
-                id={`verse-${verse.verseNumber}`}
-                onClick={() => setSelectedVerse(verse)}
-                className={`${fontSize} leading-relaxed cursor-pointer hover:text-[#8B1E2D] dark:hover:text-[#E5B54C] transition`}
-              >
-                <sup className="font-sans font-bold text-xs text-[#8B1E2D] dark:text-[#E5B54C] mr-2">
-                  {verse.verseNumber}
-                </sup>
-                {verse.text}
+          {/* Scripture Verses or HTML Content in Zen/Editorial Focus Mode */}
+          <div className="space-y-6 font-serif max-w-2xl mx-auto">
+            {currentChapter.content ? (
+              <div 
+                className={`font-serif ${fontSize} leading-[2.2] space-y-5 text-[#2D1E18] dark:text-[#F0E6D2] [&_p]:mb-4 [&_p]:leading-[2.2] [&_b]:text-[#762F3A] dark:[&_b]:text-[#E5B54C] [&_h3]:font-serif [&_h3]:text-xl [&_h3]:text-[#762F3A] [&_h3]:my-4`}
+                dangerouslySetInnerHTML={{ __html: currentChapter.content }}
+              />
+            ) : currentChapter.verses && currentChapter.verses.length > 0 ? (
+              currentChapter.verses.map((verse) => (
+                <p
+                  key={verse.id}
+                  id={`verse-${verse.verseNumber}`}
+                  onClick={() => setSelectedVerse(verse)}
+                  className={`${fontSize} leading-[2.2] cursor-pointer hover:text-[#8B1E2D] dark:hover:text-[#E5B54C] transition`}
+                >
+                  <sup className="font-sans font-bold text-xs text-[#8B1E2D] dark:text-[#E5B54C] mr-2 select-none">
+                    {verse.verseNumber}
+                  </sup>
+                  {verse.text}
+                </p>
+              ))
+            ) : (
+              <p className="text-center italic text-stone-500 py-12">
+                Đang chuẩn bị bản văn Lời Chúa...
               </p>
-            ))}
+            )}
           </div>
 
           {/* Navigation Bar in Focus Mode */}
@@ -516,6 +548,16 @@ function BibleReaderContent() {
 
           {/* Reader Controls Toolbar */}
           <div className="flex items-center flex-wrap gap-2">
+            {/* Drawer Button 73 Sách Thánh */}
+            <button
+              onClick={() => setShowDrawer(true)}
+              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-semibold shadow-xs transition ${ts.card} text-[#762F3A] dark:text-[#E5BE53] hover:border-[#762F3A]/50`}
+              title="Mở Thư Viện 73 Sách Thánh"
+            >
+              <Layers className="w-3.5 h-3.5 text-[#B39A70]" />
+              <span className="font-bold">73 Sách</span>
+            </button>
+
             {/* Chapter Selector Dropdown */}
             <select
               value={chapterNum}
@@ -1085,6 +1127,144 @@ function BibleReaderContent() {
             book={currentBook}
             onClose={() => setShowBookIntro(false)}
           />
+        )}
+
+        {/* =========================================================================
+            CLASSICAL 73 BOOKS LIBRARY DRAWER / SIDEBAR
+            ========================================================================= */}
+        {showDrawer && (
+          <div className="fixed inset-0 z-50 flex">
+            {/* Backdrop */}
+            <div 
+              className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity"
+              onClick={() => setShowDrawer(false)}
+            />
+
+            {/* Sliding Panel */}
+            <div className="relative w-full max-w-md bg-[#F7F4EE] dark:bg-[#1E1714] border-r border-[#E7E0D5] dark:border-[#3E302A] shadow-2xl h-full flex flex-col z-10 animate-fade-in">
+              {/* Drawer Header */}
+              <div className="p-4 sm:p-5 border-b border-[#E7E0D5] dark:border-[#3E302A] flex items-center justify-between bg-white dark:bg-[#241C18]">
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="font-serif text-lg font-bold text-[#762F3A] dark:text-[#E5BE53]">
+                      Thư Viện 73 Sách Thánh
+                    </span>
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#762F3A]/10 text-[#762F3A] dark:text-[#E5BE53]">
+                      Quy Điển
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-[#736B63] dark:text-[#A1887F] mt-0.5">
+                    46 Cựu Ước (gồm 7 sách Đệ Nhị Quy Điển) & 27 Tân Ước
+                  </p>
+                </div>
+                <button
+                  onClick={() => setShowDrawer(false)}
+                  className="p-2 rounded-xl text-stone-500 hover:text-black dark:hover:text-white hover:bg-black/5 transition"
+                  title="Đóng thư viện"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              {/* Drawer Search & Testament Tabs */}
+              <div className="p-4 border-b border-[#E7E0D5] dark:border-[#3E302A] space-y-3 bg-[#FAF7F2] dark:bg-[#1A1412]">
+                {/* Search Input */}
+                <div className="relative">
+                  <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-stone-400 pointer-events-none" />
+                  <input
+                    type="text"
+                    value={drawerSearch}
+                    onChange={(e) => setDrawerSearch(e.target.value)}
+                    placeholder="Tìm tên sách, viết tắt (vd: St, Mt, Kn)..."
+                    className="w-full pl-9 pr-8 py-2 rounded-xl bg-white dark:bg-[#241C18] border border-[#E7E0D5] dark:border-[#3E302A] text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-[#762F3A]"
+                  />
+                  {drawerSearch && (
+                    <button
+                      onClick={() => setDrawerSearch('')}
+                      className="absolute right-2.5 top-1/2 -translate-y-1/2 text-stone-400 hover:text-black"
+                    >
+                      <X className="w-3.5 h-3.5" />
+                    </button>
+                  )}
+                </div>
+
+                {/* Testament Switcher */}
+                <div className="grid grid-cols-3 gap-1.5 p-1 rounded-xl bg-black/5 dark:bg-white/5 text-xs font-bold">
+                  <button
+                    onClick={() => setDrawerTestament('ALL')}
+                    className={`py-1.5 rounded-lg transition ${drawerTestament === 'ALL' ? 'bg-white dark:bg-[#241C18] text-[#762F3A] dark:text-[#E5BE53] shadow-xs' : 'text-stone-500'}`}
+                  >
+                    Tất Cả (73)
+                  </button>
+                  <button
+                    onClick={() => setDrawerTestament('OLD')}
+                    className={`py-1.5 rounded-lg transition ${drawerTestament === 'OLD' ? 'bg-white dark:bg-[#241C18] text-[#762F3A] dark:text-[#E5BE53] shadow-xs' : 'text-stone-500'}`}
+                  >
+                    Cựu Ước (46)
+                  </button>
+                  <button
+                    onClick={() => setDrawerTestament('NEW')}
+                    className={`py-1.5 rounded-lg transition ${drawerTestament === 'NEW' ? 'bg-white dark:bg-[#241C18] text-[#762F3A] dark:text-[#E5BE53] shadow-xs' : 'text-stone-500'}`}
+                  >
+                    Tân Ước (27)
+                  </button>
+                </div>
+              </div>
+
+              {/* Drawer Book List */}
+              <div className="flex-1 overflow-y-auto p-3 space-y-1.5 divide-y divide-[#E7E0D5]/40 dark:divide-[#3E302A]">
+                {filteredDrawerBooks.length === 0 ? (
+                  <div className="p-8 text-center text-xs text-stone-400">
+                    Không tìm thấy sách nào phù hợp với từ khóa &ldquo;{drawerSearch}&rdquo;.
+                  </div>
+                ) : (
+                  filteredDrawerBooks.map((b) => {
+                    const isCurrent = b.id === currentBook.id;
+                    return (
+                      <button
+                        key={b.id}
+                        onClick={() => {
+                          setShowDrawer(false);
+                          router.push(`/kinh-thanh/${b.id}?chapter=1`);
+                        }}
+                        className={`w-full p-2.5 rounded-xl text-left flex items-center justify-between gap-3 transition ${
+                          isCurrent
+                            ? 'bg-[#762F3A] text-white shadow-xs'
+                            : 'hover:bg-white dark:hover:bg-[#241C18] text-[#403A34] dark:text-[#F7F4EE]'
+                        }`}
+                      >
+                        <div className="flex items-center gap-2.5 min-w-0">
+                          <span className={`w-8 h-8 rounded-lg flex items-center justify-center font-serif text-xs font-bold shrink-0 ${
+                            isCurrent
+                              ? 'bg-white/20 text-white'
+                              : 'bg-black/5 dark:bg-white/10 text-[#762F3A] dark:text-[#E5BE53]'
+                          }`}>
+                            {b.abbreviation}
+                          </span>
+                          <div className="min-w-0">
+                            <div className="font-serif text-xs sm:text-sm font-bold truncate">
+                              {b.name}
+                            </div>
+                            <div className={`text-[10px] truncate ${isCurrent ? 'text-white/80' : 'text-[#8F877F] dark:text-[#A1887F]'}`}>
+                              {b.latinName} &bull; {b.categoryName}
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="text-right shrink-0">
+                          <span className={`text-[10px] font-bold px-2 py-0.5 rounded-md ${
+                            isCurrent ? 'bg-white/20 text-white' : 'bg-black/5 dark:bg-white/5 text-stone-500'
+                          }`}>
+                            {b.chaptersCount} ch
+                          </span>
+                        </div>
+                      </button>
+                    );
+                  })
+                )}
+              </div>
+            </div>
+          </div>
         )}
 
         {isPlayingAudio && (

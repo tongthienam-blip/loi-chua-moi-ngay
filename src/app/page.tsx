@@ -39,7 +39,7 @@ import {
 import { getVietnamTodayString, formatVietnamDateFull } from '@/lib/liturgy/timezone';
 import { BibleStore } from '@/lib/bible-store';
 import { DailyLiturgicalReading, DailyReflectionItem, UserPersonalData } from '@/types';
-import { HeroCarousel } from '@/components/HeroCarousel';
+import { HeroSacred } from '@/components/HeroSacred';
 
 export default function HomePage() {
   const [currentDate, setCurrentDate] = useState<string>(() => getVietnamTodayString());
@@ -143,6 +143,44 @@ export default function HomePage() {
   const lastReadVerse = userData?.lastReadLocation?.verseNumber || 1;
   const lastReadBook = CATHOLIC_BIBLE_BOOKS.find(b => b.id === lastReadBookId) || CATHOLIC_BIBLE_BOOKS[0];
 
+  // Huy hiệu Áo Lễ Linh Mục (Chasuble Badge) chuẩn mực AC 14
+  const getChasubleBadge = (colorStr?: string) => {
+    switch (colorStr?.toUpperCase()) {
+      case 'GREEN':
+        return {
+          badgeClass: 'bg-emerald-800 text-white border-emerald-600/70 shadow-xs',
+          label: 'Áo Lễ Xanh',
+          dot: 'bg-emerald-300'
+        };
+      case 'RED':
+        return {
+          badgeClass: 'bg-[#8B1E2D] text-white border-[#B39A70] shadow-xs',
+          label: 'Áo Lễ Đỏ',
+          dot: 'bg-rose-300'
+        };
+      case 'PURPLE':
+        return {
+          badgeClass: 'bg-[#5B2C6F] text-white border-[#884EA0] shadow-xs',
+          label: 'Áo Lễ Tím',
+          dot: 'bg-purple-300'
+        };
+      case 'ROSE':
+        return {
+          badgeClass: 'bg-pink-700 text-white border-pink-500 shadow-xs',
+          label: 'Áo Lễ Hồng',
+          dot: 'bg-pink-200'
+        };
+      case 'WHITE':
+      case 'GOLD':
+      default:
+        return {
+          badgeClass: 'bg-[#FBF8F1] text-[#6E5421] border-[#B39A70] dark:bg-[#2E241E] dark:text-[#E5BE53] shadow-xs',
+          label: 'Áo Lễ Trắng',
+          dot: 'bg-amber-400'
+        };
+    }
+  };
+
   // Màn hình xử lý lỗi an toàn
   if (errorMsg || !todayReading || !todayReflection) {
     return (
@@ -176,9 +214,9 @@ export default function HomePage() {
     <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-6 space-y-8 sm:space-y-12 animate-fade-in relative pb-24 md:pb-12">
       
       {/* =========================================================================
-          HERO CAROUSEL SLIDER (BANNER ĐẦU TRANG CHỦ)
+          HERO BANNER NGHỆ THUẬT CÔNG GIÁO (PREMIUM SACRED VISUAL EXPERIENCE)
           ========================================================================= */}
-      <HeroCarousel />
+      <HeroSacred />
 
       {/* =========================================================================
           1. LỜI CHÚA VÀ PHỤNG VỤ HÔM NAY (COMPACT BANNER - MOBILE FRIENDLY)
@@ -186,7 +224,7 @@ export default function HomePage() {
       <section 
         id="phung-vu"
         aria-label="Lời Chúa và Phụng vụ hôm nay"
-        className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#F7F4EE] via-[#F4EFE6] to-[#E7E0D5] border border-[#E7E0D5] dark:border-[#3E302A] p-4 sm:p-6 md:p-8 shadow-sacred transition-all"
+        className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#F7F4EE] via-[#F4EFE6] to-[#E7E0D5] border border-[#E7E0D5] dark:border-[#3E302A] p-4 sm:p-6 md:p-8 shadow-sacred transition-all sacred-card-hover"
       >
         {/* Họa tiết góc trang nghiêm */}
         <SacredCornerOrnament position="top-left" className="absolute top-2 left-2 text-[#B39A70]/30" />
@@ -197,15 +235,27 @@ export default function HomePage() {
 
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4 sm:gap-6">
           <div className="space-y-2 sm:space-y-3 max-w-2xl">
-            {/* Huy hiệu Phụng vụ & Múi giờ Việt Nam */}
+            {/* Huy hiệu Phụng vụ & Múi giờ Việt Nam & Áo Lễ Linh Mục (Chasuble Badge AC 14) */}
             <div className="flex flex-wrap items-center gap-2">
               <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] sm:text-xs font-bold bg-[#762F3A] text-white shadow-xs">
                 <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
                 Phụng Vụ Hôm Nay
               </span>
+
+              {/* Badge Áo Lễ Linh Mục Chuẩn Mực */}
+              {(() => {
+                const chasuble = getChasubleBadge(todayReading.color);
+                return (
+                  <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] sm:text-xs font-bold border ${chasuble.badgeClass}`}>
+                    <span className={`w-2 h-2 rounded-full ${chasuble.dot}`} />
+                    {chasuble.label}
+                  </span>
+                );
+              })()}
+
               <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] sm:text-xs font-semibold bg-white/90 text-[#B39A70] dark:bg-[#2A201C] dark:text-[#E5BE53] border border-[#B39A70]/30 shadow-xs">
                 <LiturgicalHaloIcon size={13} className="text-[#B39A70]" />
-                {todayReading.colorName} &bull; {todayReading.cycle}
+                {todayReading.cycle}
               </span>
               <span className="text-[11px] sm:text-xs font-medium text-[#736B63] dark:text-[#A1887F]">
                 {formatVietnamDateFull(todayReading.date)}
@@ -252,7 +302,7 @@ export default function HomePage() {
         {/* 2. CÂU LỜI CHÚA HÔM NAY (7 Cols) */}
         <section 
           aria-label="Câu Lời Chúa hôm nay"
-          className="lg:col-span-7 relative overflow-hidden bg-white dark:bg-[#241C18] rounded-3xl p-5 sm:p-7 md:p-8 border border-[#E7E0D5] dark:border-[#3E302A] shadow-sm flex flex-col justify-between group transition-all"
+          className="lg:col-span-7 relative overflow-hidden bg-white dark:bg-[#241C18] rounded-3xl p-5 sm:p-7 md:p-8 border border-[#E7E0D5] dark:border-[#3E302A] shadow-sm flex flex-col justify-between group transition-all sacred-card-hover"
         >
           <SacredCornerOrnament position="top-right" className="absolute top-2 right-2 text-[#B39A70]/30" />
           <SacredCornerOrnament position="bottom-left" className="absolute bottom-2 left-2 text-[#B39A70]/30" />
@@ -303,7 +353,7 @@ export default function HomePage() {
         <section 
           id="suy-niem"
           aria-label="Suy niệm Tin Mừng và Linh đạo thực hành"
-          className="lg:col-span-5 bg-gradient-to-br from-[#F7F4EE] to-[#E7E0D5]/40 dark:from-[#241C18] dark:to-[#1A1412] rounded-3xl p-5 sm:p-7 md:p-8 border border-[#E7E0D5] dark:border-[#3E302A] shadow-sm flex flex-col justify-between relative overflow-hidden"
+          className="lg:col-span-5 bg-gradient-to-br from-[#F7F4EE] to-[#E7E0D5]/40 dark:from-[#241C18] dark:to-[#1A1412] rounded-3xl p-5 sm:p-7 md:p-8 border border-[#E7E0D5] dark:border-[#3E302A] shadow-sm flex flex-col justify-between relative overflow-hidden sacred-card-hover"
         >
           <div className="absolute top-0 right-0 p-4 opacity-10 pointer-events-none">
             <SacredCrossIcon size={80} className="text-[#762F3A]" />
@@ -373,7 +423,7 @@ export default function HomePage() {
           ========================================================================= */}
       <section 
         aria-label="Tiếp tục đọc Kinh Thánh"
-        className="rounded-3xl bg-white dark:bg-[#241C18] border border-[#E7E0D5] dark:border-[#3E302A] p-5 sm:p-6 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4 transition-all"
+        className="rounded-3xl bg-white dark:bg-[#241C18] border border-[#E7E0D5] dark:border-[#3E302A] p-5 sm:p-6 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4 transition-all sacred-card-hover"
       >
         <div className="flex items-start sm:items-center gap-3.5">
           <div className="w-12 h-12 rounded-2xl bg-[#762F3A]/10 dark:bg-[#E5BE53]/15 text-[#762F3A] dark:text-[#E5BE53] flex items-center justify-center shrink-0">

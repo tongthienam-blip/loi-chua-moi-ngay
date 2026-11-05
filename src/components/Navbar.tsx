@@ -30,8 +30,19 @@ export function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [currentTheme, setCurrentTheme] = useState<'light' | 'sepia' | 'dark'>('light');
+  const [isScrolled, setIsScrolled] = useState(false);
   
   const dropdownRef = useRef<HTMLDivElement | null>(null);
+
+  // Hiệu ứng phát hiện cuộn trang để tinh chỉnh hiệu ứng kính mờ (Glassmorphism)
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   // 5 Mục chính hiển thị trực tiếp trên Header
   const primaryNavLinks = [
@@ -83,7 +94,11 @@ export function Navbar() {
 
   return (
     <>
-      <header className="sticky top-0 z-40 bg-[#F7F4EE]/95 dark:bg-[#1A1412]/95 backdrop-blur-md border-b border-[#E7E0D5] dark:border-[#3E302A] transition-colors">
+      <header className={`sticky top-0 z-40 transition-all duration-300 ${
+        isScrolled 
+          ? 'bg-[#F7F4EE]/95 dark:bg-[#1A1412]/95 backdrop-blur-md shadow-md border-b border-[#E7E0D5] dark:border-[#3E302A]' 
+          : 'bg-[#F7F4EE]/85 dark:bg-[#1A1412]/85 backdrop-blur-xs border-b border-[#E7E0D5]/50 dark:border-[#3E302A]/50'
+      }`}>
         <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-15 sm:h-16 flex items-center justify-between gap-2">
           
           {/* Logo & App Title: Giữ gọn, không bị cắt hay mất chữ */}
