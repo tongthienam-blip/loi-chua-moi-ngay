@@ -40,6 +40,7 @@ import { getVietnamTodayString, formatVietnamDateFull } from '@/lib/liturgy/time
 import { BibleStore } from '@/lib/bible-store';
 import { DailyLiturgicalReading, DailyReflectionItem, UserPersonalData } from '@/types';
 import { HeroCarousel } from '@/components/HeroCarousel';
+import { DailyPrayersWidget } from '@/components/DailyPrayersWidget';
 
 export default function HomePage() {
   const [currentDate, setCurrentDate] = useState<string>(() => getVietnamTodayString());
@@ -729,11 +730,16 @@ export default function HomePage() {
       </div>
 
       {/* =========================================================================
-          12. FOOTER — MINH BẠCH BẢN QUYỀN & TÔN TRỌNG HUẤN QUYỀN HỘI THÁNH
+          12. KHỐI GÓC KINH NGUYỆN HẰNG NGÀY & TÂM TÌNH DÂNG CHÚA
+          ========================================================================= */}
+      <DailyPrayersWidget />
+
+      {/* =========================================================================
+          13. FOOTER — LIÊN KẾT ĐIỀU HƯỚNG & MINH BẠCH BẢN QUYỀN
           ========================================================================= */}
       <footer 
         aria-label="Chân trang và Bản quyền"
-        className="pt-8 pb-8 border-t border-[#E7E0D5] dark:border-[#3E302A] space-y-6 text-center"
+        className="pt-6 pb-10 border-t border-[#B39A70]/30 space-y-4 text-center max-w-4xl mx-auto"
       >
         <div className="flex items-center justify-center gap-2 select-none">
           <SacredCrossIcon size={18} className="text-[#762F3A] dark:text-[#E5BE53]" />
@@ -743,26 +749,6 @@ export default function HomePage() {
           <span className="text-xs text-[#B39A70] dark:text-[#E5BE53] font-semibold">
             &bull; Nền Tảng Kinh Thánh Công Giáo Toàn Diện
           </span>
-        </div>
-
-        {/* Thông tin tác giả & Phân định pháp lý bản quyền - Khung mạ vàng cổ kính trên nền họa tiết phục hưng */}
-        <div className="relative overflow-hidden p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-white via-[#FDFBF7] to-[#F7F4EE] dark:from-[#241C18] dark:via-[#201815] dark:to-[#1A1412] border-2 border-[#B39A70]/40 shadow-xl max-w-3xl mx-auto space-y-3.5 text-xs text-[#736B63] dark:text-[#D7CCC8] shadow-sacred text-left sm:text-center leading-relaxed sacred-card-hover">
-          {/* Họa tiết phục hưng nghệ thuật mờ chìm phía sau */}
-          <div 
-            className="absolute inset-0 bg-cover bg-center opacity-[0.06] dark:opacity-[0.03] pointer-events-none"
-            style={{ backgroundImage: `url('https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?q=40&w=1200&auto=format&fit=crop')` }}
-          />
-          <SacredCornerOrnament position="top-left" className="absolute top-2 left-2 text-[#B39A70]/40 scale-110" />
-          <SacredCornerOrnament position="top-right" className="absolute top-2 right-2 text-[#B39A70]/40 scale-110" />
-
-          <div className="relative z-10 font-bold text-[#762F3A] dark:text-[#E5BE53] text-sm flex items-center justify-center gap-2">
-            <SacredCrossIcon size={16} className="text-[#B39A70] shrink-0" />
-            <span>Người sáng lập & Phát triển dự án: Lucas Nguyen &bull; Email: anhtuan.employ202@gmail.com &bull; SĐT: 0368727316</span>
-          </div>
-          <div className="relative z-10 text-[11px] text-[#8F877F] dark:text-[#A1887F] border-t border-[#B39A70]/20 pt-2.5 max-w-2xl mx-auto">
-            Bản quyền mã nguồn và giao diện thuộc về tác giả. 
-            Bản văn Lời Chúa, Các Bài đọc Phụng vụ và Giáo lý Hội Thánh Công giáo thuộc thẩm quyền Tòa Thánh Vatican và Hội đồng Giám mục Việt Nam (HĐGMVN), được tôn kính trích dẫn nhằm phục vụ mục vụ và cộng đồng đức tin, phi thương mại.
-          </div>
         </div>
 
         {/* Liên kết điều hướng chân trang */}
@@ -778,6 +764,16 @@ export default function HomePage() {
           <Link href="/nghien-cuu" className="hover:underline">Nghiên Cứu</Link>
           <span>&bull;</span>
           <Link href="/ca-nhan" className="hover:underline">Tài Khoản Cá Nhân</Link>
+        </div>
+
+        {/* Ghi chú bản quyền & Người sáng lập chính thức */}
+        <div className="text-[11px] text-[#8F877F] dark:text-[#A1887F] space-y-1 pt-2">
+          <p>
+            Người sáng lập & Phát triển dự án: Lucas Nguyen &bull; Email: anhtuan.employ202@gmail.com &bull; SĐT: 0368727316
+          </p>
+          <p className="max-w-2xl mx-auto text-[10px] leading-relaxed opacity-80">
+            Bản quyền mã nguồn thuộc về tác giả. Bản văn Lời Chúa, Các Bài đọc Phụng vụ và Giáo lý Hội Thánh Công giáo thuộc thẩm quyền Tòa Thánh Vatican và HĐGMVN, được tôn kính trích dẫn phục vụ cộng đồng đức tin, phi thương mại.
+          </p>
         </div>
       </footer>
 
