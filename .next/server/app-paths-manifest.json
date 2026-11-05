@@ -1,1 +1,22 @@
-{}
+{
+  "/_not-found/page": "app/_not-found/page.js",
+  "/api/assistant/route": "app/api/assistant/route.js",
+  "/ca-nhan/page": "app/ca-nhan/page.js",
+  "/giao-ly/page": "app/giao-ly/page.js",
+  "/gioi-thieu/page": "app/gioi-thieu/page.js",
+  "/ke-hoach-doc/page": "app/ke-hoach-doc/page.js",
+  "/kinh-thanh/[bookId]/page": "app/kinh-thanh/[bookId]/page.js",
+  "/kinh-thanh/page": "app/kinh-thanh/page.js",
+  "/nghien-cuu/page": "app/nghien-cuu/page.js",
+  "/page": "app/page.js",
+  "/phung-vu/page": "app/phung-vu/page.js",
+  "/suy-niem/page": "app/suy-niem/page.js",
+  "/tao-anh/page": "app/tao-anh/page.js",
+  "/tro-ly-ai/page": "app/tro-ly-ai/page.js",
+  "/api/bible-fetch/route": "app/api/bible-fetch/route.js",
+  "/admin/audit-logs/page": "app/admin/audit-logs/page.js",
+  "/admin/kiem-duyet-nguon/page": "app/admin/kiem-duyet-nguon/page.js",
+  "/admin/phung-vu/page": "app/admin/phung-vu/page.js",
+  "/admin/page": "app/admin/page.js",
+  "/admin/suy-niem/page": "app/admin/suy-niem/page.js"
+}

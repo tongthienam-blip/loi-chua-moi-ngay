@@ -91,16 +91,41 @@ function BibleReaderContent() {
         try {
           const res = await fetch(`/api/bible-fetch?book=${book.id}&chapter=${chapterParam}`);
           const data = await res.json();
-          if (data.success) {
+          if (data.success && data.html) {
+            // Lấy thêm dữ liệu khảo cứu thần học địa phương nếu có
+            const localStudy = getChapterData(book.id, chapterParam);
             setCurrentChapter({
               bookId: book.id,
-              chapter: chapterParam,
+              chapterNumber: chapterParam,
+              summary: localStudy?.summary || `Bản văn Kinh Thánh ${book.name} chương ${chapterParam}`,
               content: data.html,
-              verses: []
+              verses: localStudy?.verses || [],
+              historicalContext: localStudy?.historicalContext,
+              geographyAndCulture: localStudy?.geographyAndCulture,
+              authorAndAudience: localStudy?.authorAndAudience,
+              literaryStructure: localStudy?.literaryStructure,
+              characters: localStudy?.characters,
+              keyKeywords: localStudy?.keyKeywords,
+              theologicalMeaning: localStudy?.theologicalMeaning,
+              christologicalMeaning: localStudy?.christologicalMeaning,
+              otNtConnections: localStudy?.otNtConnections,
+              cccConnections: localStudy?.cccConnections,
+              churchDocConnections: localStudy?.churchDocConnections,
+              meditationAndApplication: localStudy?.meditationAndApplication,
+              academicSources: localStudy?.academicSources
             });
+          } else {
+            const localChapter = getChapterData(book.id, chapterParam);
+            if (localChapter) {
+              setCurrentChapter(localChapter);
+            }
           }
         } catch (err) {
-          console.error('Lỗi tải dữ liệu augustino:', err);
+          console.error('Lỗi tải dữ liệu Kinh Thánh:', err);
+          const localChapter = getChapterData(book.id, chapterParam);
+          if (localChapter) {
+            setCurrentChapter(localChapter);
+          }
         }
 
         BibleStore.recordReadingActivity();
@@ -219,8 +244,13 @@ function BibleReaderContent() {
   };
 
   const getFullChapterTextForAudio = () => {
-    if (!currentChapter || currentChapter.verses.length === 0) return '';
-    return currentChapter.verses.map((v) => `Câu ${v.verseNumber}: ${v.text}`).join('. ');
+    if (currentChapter?.verses && currentChapter.verses.length > 0) {
+      return currentChapter.verses.map((v) => `Câu ${v.verseNumber}: ${v.text}`).join('. ');
+    }
+    if (currentChapter?.content) {
+      return currentChapter.content.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+    }
+    return '';
   };
 
   const cycleFontSize = () => {
@@ -603,11 +633,16 @@ function BibleReaderContent() {
                   {currentBook.name} &bull; Toàn Văn Chương {chapterNum}
                 </span>
                 <span className="text-xs text-stone-400">
-                  {currentChapter?.verses.length || 0} câu hiển thị
+                  {currentChapter?.content ? 'Bản văn Lời Chúa' : `${currentChapter?.verses.length || 0} câu hiển thị`}
                 </span>
               </div>
 
-              {currentChapter && currentChapter.verses.length > 0 ? (
+              {currentChapter && currentChapter.content ? (
+                <div 
+                  className={`bible-html-content font-serif ${fontSize} leading-relaxed space-y-4 text-[#2D1E18] dark:text-[#F0E6D2] [&_p]:mb-3 [&_p]:leading-relaxed [&_b]:text-[#762F3A] dark:[&_b]:text-[#E5B54C]`}
+                  dangerouslySetInnerHTML={{ __html: currentChapter.content }}
+                />
+              ) : currentChapter && currentChapter.verses.length > 0 ? (
                 <div className="space-y-3">
                   {currentChapter.verses.map((verse) => (
                     <div

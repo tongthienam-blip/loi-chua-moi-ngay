@@ -76,6 +76,7 @@ export interface BibleChapter {
   chapterNumber: number;
   title?: string;
   summary: string;
+  content?: string;                    // Toàn văn HTML (augustino.net / labs.bible.org fallback)
   // 12 Mục nghiên cứu chuyên sâu chuẩn học thuật Công giáo
   historicalContext?: string;          // 1. Bối cảnh lịch sử
   geography?: string;
