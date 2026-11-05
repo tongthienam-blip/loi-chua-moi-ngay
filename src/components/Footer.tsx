@@ -80,6 +80,11 @@ export function Footer() {
                   Suy Niệm Lời Chúa Hằng Ngày
                 </Link>
               </li>
+              <li>
+                <Link href="/kinh-nguyen" className="hover:text-[#762F3A] dark:hover:text-[#E5BE53] transition">
+                  Kho Kinh Nguyện Công Giáo
+                </Link>
+              </li>
             </ul>
           </div>
 

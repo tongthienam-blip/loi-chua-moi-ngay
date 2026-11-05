@@ -761,6 +761,8 @@ export default function HomePage() {
           <span>&bull;</span>
           <Link href="/giao-ly" className="hover:underline">Giáo Lý (GLHTCG)</Link>
           <span>&bull;</span>
+          <Link href="/kinh-nguyen" className="hover:underline">Kho Kinh Nguyện</Link>
+          <span>&bull;</span>
           <Link href="/nghien-cuu" className="hover:underline">Nghiên Cứu</Link>
           <span>&bull;</span>
           <Link href="/ca-nhan" className="hover:underline">Tài Khoản Cá Nhân</Link>

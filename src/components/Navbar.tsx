@@ -55,10 +55,11 @@ export function Navbar() {
 
   // Các mục phụ đưa vào Dropdown "Khám Phá"
   const moreNavLinks = [
+    { href: '/kinh-nguyen', label: 'Kho Kinh Nguyện', icon: Heart, desc: 'Kinh Sáng, Kinh Tối, Mân Côi & Kinh Thường Dùng' },
     { href: '/nghien-cuu', label: 'Nghiên Cứu Thần Học', icon: Compass, desc: 'Đối chiếu song ngữ, từ điển & tiên trưng' },
     { href: '/tro-ly-ai', label: 'Trợ Lý Thần Học AI', icon: Bot, desc: 'Hỏi đáp Huấn quyền & Giáo lý Hội Thánh' },
     { href: '/ke-hoach-doc', label: 'Kế Hoạch Đọc', icon: Award, desc: 'Lộ trình 365 ngày, 90 ngày Tân Ước' },
-    { href: '/ca-nhan', label: 'Không Gian Cá Nhân', icon: Heart, desc: 'Đánh dấu, ghi chú & nhật ký tâm linh' },
+    { href: '/ca-nhan', label: 'Không Gian Cá Nhân', icon: Sparkles, desc: 'Đánh dấu, ghi chú & nhật ký tâm linh' },
     { href: '/admin', label: 'Quản Trị Hệ Thống', icon: Shield, desc: 'Kiểm duyệt nguồn & phân quyền' },
   ];
 

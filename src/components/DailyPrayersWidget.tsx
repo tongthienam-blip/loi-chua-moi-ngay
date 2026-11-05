@@ -459,7 +459,7 @@ export function DailyPrayersWidget() {
 
           <div className="flex items-center gap-2">
             <Link
-              href="/ca-nhan"
+              href="/kinh-nguyen"
               className="inline-flex items-center gap-1 font-bold text-[#762F3A] dark:text-[#E5BE53] hover:underline"
             >
               <BookOpen className="w-3.5 h-3.5" />
