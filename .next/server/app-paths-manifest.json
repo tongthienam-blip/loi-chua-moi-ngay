@@ -14,8 +14,8 @@
   "/suy-niem/page": "app/suy-niem/page.js",
   "/tao-anh/page": "app/tao-anh/page.js",
   "/tro-ly-ai/page": "app/tro-ly-ai/page.js",
-  "/admin/audit-logs/page": "app/admin/audit-logs/page.js",
   "/admin/kiem-duyet-nguon/page": "app/admin/kiem-duyet-nguon/page.js",
+  "/admin/audit-logs/page": "app/admin/audit-logs/page.js",
   "/admin/page": "app/admin/page.js",
   "/admin/phung-vu/page": "app/admin/phung-vu/page.js",
   "/admin/suy-niem/page": "app/admin/suy-niem/page.js"

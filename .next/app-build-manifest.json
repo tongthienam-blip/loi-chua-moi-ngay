@@ -13,7 +13,7 @@
       "static/chunks/117-ba1889dfe9f2ca3d.js",
       "static/chunks/main-app-2e36565d99a68133.js",
       "static/css/e52ea07f33fe4efc.css",
-      "static/css/a4fcd8226f0735db.css",
+      "static/css/2f8964e9bee0eef6.css",
       "static/chunks/216-815d65d8ae062b9a.js",
       "static/chunks/270-aba16fd0c2394945.js",
       "static/chunks/536-7979381ee0b14875.js",
@@ -98,7 +98,7 @@
       "static/chunks/270-aba16fd0c2394945.js",
       "static/chunks/601-899e3dd20100ec6c.js",
       "static/chunks/536-7979381ee0b14875.js",
-      "static/chunks/app/page-7174f36c2f36e27c.js"
+      "static/chunks/app/page-361994c24e099f72.js"
     ],
     "/phung-vu/page": [
       "static/chunks/webpack-2a6513eb0948d391.js",
@@ -136,14 +136,14 @@
       "static/chunks/601-899e3dd20100ec6c.js",
       "static/chunks/app/tro-ly-ai/page-325de75e99e7b221.js"
     ],
-    "/admin/audit-logs/page": [
+    "/admin/kiem-duyet-nguon/page": [
       "static/chunks/webpack-2a6513eb0948d391.js",
       "static/chunks/fd9d1056-0d19444e3e44d8fd.js",
       "static/chunks/117-ba1889dfe9f2ca3d.js",
       "static/chunks/main-app-2e36565d99a68133.js",
       "static/chunks/270-aba16fd0c2394945.js",
       "static/chunks/601-899e3dd20100ec6c.js",
-      "static/chunks/app/admin/audit-logs/page-a44c0a304030f9e5.js"
+      "static/chunks/app/admin/kiem-duyet-nguon/page-1d9fd635fcc6791f.js"
     ],
     "/admin/layout": [
       "static/chunks/webpack-2a6513eb0948d391.js",
@@ -153,14 +153,14 @@
       "static/chunks/216-815d65d8ae062b9a.js",
       "static/chunks/app/admin/layout-6721163969c81867.js"
     ],
-    "/admin/kiem-duyet-nguon/page": [
+    "/admin/audit-logs/page": [
       "static/chunks/webpack-2a6513eb0948d391.js",
       "static/chunks/fd9d1056-0d19444e3e44d8fd.js",
       "static/chunks/117-ba1889dfe9f2ca3d.js",
       "static/chunks/main-app-2e36565d99a68133.js",
       "static/chunks/270-aba16fd0c2394945.js",
       "static/chunks/601-899e3dd20100ec6c.js",
-      "static/chunks/app/admin/kiem-duyet-nguon/page-1d9fd635fcc6791f.js"
+      "static/chunks/app/admin/audit-logs/page-a44c0a304030f9e5.js"
     ],
     "/admin/page": [
       "static/chunks/webpack-2a6513eb0948d391.js",

@@ -39,6 +39,7 @@ import {
 import { getVietnamTodayString, formatVietnamDateFull } from '@/lib/liturgy/timezone';
 import { BibleStore } from '@/lib/bible-store';
 import { DailyLiturgicalReading, DailyReflectionItem, UserPersonalData } from '@/types';
+import { HeroCarousel } from '@/components/HeroCarousel';
 
 export default function HomePage() {
   const [currentDate, setCurrentDate] = useState<string>(() => getVietnamTodayString());
@@ -175,9 +176,15 @@ export default function HomePage() {
     <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-6 space-y-8 sm:space-y-12 animate-fade-in relative pb-24 md:pb-12">
       
       {/* =========================================================================
+          HERO CAROUSEL SLIDER (BANNER ĐẦU TRANG CHỦ)
+          ========================================================================= */}
+      <HeroCarousel />
+
+      {/* =========================================================================
           1. LỜI CHÚA VÀ PHỤNG VỤ HÔM NAY (COMPACT BANNER - MOBILE FRIENDLY)
           ========================================================================= */}
       <section 
+        id="phung-vu"
         aria-label="Lời Chúa và Phụng vụ hôm nay"
         className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#F7F4EE] via-[#F4EFE6] to-[#E7E0D5] border border-[#E7E0D5] dark:border-[#3E302A] p-4 sm:p-6 md:p-8 shadow-sacred transition-all"
       >
@@ -294,6 +301,7 @@ export default function HomePage() {
 
         {/* 3 & 4. SUY NIỆM TIN MỪNG & LINH ĐẠO THỰC HÀNH (5 Cols) */}
         <section 
+          id="suy-niem"
           aria-label="Suy niệm Tin Mừng và Linh đạo thực hành"
           className="lg:col-span-5 bg-gradient-to-br from-[#F7F4EE] to-[#E7E0D5]/40 dark:from-[#241C18] dark:to-[#1A1412] rounded-3xl p-5 sm:p-7 md:p-8 border border-[#E7E0D5] dark:border-[#3E302A] shadow-sm flex flex-col justify-between relative overflow-hidden"
         >
