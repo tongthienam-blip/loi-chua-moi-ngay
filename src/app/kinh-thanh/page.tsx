@@ -1,10 +1,10 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useParams, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 
-export default function BookPage() {
+function BibleContent() {
   const params = useParams();
   const searchParams = useSearchParams();
   
@@ -13,24 +13,18 @@ export default function BookPage() {
 
   const [contentHtml, setContentHtml] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [errorMsg, setErrorMsg] = useState<string>('');
 
   useEffect(() => {
     async function fetchChapter() {
       setIsLoading(true);
-      setErrorMsg('');
       try {
-        const res = await fetch(`/api/bible-fetch?book=${bookId}&chapter=${chapterParam}`, {
-          cache: 'no-store'
-        });
+        const res = await fetch(`/api/bible-fetch?book=${bookId}&chapter=${chapterParam}`);
         const data = await res.json();
         if (data.success && data.html) {
           setContentHtml(data.html);
-        } else {
-          setErrorMsg('Đang cập nhật văn bản cho chương này...');
         }
       } catch (err) {
-        setErrorMsg('Lỗi kết nối tải dữ liệu.');
+        console.error(err);
       } finally {
         setIsLoading(false);
       }
@@ -40,7 +34,6 @@ export default function BookPage() {
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
-      {/* Thanh chuyển chương */}
       <div className="flex items-center justify-between mb-6 pb-4 border-b">
         <Link 
           href={`/kinh-thanh/${bookId}?chapter=${Math.max(1, parseInt(chapterParam) - 1)}`}
@@ -57,14 +50,9 @@ export default function BookPage() {
         </Link>
       </div>
 
-      {/* Hiển thị văn bản Kinh Thánh */}
       {isLoading ? (
         <div className="text-center py-12 text-gray-500 animate-pulse">
           Đang tải văn bản Kinh Thánh từ máy chủ...
-        </div>
-      ) : errorMsg ? (
-        <div className="text-center py-8 text-amber-700 bg-amber-50 rounded-xl p-4">
-          {errorMsg}
         </div>
       ) : (
         <div 
@@ -73,5 +61,13 @@ export default function BookPage() {
         />
       )}
     </div>
+  );
+}
+
+export default function BookPage() {
+  return (
+    <Suspense fallback={<div className="text-center py-12">Đang nạp...</div>}>
+      <BibleContent />
+    </Suspense>
   );
 }
