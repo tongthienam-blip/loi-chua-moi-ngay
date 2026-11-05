@@ -1,7 +1,9 @@
 {
   "/page": "app/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
   "/gioi-thieu/page": "app/gioi-thieu/page.js",
   "/phung-vu/page": "app/phung-vu/page.js",
   "/kinh-thanh/page": "app/kinh-thanh/page.js",
-  "/kinh-thanh/[bookId]/page": "app/kinh-thanh/[bookId]/page.js"
+  "/kinh-thanh/[bookId]/page": "app/kinh-thanh/[bookId]/page.js",
+  "/api/bible-fetch/route": "app/api/bible-fetch/route.js"
 }
