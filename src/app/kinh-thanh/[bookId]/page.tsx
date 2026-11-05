@@ -45,15 +45,47 @@ import { parseScriptureAddress } from '@/lib/bible/address-parser';
 type ReaderTheme = 'parchment' | 'sepia' | 'dark';
 type ReaderFontSize = 'text-base' | 'text-lg' | 'text-xl' | 'text-2xl';
 
+/**
+ * Tìm sách Kinh Thánh Công Giáo từ ID, mã viết tắt, slug hoặc tên tiếng Việt
+ */
+function findCatholicBook(rawId: string): BibleBook | null {
+  if (!rawId) return null;
+  const clean = rawId.toLowerCase().trim();
+  const normalized = clean.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[đĐ]/g, 'd').replace(/[^a-z0-9]/g, '');
+
+  // 1. So khớp trực tiếp id
+  const direct = CATHOLIC_BIBLE_BOOKS.find((b) => b.id.toLowerCase() === clean);
+  if (direct) return direct;
+
+  // 2. So khớp theo slug, tên, viết tắt hoặc tên Latinh
+  return CATHOLIC_BIBLE_BOOKS.find((b) => {
+    const bIdNorm = b.id.toLowerCase().replace(/[^a-z0-9]/g, '');
+    const bNameNorm = b.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[đĐ]/g, 'd').replace(/[^a-z0-9]/g, '');
+    const bAbbrNorm = b.abbreviation.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[đĐ]/g, 'd').replace(/[^a-z0-9]/g, '');
+    const bCodeNorm = b.code.toLowerCase().replace(/[^a-z0-9]/g, '');
+    const bLatinNorm = b.latinName.toLowerCase().replace(/[^a-z0-9]/g, '');
+
+    return (
+      bIdNorm === normalized ||
+      bNameNorm === normalized ||
+      bAbbrNorm === normalized ||
+      bCodeNorm === normalized ||
+      bLatinNorm === normalized
+    );
+  }) || null;
+}
+
 function BibleReaderContent() {
   const params = useParams();
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  const bookId = (params?.bookId as string) || 'gen';
-  const chapterParam = parseInt(searchParams.get('chapter') || '1', 10);
+  // Bắt chính xác bookId từ Dynamic Route (params.bookId) hoặc query (searchParams.book)
+  const rawBookParam = (params?.bookId as string) || (searchParams?.get('book') as string) || 'gen';
+  const chapterParam = parseInt(searchParams?.get('chapter') || '1', 10);
 
-  const [currentBook, setCurrentBook] = useState<BibleBook | null>(null);
+  const matchedBook = useMemo(() => findCatholicBook(rawBookParam) || CATHOLIC_BIBLE_BOOKS[0], [rawBookParam]);
+  const [currentBook, setCurrentBook] = useState<BibleBook>(matchedBook);
   const [currentChapter, setCurrentChapter] = useState<BibleChapter | null>(null);
   const [chapterNum, setChapterNum] = useState<number>(chapterParam);
   const [selectedVerse, setSelectedVerse] = useState<BibleVerse | null>(null);
@@ -70,10 +102,10 @@ function BibleReaderContent() {
   const [jumpError, setJumpError] = useState('');
   const [copiedVerseId, setCopiedVerseId] = useState<string | null>(null);
 
-  // Book Navigation Index
+  // Book Navigation Index dựa trên sách hiện tại
   const currentBookIndex = useMemo(() => {
-    return CATHOLIC_BIBLE_BOOKS.findIndex((b) => b.id === bookId);
-  }, [bookId]);
+    return CATHOLIC_BIBLE_BOOKS.findIndex((b) => b.id === currentBook.id);
+  }, [currentBook.id]);
 
   const prevBook = currentBookIndex > 0 ? CATHOLIC_BIBLE_BOOKS[currentBookIndex - 1] : null;
   const nextBook = currentBookIndex >= 0 && currentBookIndex < CATHOLIC_BIBLE_BOOKS.length - 1 
@@ -83,62 +115,60 @@ function BibleReaderContent() {
   useEffect(() => {
     async function fetchBibleData() {
       setIsLoading(true);
-      const book = CATHOLIC_BIBLE_BOOKS.find((b) => b.id === bookId);
-      if (book) {
-        setCurrentBook(book);
-        setChapterNum(chapterParam);
+      const book = findCatholicBook(rawBookParam) || CATHOLIC_BIBLE_BOOKS[0];
+      setCurrentBook(book);
+      setChapterNum(chapterParam);
 
-        try {
-          const res = await fetch(`/api/bible-fetch?book=${book.id}&chapter=${chapterParam}`);
-          const data = await res.json();
-          if (data.success && data.html) {
-            // Lấy thêm dữ liệu khảo cứu thần học địa phương nếu có
-            const localStudy = getChapterData(book.id, chapterParam);
-            setCurrentChapter({
-              bookId: book.id,
-              chapterNumber: chapterParam,
-              summary: localStudy?.summary || `Bản văn Kinh Thánh ${book.name} chương ${chapterParam}`,
-              content: data.html,
-              verses: localStudy?.verses || [],
-              historicalContext: localStudy?.historicalContext,
-              geographyAndCulture: localStudy?.geographyAndCulture,
-              authorAndAudience: localStudy?.authorAndAudience,
-              literaryStructure: localStudy?.literaryStructure,
-              characters: localStudy?.characters,
-              keyKeywords: localStudy?.keyKeywords,
-              theologicalMeaning: localStudy?.theologicalMeaning,
-              christologicalMeaning: localStudy?.christologicalMeaning,
-              otNtConnections: localStudy?.otNtConnections,
-              cccConnections: localStudy?.cccConnections,
-              churchDocConnections: localStudy?.churchDocConnections,
-              meditationAndApplication: localStudy?.meditationAndApplication,
-              academicSources: localStudy?.academicSources
-            });
-          } else {
-            const localChapter = getChapterData(book.id, chapterParam);
-            if (localChapter) {
-              setCurrentChapter(localChapter);
-            }
-          }
-        } catch (err) {
-          console.error('Lỗi tải dữ liệu Kinh Thánh:', err);
+      try {
+        const res = await fetch(`/api/bible-fetch?book=${book.id}&chapter=${chapterParam}`);
+        const data = await res.json();
+        if (data.success && data.html) {
+          // Lấy thêm dữ liệu khảo cứu thần học địa phương nếu có
+          const localStudy = getChapterData(book.id, chapterParam);
+          setCurrentChapter({
+            bookId: book.id,
+            chapterNumber: chapterParam,
+            summary: localStudy?.summary || `Bản văn Lời Chúa ${book.name} chương ${chapterParam}`,
+            content: data.html,
+            verses: localStudy?.verses || [],
+            historicalContext: localStudy?.historicalContext,
+            geographyAndCulture: localStudy?.geographyAndCulture,
+            authorAndAudience: localStudy?.authorAndAudience,
+            literaryStructure: localStudy?.literaryStructure,
+            characters: localStudy?.characters,
+            keyKeywords: localStudy?.keyKeywords,
+            theologicalMeaning: localStudy?.theologicalMeaning,
+            christologicalMeaning: localStudy?.christologicalMeaning,
+            otNtConnections: localStudy?.otNtConnections,
+            cccConnections: localStudy?.cccConnections,
+            churchDocConnections: localStudy?.churchDocConnections,
+            meditationAndApplication: localStudy?.meditationAndApplication,
+            academicSources: localStudy?.academicSources
+          });
+        } else {
           const localChapter = getChapterData(book.id, chapterParam);
           if (localChapter) {
             setCurrentChapter(localChapter);
           }
         }
-
-        BibleStore.recordReadingActivity();
-        BibleStore.saveLastReadLocation(book.id, chapterParam);
+      } catch (err) {
+        console.error('Lỗi tải dữ liệu Kinh Thánh:', err);
+        const localChapter = getChapterData(book.id, chapterParam);
+        if (localChapter) {
+          setCurrentChapter(localChapter);
+        }
       }
+
+      BibleStore.recordReadingActivity();
+      BibleStore.saveLastReadLocation(book.id, chapterParam);
       setIsLoading(false);
     }
     fetchBibleData();
-  }, [bookId, chapterParam]);
+  }, [rawBookParam, chapterParam]);
 
   const currentArtwork: SacredArtwork = useMemo(() => {
-    return getArtworkForBook(bookId);
-  }, [bookId]);
+    return getArtworkForBook(currentBook.id);
+  }, [currentBook.id]);
 
   const getThemeStyles = () => {
     switch (theme) {
@@ -552,7 +582,7 @@ function BibleReaderContent() {
             {/* Audio Chapter */}
             <button
               onClick={() => setIsPlayingAudio(true)}
-              disabled={!currentChapter || currentChapter.verses.length === 0}
+              disabled={!currentChapter || (!currentChapter.content && currentChapter.verses.length === 0)}
               className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#8B1E2D] disabled:opacity-40 text-white text-xs font-semibold shadow-sm hover:bg-[#701124] transition"
               title="Nghe đọc chương này"
             >

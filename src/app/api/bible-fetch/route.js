@@ -1,215 +1,186 @@
 import { NextResponse } from 'next/server';
+import { getChapterData } from '@/data/sample-verses';
 
 // ============================================================================
-// BẢNG ÁNH XẠ CHUẨN 73 SÁCH KINH THÁNH CÔNG GIÁO SANG SLUG AUGUSTINO.NET
-// Gồm 46 sách Cựu Ước + 27 sách Tân Ước (Đầy đủ 7 sách Thứ Luật/Đệ Nhị Quy Điển)
+// BẢNG ÁNH XẠ CHUẨN 73 SÁCH KINH THÁNH CÔNG GIÁO (100% TIẾNG VIỆT)
+// Ánh xạ từ các mã / tên / viết tắt sang Slug augustino.net và Slug chuẩn
 // ============================================================================
-export const BIBLE_MAP = {
-  // --- CỰU ƯỚC (46 SÁCH) ---
-  'gen': 'sang-the',
-  'exod': 'xuat-hanh',
-  'exo': 'xuat-hanh',
-  'lev': 'le-vi',
-  'num': 'dan-so',
-  'deut': 'de-nhi-luat',
-  'josh': 'gio-sue',
-  'judg': 'thu-lanh',
-  'ruth': 'rut',
-  '1sam': '1-sam-uen',
-  '2sam': '2-sam-uen',
-  '1kgs': '1-vua',
-  '1kings': '1-vua',
-  '2kgs': '2-vua',
-  '2kings': '2-vua',
-  '1chr': '1-su-bieu',
-  '1chron': '1-su-bieu',
-  '2chr': '2-su-bieu',
-  '2chron': '2-su-bieu',
-  'ezra': 'et-ra',
-  'neh': 'ne-he-mi-a',
-  'tob': 'to-bi-a',
-  'jdt': 'giu-di-tha',
-  'esth': 'et-ste',
-  'est': 'et-ste',
-  '1macc': '1-ma-ca-be',
-  '2macc': '2-ma-ca-be',
-  'job': 'gio-an',
-  'ps': 'danh-ca',
-  'prov': 'cham-ngon',
-  'eccl': 'huan-ca',
-  'eccles': 'huan-ca',
-  'song': 'diem-ca',
-  'wis': 'khon-ngoan',
-  'sir': 'huan-ca',
-  'isa': 'i-sai-a',
-  'jer': 'gie-re-mi-a',
-  'lam': 'ca-thuong',
-  'bar': 'ba-ruc',
-  'ezek': 'e-ze-ki-en',
-  'dan': 'da-ni-en',
-  'hos': 'ho-se',
-  'joel': 'gio-en',
-  'amos': 'a-mos',
-  'obad': 'o-va-di-a',
-  'jonah': 'gio-na',
-  'mic': 'mi-kha',
-  'nah': 'na-khum',
-  'hab': 'kha-ba-cuc',
-  'zeph': 'xe-pha-ni-a',
-  'hag': 'khac-gai',
-  'zech': 'xa-ca-ri-a',
-  'mal': 'ma-la-khi',
+const BIBLE_MAP = {
+  // --- 46 SÁCH CỰU ƯỚC ---
+  'gen': { id: 'gen', slug: 'sang-the', augustino: 'sach-sang-the', name: 'Sáng Thế' },
+  'exod': { id: 'exod', slug: 'xuat-hanh', augustino: 'sach-xuat-hanh', name: 'Xuất Hành' },
+  'exo': { id: 'exod', slug: 'xuat-hanh', augustino: 'sach-xuat-hanh', name: 'Xuất Hành' },
+  'lev': { id: 'lev', slug: 'le-vi', augustino: 'sach-le-vi', name: 'Lê-vi' },
+  'num': { id: 'num', slug: 'dan-so', augustino: 'sach-dan-so', name: 'Dân Số' },
+  'deut': { id: 'deut', slug: 'de-nhi-luat', augustino: 'sach-de-nhi-luat', name: 'Đệ Nhị Luật' },
+  'josh': { id: 'josh', slug: 'gio-sue', augustino: 'sach-gio-sue', name: 'Giô-suê' },
+  'judg': { id: 'judg', slug: 'thu-lanh', augustino: 'sach-thu-lanh', name: 'Thủ Lãnh' },
+  'ruth': { id: 'ruth', slug: 'rut', augustino: 'sach-rut', name: 'Rút' },
+  '1sam': { id: '1sam', slug: '1-sam-uen', augustino: 'sach-sa-mu-en-1', name: '1 Sa-mu-en' },
+  '2sam': { id: '2sam', slug: '2-sam-uen', augustino: 'sach-sa-mu-en-2', name: '2 Sa-mu-en' },
+  '1kgs': { id: '1kgs', slug: '1-vua', augustino: 'sach-cac-vua-1', name: '1 Các Vua' },
+  '1kings': { id: '1kgs', slug: '1-vua', augustino: 'sach-cac-vua-1', name: '1 Các Vua' },
+  '2kgs': { id: '2kgs', slug: '2-vua', augustino: 'sach-cac-vua-2', name: '2 Các Vua' },
+  '2kings': { id: '2kgs', slug: '2-vua', augustino: 'sach-cac-vua-2', name: '2 Các Vua' },
+  '1chr': { id: '1chr', slug: '1-su-bieu', augustino: 'sach-su-bien-1', name: '1 Sử Biên' },
+  '1chron': { id: '1chr', slug: '1-su-bieu', augustino: 'sach-su-bien-1', name: '1 Sử Biên' },
+  '2chr': { id: '2chr', slug: '2-su-bieu', augustino: 'sach-su-bien-2', name: '2 Sử Biên' },
+  '2chron': { id: '2chr', slug: '2-su-bieu', augustino: 'sach-su-bien-2', name: '2 Sử Biên' },
+  'ezra': { id: 'ezra', slug: 'et-ra', augustino: 'sach-et-ra', name: 'Ét-ra' },
+  'neh': { id: 'neh', slug: 'ne-he-mi-a', augustino: 'sach-no-khe-mi-a', name: 'Nê-hê-mi-a' },
+  'tob': { id: 'tob', slug: 'to-bi-a', augustino: 'sach-to-bi-a', name: 'Tô-bi-a' },
+  'jdt': { id: 'jdt', slug: 'giu-di-tha', augustino: 'sach-giu-di-tha', name: 'Giu-đi-tha' },
+  'esth': { id: 'esth', slug: 'et-ste', augustino: 'sach-et-te', name: 'Ét-te' },
+  'est': { id: 'esth', slug: 'et-ste', augustino: 'sach-et-te', name: 'Ét-te' },
+  '1macc': { id: '1macc', slug: '1-ma-ca-be', augustino: 'sach-ma-ca-be-1', name: '1 Ma-ca-bê' },
+  '2macc': { id: '2macc', slug: '2-ma-ca-be', augustino: 'sach-ma-ca-be-2', name: '2 Ma-ca-bê' },
+  'job': { id: 'job', slug: 'giop', augustino: 'sach-giop', name: 'Gióp' },
+  'ps': { id: 'ps', slug: 'thanh-vinh', augustino: 'sach-thanh-vinh', name: 'Thánh Vịnh' },
+  'prov': { id: 'prov', slug: 'cham-ngon', augustino: 'sach-cham-ngon', name: 'Châm Ngôn' },
+  'eccl': { id: 'eccl', slug: 'giang-vien', augustino: 'sach-giang-vien', name: 'Giảng Viên' },
+  'eccles': { id: 'eccl', slug: 'giang-vien', augustino: 'sach-giang-vien', name: 'Giảng Viên' },
+  'song': { id: 'song', slug: 'diem-ca', augustino: 'sach-diem-ca', name: 'Diễm Ca' },
+  'wis': { id: 'wis', slug: 'khon-ngoan', augustino: 'sach-khon-ngoan', name: 'Khôn Ngoan' },
+  'sir': { id: 'sir', slug: 'huan-ca', augustino: 'sach-huan-ca', name: 'Huấn Ca' },
+  'isa': { id: 'isa', slug: 'i-sai-a', augustino: 'sach-ngon-su-i-sai-a', name: 'I-sai-a' },
+  'jer': { id: 'jer', slug: 'gie-re-mi-a', augustino: 'sach-ngon-su-gie-re-mi-a', name: 'Giê-rê-mi-a' },
+  'lam': { id: 'lam', slug: 'ca-thuong', augustino: 'sach-ai-ca', name: 'Ca Thương' },
+  'bar': { id: 'bar', slug: 'ba-ruc', augustino: 'sach-ba-ruc', name: 'Ba-rúc' },
+  'ezek': { id: 'ezek', slug: 'e-ze-ki-en', augustino: 'sach-ngon-su-e-de-ki-en', name: 'Ê-dê-ki-en' },
+  'dan': { id: 'dan', slug: 'da-ni-en', augustino: 'sach-ngon-su-da-ni-en', name: 'Đa-ni-en' },
+  'hos': { id: 'hos', slug: 'ho-se', augustino: 'sach-ngon-su-ho-se', name: 'Hô-sê' },
+  'joel': { id: 'joel', slug: 'gio-en', augustino: 'sach-ngon-su-gio-en', name: 'Giô-en' },
+  'amos': { id: 'amos', slug: 'a-mos', augustino: 'sach-ngon-su-a-mot', name: 'A-mốt' },
+  'obad': { id: 'obad', slug: 'o-va-di-a', augustino: 'sach-ngon-su-o-va-di-a', name: 'Ô-va-đi-a' },
+  'jonah': { id: 'jonah', slug: 'gio-na', augustino: 'sach-ngon-su-gio-na', name: 'Giô-na' },
+  'mic': { id: 'mic', slug: 'mi-kha', augustino: 'sach-ngon-su-mi-kha', name: 'Mi-kha' },
+  'nah': { id: 'nah', slug: 'na-khum', augustino: 'sach-ngon-su-na-khum', name: 'Na-khum' },
+  'hab': { id: 'hab', slug: 'kha-ba-cuc', augustino: 'sach-ngon-su-kha-ba-cuc', name: 'Kha-ba-cúc' },
+  'zeph': { id: 'zeph', slug: 'xe-pha-ni-a', augustino: 'sach-ngon-su-xo-pho-ni-a', name: 'Xê-pha-ni-a' },
+  'hag': { id: 'hag', slug: 'khac-gai', augustino: 'sach-ngon-su-khac-gai', name: 'Khắc-gai' },
+  'zech': { id: 'zech', slug: 'xa-ca-ri-a', augustino: 'sach-ngon-su-da-ca-ri-a', name: 'Xa-ca-ri-a' },
+  'mal': { id: 'mal', slug: 'ma-la-khi', augustino: 'sach-ngon-su-ma-la-khi', name: 'Ma-la-khi' },
 
-  // --- TÂN ƯỚC (27 SÁCH) ---
-  'matt': 'mat-theu',
-  'mark': 'mac-co',
-  'luke': 'lu-ca',
-  'john': 'gio-an',
-  'acts': 'tong-do-cong-vu',
-  'rom': 'ro-ma',
-  '1cor': '1-co-rin-to',
-  '2cor': '2-co-rin-to',
-  'gal': 'ga-lat',
-  'eph': 'e-phe-xo',
-  'phil': 'phi-lip-phe',
-  'col': 'co-lo-xe',
-  '1thess': '1-the-xa-lo-ni-ca',
-  '2thess': '2-the-xa-lo-ni-ca',
-  '1tim': '1-ti-mo-the',
-  '2tim': '2-ti-mo-the',
-  'tit': 'ti-to',
-  'titus': 'ti-to',
-  'philem': 'phi-le-mon',
-  'heb': 'do-thai',
-  'jas': 'gia-co-be',
-  '1pet': '1-phe-ro',
-  '2pet': '2-phe-ro',
-  '1john': '1-gio-an',
-  '2john': '2-gio-an',
-  '3john': '3-gio-an',
-  'jude': 'giu-da',
-  'rev': 'khai-huyen',
-
-  // --- ÁNH XẠ SLUG TRỰC TIẾP ---
-  'sang-the': 'sang-the',
-  'xuat-hanh': 'xuat-hanh',
-  'le-vi': 'le-vi',
-  'dan-so': 'dan-so',
-  'de-nhi-luat': 'de-nhi-luat',
-  'gio-sue': 'gio-sue',
-  'thu-lanh': 'thu-lanh',
-  'rut': 'rut',
-  '1-sam-uen': '1-sam-uen',
-  '2-sam-uen': '2-sam-uen',
-  '1-vua': '1-vua',
-  '2-vua': '2-vua',
-  '1-su-bieu': '1-su-bieu',
-  '2-su-bieu': '2-su-bieu',
-  'et-ra': 'et-ra',
-  'ne-he-mi-a': 'ne-he-mi-a',
-  'to-bi-a': 'to-bi-a',
-  'giu-di-tha': 'giu-di-tha',
-  'et-ste': 'et-ste',
-  '1-ma-ca-be': '1-ma-ca-be',
-  '2-ma-ca-be': '2-ma-ca-be',
-  'danh-ca': 'danh-ca',
-  'cham-ngon': 'cham-ngon',
-  'huan-ca': 'huan-ca',
-  'diem-ca': 'diem-ca',
-  'khon-ngoan': 'khon-ngoan',
-  'i-sai-a': 'i-sai-a',
-  'gie-re-mi-a': 'gie-re-mi-a',
-  'ca-thuong': 'ca-thuong',
-  'ba-ruc': 'ba-ruc',
-  'e-ze-ki-en': 'e-ze-ki-en',
-  'da-ni-en': 'da-ni-en',
-  'ho-se': 'ho-se',
-  'gio-en': 'gio-en',
-  'a-mos': 'a-mos',
-  'o-va-di-a': 'o-va-di-a',
-  'gio-na': 'gio-na',
-  'mi-kha': 'mi-kha',
-  'na-khum': 'na-khum',
-  'kha-ba-cuc': 'kha-ba-cuc',
-  'xe-pha-ni-a': 'xe-pha-ni-a',
-  'khac-gai': 'khac-gai',
-  'xa-ca-ri-a': 'xa-ca-ri-a',
-  'ma-la-khi': 'ma-la-khi',
-  'mat-theu': 'mat-theu',
-  'mac-co': 'mac-co',
-  'lu-ca': 'lu-ca',
-  'gio-an': 'gio-an',
-  'tong-do-cong-vu': 'tong-do-cong-vu',
-  'ro-ma': 'ro-ma',
-  '1-co-rin-to': '1-co-rin-to',
-  '2-co-rin-to': '2-co-rin-to',
-  'ga-lat': 'ga-lat',
-  'e-phe-xo': 'e-phe-xo',
-  'phi-lip-phe': 'phi-lip-phe',
-  'co-lo-xe': 'co-lo-xe',
-  '1-the-xa-lo-ni-ca': '1-the-xa-lo-ni-ca',
-  '2-the-xa-lo-ni-ca': '2-the-xa-lo-ni-ca',
-  '1-ti-mo-the': '1-ti-mo-the',
-  '2-ti-mo-the': '2-ti-mo-the',
-  'ti-to': 'ti-to',
-  'phi-le-mon': 'phi-le-mon',
-  'do-thai': 'do-thai',
-  'gia-co-be': 'gia-co-be',
-  '1-phe-ro': '1-phe-ro',
-  '2-phe-ro': '2-phe-ro',
-  '1-gio-an': '1-gio-an',
-  '2-gio-an': '2-gio-an',
-  '3-gio-an': '3-gio-an',
-  'giu-da': 'giu-da',
-  'khai-huyen': 'khai-huyen',
+  // --- 27 SÁCH TÂN ƯỚC ---
+  'matt': { id: 'matt', slug: 'mat-theu', augustino: 'tin-mung-theo-thanh-mat-theu', name: 'Mát-thêu' },
+  'mark': { id: 'mark', slug: 'mac-co', augustino: 'tin-mung-theo-thanh-mac-co', name: 'Mác-cô' },
+  'luke': { id: 'luke', slug: 'lu-ca', augustino: 'tin-mung-theo-thanh-lu-ca', name: 'Lu-ca' },
+  'john': { id: 'john', slug: 'gio-an', augustino: 'tin-mung-theo-thanh-gio-an', name: 'Gio-an' },
+  'acts': { id: 'acts', slug: 'tong-do-cong-vu', augustino: 'sach-cong-vu-tong-do', name: 'Tông Đồ Công Vụ' },
+  'rom': { id: 'rom', slug: 'ro-ma', augustino: 'thu-gui-tin-huu-ro-ma', name: 'Rô-ma' },
+  '1cor': { id: '1cor', slug: '1-co-rin-to', augustino: 'thu-1-gui-tin-huu-co-rin-to', name: '1 Cô-rin-tô' },
+  '2cor': { id: '2cor', slug: '2-co-rin-to', augustino: 'thu-2-gui-tin-huu-co-rin-to', name: '2 Cô-rin-tô' },
+  'gal': { id: 'gal', slug: 'ga-lat', augustino: 'thu-gui-tin-huu-ga-lat', name: 'Ga-lát' },
+  'eph': { id: 'eph', slug: 'e-phe-xo', augustino: 'thu-gui-tin-huu-e-phe-xo', name: 'Ê-phê-xô' },
+  'phil': { id: 'phil', slug: 'phi-lip-phe', augustino: 'thu-gui-tin-huu-phi-lip-phe', name: 'Phi-líp-phê' },
+  'col': { id: 'col', slug: 'co-lo-xe', augustino: 'thu-gui-tin-huu-co-lo-xe', name: 'Cô-lô-xê' },
+  '1thess': { id: '1thess', slug: '1-the-xa-lo-ni-ca', augustino: 'thu-1-gui-tin-huu-the-xa-lo-ni-ca', name: '1 Tê-xa-lô-ni-ca' },
+  '2thess': { id: '2thess', slug: '2-the-xa-lo-ni-ca', augustino: 'thu-2-gui-tin-huu-the-xa-lo-ni-ca', name: '2 Tê-xa-lô-ni-ca' },
+  '1tim': { id: '1tim', slug: '1-ti-mo-the', augustino: 'thu-1-gui-ong-ti-mo-the', name: '1 Ti-mô-thê' },
+  '2tim': { id: '2tim', slug: '2-ti-mo-the', augustino: 'thu-2-gui-ong-ti-mo-the', name: '2 Ti-mô-thê' },
+  'tit': { id: 'titus', slug: 'ti-to', augustino: 'thu-gui-ong-ti-to', name: 'Ti-tô' },
+  'titus': { id: 'titus', slug: 'ti-to', augustino: 'thu-gui-ong-ti-to', name: 'Ti-tô' },
+  'philem': { id: 'philem', slug: 'phi-le-mon', augustino: 'thu-gui-ong-phi-le-mon', name: 'Phi-lê-môn' },
+  'heb': { id: 'heb', slug: 'do-thai', augustino: 'thu-gui-tin-huu-hip-ri', name: 'Do Thái' },
+  'jas': { id: 'jas', slug: 'gia-co-be', augustino: 'thu-cua-thanh-gia-co-be', name: 'Gia-cô-bê' },
+  '1pet': { id: '1pet', slug: '1-phe-ro', augustino: 'thu-1-cua-thanh-phe-ro', name: '1 Phê-rô' },
+  '2pet': { id: '2pet', slug: '2-phe-ro', augustino: 'thu-2-cua-thanh-phe-ro', name: '2 Phê-rô' },
+  '1john': { id: '1john', slug: '1-gio-an', augustino: 'thu-1-cua-thanh-gio-an', name: '1 Gio-an' },
+  '2john': { id: '2john', slug: '2-gio-an', augustino: 'thu-2-cua-thanh-gio-an', name: '2 Gio-an' },
+  '3john': { id: '3john', slug: '3-gio-an', augustino: 'thu-3-cua-thanh-gio-an', name: '3 Gio-an' },
+  'jude': { id: 'jude', slug: 'giu-da', augustino: 'thu-cua-thanh-giu-da', name: 'Giu-đa' },
+  'rev': { id: 'rev', slug: 'khai-huyen', augustino: 'sach-khai-huyen', name: 'Khải Huyền' },
 
   // --- VIẾT TẮT TIẾNG VIỆT PHỔ BIẾN ---
-  'st': 'sang-the', 'xh': 'xuat-hanh', 'lv': 'le-vi', 'ds': 'dan-so', 'dnl': 'de-nhi-luat',
-  'gs': 'gio-sue', 'tl': 'thu-lanh', 'rt': 'rut', '1sm': '1-sam-uen', '2sm': '2-sam-uen',
-  '1v': '1-vua', '2v': '2-vua', '1sb': '1-su-bieu', '2sb': '2-su-bieu', 'er': 'et-ra',
-  'nh': 'ne-he-mi-a', 'tb': 'to-bi-a', 'gdt': 'giu-di-tha', 'es': 'et-ste',
-  '1mc': '1-ma-ca-be', '2mc': '2-ma-ca-be', 'gp': 'gio-an', 'tv': 'danh-ca',
-  'cn': 'cham-ngon', 'gv': 'huan-ca', 'dc': 'diem-ca', 'kn': 'khon-ngoan', 'hc': 'huan-ca',
-  'is': 'i-sai-a', 'gr': 'gie-re-mi-a', 'tc': 'ca-thuong', 'br': 'ba-ruc', 'ez': 'e-ze-ki-en',
-  'dn': 'da-ni-en', 'hs': 'ho-se', 'ge': 'gio-en', 'am': 'a-mos', 'ov': 'o-va-di-a',
-  'gn': 'gio-na', 'mk': 'mi-kha', 'nhm': 'na-khum', 'khb': 'kha-ba-cuc', 'xp': 'xe-pha-ni-a',
-  'hg': 'khac-gai', 'zc': 'xa-ca-ri-a', 'ml': 'ma-la-khi',
-  'mt': 'mat-theu', 'mc-nt': 'mac-co', 'lc': 'lu-ca', 'ga': 'gio-an', 'cv': 'tong-do-cong-vu',
-  'rm': 'ro-ma', '1cr': '1-co-rin-to', '2cr': '2-co-rin-to', 'gl': 'ga-lat', 'ep': 'e-phe-xo',
-  'pl': 'phi-lip-phe', 'cl': 'co-lo-xe', '1ts': '1-the-xa-lo-ni-ca', '2ts': '2-the-xa-lo-ni-ca',
-  '1tm': '1-ti-mo-the', '2tm': '2-ti-mo-the', 'tt': 'ti-to', 'pm': 'phi-le-mon',
-  'dt': 'do-thai', 'gc': 'gia-co-be', '1pr': '1-phe-ro', '2pr': '2-phe-ro',
-  '1ga': '1-gio-an', '2ga': '2-gio-an', '3ga': '3-gio-an', 'gd': 'giu-da', 'kh': 'khai-huyen'
+  'st': { id: 'gen', slug: 'sang-the', augustino: 'sach-sang-the', name: 'Sáng Thế' },
+  'xh': { id: 'exod', slug: 'xuat-hanh', augustino: 'sach-xuat-hanh', name: 'Xuất Hành' },
+  'lv': { id: 'lev', slug: 'le-vi', augustino: 'sach-le-vi', name: 'Lê-vi' },
+  'ds': { id: 'num', slug: 'dan-so', augustino: 'sach-dan-so', name: 'Dân Số' },
+  'dnl': { id: 'deut', slug: 'de-nhi-luat', augustino: 'sach-de-nhi-luat', name: 'Đệ Nhị Luật' },
+  'gs': { id: 'josh', slug: 'gio-sue', augustino: 'sach-gio-sue', name: 'Giô-suê' },
+  'tl': { id: 'judg', slug: 'thu-lanh', augustino: 'sach-thu-lanh', name: 'Thủ Lãnh' },
+  'rt': { id: 'ruth', slug: 'rut', augustino: 'sach-rut', name: 'Rút' },
+  '1sm': { id: '1sam', slug: '1-sam-uen', augustino: 'sach-sa-mu-en-1', name: '1 Sa-mu-en' },
+  '2sm': { id: '2sam', slug: '2-sam-uen', augustino: 'sach-sa-mu-en-2', name: '2 Sa-mu-en' },
+  '1v': { id: '1kgs', slug: '1-vua', augustino: 'sach-cac-vua-1', name: '1 Các Vua' },
+  '2v': { id: '2kgs', slug: '2-vua', augustino: 'sach-cac-vua-2', name: '2 Các Vua' },
+  '1sb': { id: '1chr', slug: '1-su-bieu', augustino: 'sach-su-bien-1', name: '1 Sử Biên' },
+  '2sb': { id: '2chr', slug: '2-su-bieu', augustino: 'sach-su-bien-2', name: '2 Sử Biên' },
+  'er': { id: 'ezra', slug: 'et-ra', augustino: 'sach-et-ra', name: 'Ét-ra' },
+  'nh': { id: 'neh', slug: 'ne-he-mi-a', augustino: 'sach-no-khe-mi-a', name: 'Nê-hê-mi-a' },
+  'tb': { id: 'tob', slug: 'to-bi-a', augustino: 'sach-to-bi-a', name: 'Tô-bi-a' },
+  'gdt': { id: 'jdt', slug: 'giu-di-tha', augustino: 'sach-giu-di-tha', name: 'Giu-đi-tha' },
+  'es': { id: 'esth', slug: 'et-ste', augustino: 'sach-et-te', name: 'Ét-te' },
+  '1mc': { id: '1macc', slug: '1-ma-ca-be', augustino: 'sach-ma-ca-be-1', name: '1 Ma-ca-bê' },
+  '2mc': { id: '2macc', slug: '2-ma-ca-be', augustino: 'sach-ma-ca-be-2', name: '2 Ma-ca-bê' },
+  'gp': { id: 'job', slug: 'giop', augustino: 'sach-giop', name: 'Gióp' },
+  'tv': { id: 'ps', slug: 'thanh-vinh', augustino: 'sach-thanh-vinh', name: 'Thánh Vịnh' },
+  'cn': { id: 'prov', slug: 'cham-ngon', augustino: 'sach-cham-ngon', name: 'Châm Ngôn' },
+  'gv': { id: 'eccl', slug: 'giang-vien', augustino: 'sach-giang-vien', name: 'Giảng Viên' },
+  'dc': { id: 'song', slug: 'diem-ca', augustino: 'sach-diem-ca', name: 'Diễm Ca' },
+  'kn': { id: 'wis', slug: 'khon-ngoan', augustino: 'sach-khon-ngoan', name: 'Khôn Ngoan' },
+  'hc': { id: 'sir', slug: 'huan-ca', augustino: 'sach-huan-ca', name: 'Huấn Ca' },
+  'is': { id: 'isa', slug: 'i-sai-a', augustino: 'sach-ngon-su-i-sai-a', name: 'I-sai-a' },
+  'gr': { id: 'jer', slug: 'gie-re-mi-a', augustino: 'sach-ngon-su-gie-re-mi-a', name: 'Giê-rê-mi-a' },
+  'tc': { id: 'lam', slug: 'ca-thuong', augustino: 'sach-ai-ca', name: 'Ca Thương' },
+  'br': { id: 'bar', slug: 'ba-ruc', augustino: 'sach-ba-ruc', name: 'Ba-rúc' },
+  'ez': { id: 'ezek', slug: 'e-ze-ki-en', augustino: 'sach-ngon-su-e-de-ki-en', name: 'Ê-dê-ki-en' },
+  'dn': { id: 'dan', slug: 'da-ni-en', augustino: 'sach-ngon-su-da-ni-en', name: 'Đa-ni-en' },
+  'hs': { id: 'hos', slug: 'ho-se', augustino: 'sach-ngon-su-ho-se', name: 'Hô-sê' },
+  'ge': { id: 'joel', slug: 'gio-en', augustino: 'sach-ngon-su-gio-en', name: 'Giô-en' },
+  'am': { id: 'amos', slug: 'a-mos', augustino: 'sach-ngon-su-a-mot', name: 'A-mốt' },
+  'ov': { id: 'obad', slug: 'o-va-di-a', augustino: 'sach-ngon-su-o-va-di-a', name: 'Ô-va-đi-a' },
+  'gn': { id: 'jonah', slug: 'gio-na', augustino: 'sach-ngon-su-gio-na', name: 'Giô-na' },
+  'mk': { id: 'mic', slug: 'mi-kha', augustino: 'sach-ngon-su-mi-kha', name: 'Mi-kha' },
+  'nhm': { id: 'nah', slug: 'na-khum', augustino: 'sach-ngon-su-na-khum', name: 'Na-khum' },
+  'khb': { id: 'hab', slug: 'kha-ba-cuc', augustino: 'sach-ngon-su-kha-ba-cuc', name: 'Kha-ba-cúc' },
+  'xp': { id: 'zeph', slug: 'xe-pha-ni-a', augustino: 'sach-ngon-su-xo-pho-ni-a', name: 'Xê-pha-ni-a' },
+  'hg': { id: 'hag', slug: 'khac-gai', augustino: 'sach-ngon-su-khac-gai', name: 'Khắc-gai' },
+  'zc': { id: 'zech', slug: 'xa-ca-ri-a', augustino: 'sach-ngon-su-da-ca-ri-a', name: 'Xa-ca-ri-a' },
+  'ml': { id: 'mal', slug: 'ma-la-khi', augustino: 'sach-ngon-su-ma-la-khi', name: 'Ma-la-khi' },
+  'mt': { id: 'matt', slug: 'mat-theu', augustino: 'tin-mung-theo-thanh-mat-theu', name: 'Mát-thêu' },
+  'mc': { id: 'mark', slug: 'mac-co', augustino: 'tin-mung-theo-thanh-mac-co', name: 'Mác-cô' },
+  'lc': { id: 'luke', slug: 'lu-ca', augustino: 'tin-mung-theo-thanh-lu-ca', name: 'Lu-ca' },
+  'ga': { id: 'john', slug: 'gio-an', augustino: 'tin-mung-theo-thanh-gio-an', name: 'Gio-an' },
+  'cv': { id: 'acts', slug: 'tong-do-cong-vu', augustino: 'sach-cong-vu-tong-do', name: 'Tông Đồ Công Vụ' },
+  'rm': { id: 'rom', slug: 'ro-ma', augustino: 'thu-gui-tin-huu-ro-ma', name: 'Rô-ma' },
+  '1cr': { id: '1cor', slug: '1-co-rin-to', augustino: 'thu-1-gui-tin-huu-co-rin-to', name: '1 Cô-rin-tô' },
+  '2cr': { id: '2cor', slug: '2-co-rin-to', augustino: 'thu-2-gui-tin-huu-co-rin-to', name: '2 Cô-rin-tô' },
+  'gl': { id: 'gal', slug: 'ga-lat', augustino: 'thu-gui-tin-huu-ga-lat', name: 'Ga-lát' },
+  'ep': { id: 'eph', slug: 'e-phe-xo', augustino: 'thu-gui-tin-huu-e-phe-xo', name: 'Ê-phê-xô' },
+  'pl': { id: 'phil', slug: 'phi-lip-phe', augustino: 'thu-gui-tin-huu-phi-lip-phe', name: 'Phi-líp-phê' },
+  'cl': { id: 'col', slug: 'co-lo-xe', augustino: 'thu-gui-tin-huu-co-lo-xe', name: 'Cô-lô-xê' },
+  '1ts': { id: '1thess', slug: '1-the-xa-lo-ni-ca', augustino: 'thu-1-gui-tin-huu-the-xa-lo-ni-ca', name: '1 Tê-xa-lô-ni-ca' },
+  '2ts': { id: '2thess', slug: '2-the-xa-lo-ni-ca', augustino: 'thu-2-gui-tin-huu-the-xa-lo-ni-ca', name: '2 Tê-xa-lô-ni-ca' },
+  '1tm': { id: '1tim', slug: '1-ti-mo-the', augustino: 'thu-1-gui-ong-ti-mo-the', name: '1 Ti-mô-thê' },
+  '2tm': { id: '2tim', slug: '2-ti-mo-the', augustino: 'thu-2-gui-ong-ti-mo-the', name: '2 Ti-mô-thê' },
+  'tt': { id: 'titus', slug: 'ti-to', augustino: 'thu-gui-ong-ti-to', name: 'Ti-tô' },
+  'pm': { id: 'philem', slug: 'phi-le-mon', augustino: 'thu-gui-ong-phi-le-mon', name: 'Phi-lê-môn' },
+  'dt': { id: 'heb', slug: 'do-thai', augustino: 'thu-gui-tin-huu-hip-ri', name: 'Do Thái' },
+  'gc': { id: 'jas', slug: 'gia-co-be', augustino: 'thu-cua-thanh-gia-co-be', name: 'Gia-cô-bê' },
+  '1pr': { id: '1pet', slug: '1-phe-ro', augustino: 'thu-1-cua-thanh-phe-ro', name: '1 Phê-rô' },
+  '2pr': { id: '2pet', slug: '2-phe-ro', augustino: 'thu-2-cua-thanh-phe-ro', name: '2 Phê-rô' },
+  '1ga': { id: '1john', slug: '1-gio-an', augustino: 'thu-1-cua-thanh-gio-an', name: '1 Gio-an' },
+  '2ga': { id: '2john', slug: '2-gio-an', augustino: 'thu-2-cua-thanh-gio-an', name: '2 Gio-an' },
+  '3ga': { id: '3john', slug: '3-gio-an', augustino: 'thu-3-cua-thanh-gio-an', name: '3 Gio-an' },
+  'gd': { id: 'jude', slug: 'giu-da', augustino: 'thu-cua-thanh-giu-da', name: 'Giu-đa' },
+  'kh': { id: 'rev', slug: 'khai-huyen', augustino: 'sach-khai-huyen', name: 'Khải Huyền' }
 };
 
-// Bảng ánh xạ tiếng Anh cho nguồn dự phòng labs.bible.org
-const LABS_BIBLE_MAP = {
-  'sang-the': 'Genesis', 'xuat-hanh': 'Exodus', 'le-vi': 'Leviticus', 'dan-so': 'Numbers',
-  'de-nhi-luat': 'Deuteronomy', 'gio-sue': 'Joshua', 'thu-lanh': 'Judges', 'rut': 'Ruth',
-  '1-sam-uen': '1 Samuel', '2-sam-uen': '2 Samuel', '1-vua': '1 Kings', '2-vua': '2 Kings',
-  '1-su-bieu': '1 Chronicles', '2-su-bieu': '2 Chronicles', 'et-ra': 'Ezra', 'ne-he-mi-a': 'Nehemiah',
-  'to-bi-a': 'Tobit', 'giu-di-tha': 'Judith', 'et-ste': 'Esther', '1-ma-ca-be': '1 Maccabees',
-  '2-ma-ca-be': '2 Maccabees', 'gio-an': 'Job', 'danh-ca': 'Psalms', 'cham-ngon': 'Proverbs',
-  'huan-ca': 'Ecclesiastes', 'diem-ca': 'Song of Solomon', 'khon-ngoan': 'Wisdom',
-  'i-sai-a': 'Isaiah', 'gie-re-mi-a': 'Jeremiah', 'ca-thuong': 'Lamentations', 'ba-ruc': 'Baruch',
-  'e-ze-ki-en': 'Ezekiel', 'da-ni-en': 'Daniel', 'ho-se': 'Hosea', 'gio-en': 'Joel',
-  'a-mos': 'Amos', 'o-va-di-a': 'Obadiah', 'gio-na': 'Jonah', 'mi-kha': 'Micah',
-  'na-khum': 'Nahum', 'kha-ba-cuc': 'Habakkuk', 'xe-pha-ni-a': 'Zephaniah',
-  'khac-gai': 'Haggai', 'xa-ca-ri-a': 'Zechariah', 'ma-la-khi': 'Malachi',
-  'mat-theu': 'Matthew', 'mac-co': 'Mark', 'lu-ca': 'Luke', 'tong-do-cong-vu': 'Acts',
-  'ro-ma': 'Romans', '1-co-rin-to': '1 Corinthians', '2-co-rin-to': '2 Corinthians',
-  'ga-lat': 'Galatians', 'e-phe-xo': 'Ephesians', 'phi-lip-phe': 'Philippians',
-  'co-lo-xe': 'Colossians', '1-the-xa-lo-ni-ca': '1 Thessalonians', '2-the-xa-lo-ni-ca': '2 Thessalonians',
-  '1-ti-mo-the': '1 Timothy', '2-ti-mo-the': '2 Timothy', 'ti-to': 'Titus',
-  'phi-le-mon': 'Philemon', 'do-thai': 'Hebrews', 'gia-co-be': 'James',
-  '1-phe-ro': '1 Peter', '2-phe-ro': '2 Peter', '1-gio-an': '1 John',
-  '2-gio-an': '2 John', '3-gio-an': '3 John', 'giu-da': 'Jude', 'khai-huyen': 'Revelation'
-};
+// Đăng ký thêm các alias dạng slug tiếng Việt (ví dụ 'sang-the', 'mat-theu', 'to-bi-a')
+Object.values(BIBLE_MAP).forEach((item) => {
+  if (item && item.slug && !BIBLE_MAP[item.slug]) {
+    BIBLE_MAP[item.slug] = item;
+  }
+  if (item && item.augustino && !BIBLE_MAP[item.augustino]) {
+    BIBLE_MAP[item.augustino] = item;
+  }
+});
 
 /**
- * Hàm chuẩn hóa tên sách tiếng Việt có dấu/không dấu/viết tắt về đúng slug URL augustino.net
+ * Hàm chuẩn hóa tên sách tiếng Việt có dấu/không dấu/viết tắt về dạng slug sạch
  */
-export function normalizeSlug(str) {
+function normalizeSlug(str) {
   if (!str) return '';
   return str
     .toLowerCase()
@@ -221,19 +192,78 @@ export function normalizeSlug(str) {
     .replace(/^-+|-+$/g, '');
 }
 
+/**
+ * Trích xuất khối nội dung chính từ HTML của augustino.net
+ */
+function extractMainContent(htmlText) {
+  if (!htmlText) return '';
+
+  // 1. Tìm thẻ nội dung chính theo thứ tự ưu tiên: .entry-content, div.content, article, main
+  const entryMatch = htmlText.match(/<div[^>]*class="[^"]*entry-content[^"]*"[^>]*>([\s\S]*?)<\/div>/i);
+  const contentDivMatch = htmlText.match(/<div[^>]*class="[^"]*content[^"]*"[^>]*>([\s\S]*?)<\/div>\s*<\/main>/i) ||
+                          htmlText.match(/<div[^>]*class="[^"]*content[^"]*"[^>]*>([\s\S]*?)<\/div>/i);
+  const articleMatch = htmlText.match(/<article[\s\S]*?>([\s\S]*?)<\/article>/i);
+  const mainMatch = htmlText.match(/<main[\s\S]*?>([\s\S]*?)<\/main>/i);
+
+  const rawBlock = (entryMatch && entryMatch[1]) ||
+                   (contentDivMatch && contentDivMatch[1]) ||
+                   (articleMatch && articleMatch[1]) ||
+                   (mainMatch && mainMatch[1]) ||
+                   htmlText;
+
+  // 2. Trích xuất các đoạn văn bản Lời Chúa (<p>...</p>), loại bỏ ảnh bìa hoặc thông tin tác quyền ngoài lề
+  const paragraphs = [...rawBlock.matchAll(/<p[\s\S]*?>([\s\S]*?)<\/p>/gi)]
+    .map(m => m[0])
+    .filter(p => !p.includes('<img') && !p.includes('thanhlinh.net'));
+
+  if (paragraphs.length > 0) {
+    return paragraphs.join('\n');
+  }
+
+  return rawBlock;
+}
+
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
-  const rawBook = (searchParams.get('book') || 'mat-theu').trim();
-  const chapter = searchParams.get('chapter') || '1';
+  const rawBook = (searchParams.get('book') || '').trim();
+  const chapter = parseInt(searchParams.get('chapter') || '1', 10);
+
+  if (!rawBook) {
+    return NextResponse.json({
+      success: false,
+      error: 'Vui lòng cung cấp tham số book'
+    }, { status: 400 });
+  }
 
   const cleanBook = rawBook.toLowerCase();
   const normalizedInput = normalizeSlug(cleanBook);
-  const bookSlug = BIBLE_MAP[cleanBook] || BIBLE_MAP[normalizedInput] || normalizedInput;
+  const bookInfo = BIBLE_MAP[cleanBook] || BIBLE_MAP[normalizedInput] || {
+    id: cleanBook,
+    slug: normalizedInput,
+    augustino: normalizedInput,
+    name: rawBook
+  };
 
-  try {
-    // 1. Cào dữ liệu theo đường dẫn: https://augustino.net/phung-vu/kinh-thanh/${bookSlug}/${chapter}
-    const targetUrl = `https://augustino.net/phung-vu/kinh-thanh/${bookSlug}/${chapter}`;
-    
+  const canonicalId = bookInfo.id || cleanBook;
+  const augustinoSlug = bookInfo.augustino || normalizedInput;
+  const shortSlug = bookInfo.slug || normalizedInput;
+
+  // Danh sách các URL thử nghiệm trên augustino.net
+  const candidateUrls = [
+    // Định dạng 1: https://augustino.net/${augustinoSlug} (chương 1) hoặc -chuong-${chapter}
+    chapter === 1 
+      ? `https://augustino.net/${augustinoSlug}` 
+      : `https://augustino.net/${augustinoSlug}-chuong-${chapter}`,
+    // Định dạng 2: https://augustino.net/phung-vu/kinh-thanh/${shortSlug}/${chapter}
+    `https://augustino.net/phung-vu/kinh-thanh/${shortSlug}/${chapter}`,
+    // Định dạng 3: https://augustino.net/${shortSlug}${chapter === 1 ? '' : '-chuong-' + chapter}`
+    chapter === 1 
+      ? `https://augustino.net/${shortSlug}` 
+      : `https://augustino.net/${shortSlug}-chuong-${chapter}`
+  ];
+
+  // 1. CÀO DỮ LIỆU TỪ AUGUSTINO.NET
+  for (const targetUrl of candidateUrls) {
     try {
       const res = await fetch(targetUrl, {
         headers: {
@@ -245,59 +275,48 @@ export async function GET(request) {
 
       if (res.ok) {
         const htmlText = await res.text();
-        const match = htmlText.match(/<article[\s\S]*?>([\s\S]*?)<\/article>/i) ||
-                      htmlText.match(/<main[\s\S]*?>([\s\S]*?)<\/main>/i) ||
-                      htmlText.match(/<div class="entry-content"[\s\S]*?>([\s\S]*?)<\/div>/i);
+        const extracted = extractMainContent(htmlText);
 
-        if (match && match[1] && match[1].trim().length > 50) {
+        if (extracted && extracted.trim().length > 60) {
           return NextResponse.json({
             success: true,
             source: 'augustino.net',
-            bookSlug,
+            bookId: canonicalId,
+            bookName: bookInfo.name,
             chapter,
-            html: match[1]
+            html: extracted
           });
         }
       }
     } catch (augustinoErr) {
-      console.warn('Không thể kết nối augustino.net, chuyển sang nguồn dự phòng:', augustinoErr.message);
+      // Tiếp tục thử URL kế tiếp
     }
-
-    // 2. Nguồn dự phòng từ API công khai (labs.bible.org) trả về JSON dạng đoạn văn HTML
-    const passageName = LABS_BIBLE_MAP[bookSlug] || rawBook;
-    const fallbackUrl = `https://labs.bible.org/api/?passage=${encodeURIComponent(passageName)}%20${chapter}&type=json`;
-
-    const fallbackRes = await fetch(fallbackUrl, {
-      cache: 'no-store',
-      headers: { 'Accept': 'application/json' }
-    });
-
-    if (fallbackRes.ok) {
-      const data = await fallbackRes.json();
-      if (Array.isArray(data) && data.length > 0) {
-        const formattedHtml = data.map((v) => (
-          `<p class="mb-3 leading-relaxed text-justify"><b class="font-serif text-[#762F3A] mr-2 inline-block select-none">[${v.verse}]</b>${v.text}</p>`
-        )).join('\n');
-
-        return NextResponse.json({
-          success: true,
-          source: 'labs.bible.org',
-          bookSlug,
-          chapter,
-          html: formattedHtml
-        });
-      }
-    }
-
-    return NextResponse.json({
-      success: false,
-      error: `Chưa tìm thấy bản văn cho ${bookSlug} chương ${chapter}`
-    }, { status: 404 });
-  } catch (error) {
-    console.error('Lỗi API bible-fetch:', error);
-    return NextResponse.json({
-      success: false,
-      error: 'Lỗi máy chủ trong quá trình tải bản văn Kinh Thánh'
-    }, { status: 500 });
   }
+
+  // 2. NGUỒN DỰ PHÒNG 100% TIẾNG VIỆT (TỪ KHO DỮ LIỆU KINH VIỆN CÔNG GIÁO NỘI BỘ)
+  // Tuyệt đối không fallback sang labs.bible.org hoặc bất kỳ API tiếng Anh nào
+  try {
+    const localChapter = getChapterData(canonicalId, chapter);
+    if (localChapter && localChapter.verses && localChapter.verses.length > 0) {
+      const formattedHtml = localChapter.verses.map((v) => (
+        `<p class="mb-3 leading-relaxed text-justify"><b class="font-serif text-[#762F3A] dark:text-[#E5B54C] mr-2 inline-block select-none">[${v.verseNumber}]</b>${v.text}</p>`
+      )).join('\n');
+
+      return NextResponse.json({
+        success: true,
+        source: 'local-canonical-vietnamese',
+        bookId: canonicalId,
+        bookName: bookInfo.name,
+        chapter,
+        html: formattedHtml
+      });
+    }
+  } catch (localErr) {
+    console.error('Lỗi nạp kho dự phòng tiếng Việt:', localErr);
+  }
+
+  return NextResponse.json({
+    success: false,
+    error: `Chưa tìm thấy bản văn tiếng Việt cho ${bookInfo.name || canonicalId} chương ${chapter}`
+  }, { status: 404 });
 }

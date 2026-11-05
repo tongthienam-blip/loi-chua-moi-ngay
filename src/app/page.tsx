@@ -136,11 +136,11 @@ export default function HomePage() {
     });
   };
 
-  // Xác định thông tin vị trí đọc gần nhất
-  const lastReadBookId = userData?.lastReadLocation?.bookId || 'matt';
-  const lastReadChapter = userData?.lastReadLocation?.chapterNumber || 5;
+  // Xác định thông tin vị trí đọc gần nhất (mặc định Sách Sáng Thế nếu chưa có lịch sử đọc)
+  const lastReadBookId = userData?.lastReadLocation?.bookId || 'gen';
+  const lastReadChapter = userData?.lastReadLocation?.chapterNumber || 1;
   const lastReadVerse = userData?.lastReadLocation?.verseNumber || 1;
-  const lastReadBook = CATHOLIC_BIBLE_BOOKS.find(b => b.id === lastReadBookId) || CATHOLIC_BIBLE_BOOKS[46];
+  const lastReadBook = CATHOLIC_BIBLE_BOOKS.find(b => b.id === lastReadBookId) || CATHOLIC_BIBLE_BOOKS[0];
 
   // Màn hình xử lý lỗi an toàn
   if (errorMsg || !todayReading || !todayReflection) {
