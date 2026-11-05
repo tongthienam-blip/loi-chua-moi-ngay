@@ -1,7 +1,1 @@
-{
-  "/page": "app/page.js",
-  "/gioi-thieu/page": "app/gioi-thieu/page.js",
-  "/phung-vu/page": "app/phung-vu/page.js",
-  "/kinh-thanh/page": "app/kinh-thanh/page.js",
-  "/kinh-thanh/[bookId]/page": "app/kinh-thanh/[bookId]/page.js"
-}
+{}
