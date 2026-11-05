@@ -24,57 +24,77 @@ export interface SlideItem {
   id: number;
   tag: string;
   title: string;
-  sub: string;
-  btnText: string;
-  btnHref: string;
+  subtitle: string;
+  primaryBtnText: string;
+  primaryBtnHref: string;
+  secondaryBtnText?: string;
+  secondaryBtnHref?: string;
   imageUrl: string;
   imageAlt: string;
   icon: React.ReactNode;
 }
 
 export const HERO_SLIDES: SlideItem[] = [
+  // SLIDE 0 - SLIDE MASTER TỔNG HỢP
+  {
+    id: 0,
+    tag: 'NỀN TẢNG KINH THÁNH & PHỤNG VỤ CÔNG GIÁO',
+    title: 'LỜI CHÚA MỖI NGÀY',
+    subtitle: 'Một không gian đọc, suy niệm và khám phá kho tàng đức tin Công giáo.',
+    primaryBtnText: 'Khám Phá Kinh Thánh',
+    primaryBtnHref: '/kinh-thanh',
+    secondaryBtnText: 'Phụng Vụ Hôm Nay',
+    secondaryBtnHref: '#phung-vu',
+    imageUrl: 'https://images.unsplash.com/photo-1548625361-165b4c693a10?q=85&w=2000&auto=format&fit=crop',
+    imageAlt: 'Ánh sáng thiên đình chiếu qua cửa kính màu thánh đường cổ kính',
+    icon: <BookOpen className="w-4 h-4 text-[#E5BE53]" />
+  },
+  // SLIDE 1 CHUYÊN BỆT - KHÁM PHÁ KINH THÁNH
   {
     id: 1,
     tag: 'KHÁM PHÁ KINH THÁNH',
-    title: 'KHÁM PHÁ TRỌN BỘ 73 SÁCH KINH THÁNH',
-    sub: 'Hệ thống toàn văn Cựu Ước & Tân Ước tiếng Việt chuẩn Công Giáo.',
-    btnText: 'ĐỌC KINH THÁNH →',
-    btnHref: '/kinh-thanh/mat-theu',
+    title: 'TRỌN BỘ 73 SÁCH KINH THÁNH',
+    subtitle: 'Hệ thống toàn văn Cựu Ước & Tân Ước tiếng Việt chuẩn Công Giáo.',
+    primaryBtnText: 'ĐỌC KINH THÁNH →',
+    primaryBtnHref: '/kinh-thanh/mat-theu',
     imageUrl: 'https://images.unsplash.com/photo-1519817650390-64a93db51149?q=85&w=2000&auto=format&fit=crop',
     imageAlt: 'Quyển Kinh Thánh mở rộng dưới ánh nến ấm áp và trang nghiêm',
     icon: <BookOpen className="w-4 h-4 text-[#E5BE53]" />
   },
+  // SLIDE 2 CHUYÊN BỆT - PHỤNG VỤ HÔM NAY
   {
     id: 2,
     tag: 'PHỤNG VỤ HÔM NAY',
-    title: 'LỊCH PHỤNG VỤ & LỜI CHÚA HÀNG NGÀY',
-    sub: 'Theo dõi ngày phụng vụ, bài đọc, câu lạy và màu áo lễ theo quy chế AC.',
-    btnText: 'XEM PHỤNG VỤ',
-    btnHref: '#phung-vu',
-    imageUrl: 'https://images.unsplash.com/photo-1548625361-165b4c693a10?q=85&w=2000&auto=format&fit=crop',
-    imageAlt: 'Kiến trúc thánh đường Công Giáo với ánh sáng nến và kính màu uy nghi',
+    title: 'LỊCH PHỤNG VỤ & CÁC BÀI ĐỌC',
+    subtitle: 'Theo dõi ngày phụng vụ, bài đọc, câu lạy và màu áo lễ theo quy chế AC.',
+    primaryBtnText: 'XEM LỊCH PHỤNG VỤ →',
+    primaryBtnHref: '#phung-vu',
+    imageUrl: 'https://images.unsplash.com/photo-1438232992991-995b7058bbb3?q=85&w=2000&auto=format&fit=crop',
+    imageAlt: 'Nội thất nhà thờ Công Giáo với ánh nến lung linh huyền diệu',
     icon: <Calendar className="w-4 h-4 text-[#E5BE53]" />
   },
+  // SLIDE 3 CHUYÊN BỆT - GIÁO LÝ HỘI THÁNH
   {
     id: 3,
     tag: 'GIÁO LÝ HỘI THÁNH',
-    title: 'KHO TÀNG GIÁO LÝ HỘI THÁNH CÔNG GIÁO',
-    sub: 'Học hỏi và đào sâu nền tảng đức tin qua các giáo điều chính thống.',
-    btnText: 'KHÁM PHÁ GIÁO LÝ',
-    btnHref: '/giao-ly',
+    title: 'GIÁO LÝ HỘI THÁNH CÔNG GIÁO',
+    subtitle: 'Đào sâu nền tảng đức tin qua 2.865 điều khoản chuẩn mực.',
+    primaryBtnText: 'KHÁM PHÁ GIÁO LÝ →',
+    primaryBtnHref: '/giao-ly',
     imageUrl: 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?q=85&w=2000&auto=format&fit=crop',
-    imageAlt: 'Thư viện thần học cổ điển và sách thánh Công Giáo uyên bác',
+    imageAlt: 'Thư viện thần học cổ điển và các cuốn sách thánh uyên bác',
     icon: <BookMarked className="w-4 h-4 text-[#E5BE53]" />
   },
+  // SLIDE 4 CHUYÊN BỆT - VĂN KIỆN CÔNG GIÁO
   {
     id: 4,
     tag: 'VĂN KIỆN CÔNG GIÁO',
-    title: 'VĂN KIỆN & THÔNG ĐIỆP HỘI THÁNH',
-    sub: 'Tra cứu các văn kiện Tòa Thánh, Công đồng và Huấn quyền.',
-    btnText: 'TRA CỨU VĂN KIỆN',
-    btnHref: '/van-kien',
+    title: 'VĂN KIỆN & THÔNG ĐIỆP TÒA THÁNH',
+    subtitle: 'Tra cứu các văn kiện Công đồng, Thông điệp và Tông huấn chính thức.',
+    primaryBtnText: 'TRA CỨU VĂN KIỆN →',
+    primaryBtnHref: '/van-kien',
     imageUrl: 'https://images.unsplash.com/photo-1515542622106-78bda8ba0e5b?q=85&w=2000&auto=format&fit=crop',
-    imageAlt: 'Nghệ thuật thánh kiến trúc Vatican và Roma cổ kính',
+    imageAlt: 'Kiến trúc thánh đường Vatican và Roma cổ kính',
     icon: <FileText className="w-4 h-4 text-[#E5BE53]" />
   }
 ];
@@ -86,7 +106,7 @@ export function HeroCarousel() {
 
   const totalSlides = HERO_SLIDES.length;
 
-  // Cơ chế Preload Image: nạp trước toàn bộ 4 hình ảnh ngay khi vừa mount để loại bỏ độ trễ
+  // Hàm preloadImages: tải trước cả 5 ảnh ngay khi vừa load trang để chuyển slide mượt 100%
   useEffect(() => {
     if (typeof window === 'undefined') return;
     HERO_SLIDES.forEach((slide) => {
@@ -103,16 +123,16 @@ export function HeroCarousel() {
     setCurrentSlide((prev) => (prev - 1 + totalSlides) % totalSlides);
   }, [totalSlides]);
 
-  // Autoplay mỗi 5.5 giây (tự tạm dừng khi người dùng hover chuột hoặc tương tác)
+  // Autoplay mỗi 6 giây (tự tạm dừng khi người dùng hover chuột hoặc chạm)
   useEffect(() => {
     if (isPaused) return;
     const interval = setInterval(() => {
       nextSlide();
-    }, 5500);
+    }, 6000);
     return () => clearInterval(interval);
   }, [isPaused, nextSlide]);
 
-  // Xử lý vuốt màn hình (Swipe gesture) trên thiết bị di động
+  // Xử lý vuốt màn hình (Swipe gesture) trên di động
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartX.current = e.touches[0].clientX;
   };
@@ -148,7 +168,7 @@ export function HeroCarousel() {
       className="relative w-full overflow-hidden rounded-3xl shadow-2xl border border-[#B39A70]/30 min-h-[460px] sm:min-h-[520px] md:min-h-[580px] flex items-center justify-center text-center p-6 sm:p-10 md:p-16 transition-all select-none"
     >
       {/* =========================================================================
-          1. LỚP HÌNH NỀN TẤT CẢ 4 SLIDES (PRELOADED & NEXT/IMAGE PRIORITY)
+          1. LỚP HÌNH NỀN TẤT CẢ 5 SLIDES (PRELOADED & NEXT/IMAGE PRIORITY)
           ========================================================================= */}
       {HERO_SLIDES.map((slide, idx) => (
         <div
@@ -219,38 +239,42 @@ export function HeroCarousel() {
 
         {/* Dòng mô tả căn giữa */}
         <p className="text-sm sm:text-base md:text-lg text-[#F7F4EE]/90 font-light max-w-2xl leading-relaxed tracking-wide drop-shadow-xs px-2">
-          {currentItem.sub}
+          {currentItem.subtitle}
         </p>
 
         {/* Nút hành động trung tâm */}
         <div className="pt-2 sm:pt-4 flex flex-col sm:flex-row items-center justify-center gap-3.5 sm:gap-5 w-full max-w-md">
-          {currentItem.btnHref.startsWith('#') ? (
+          {/* Nút chính */}
+          {currentItem.primaryBtnHref.startsWith('#') ? (
             <a
-              href={currentItem.btnHref}
-              onClick={(e) => handleSmoothScroll(e, currentItem.btnHref.replace('#', ''))}
+              href={currentItem.primaryBtnHref}
+              onClick={(e) => handleSmoothScroll(e, currentItem.primaryBtnHref.replace('#', ''))}
               className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-2xl bg-[#762F3A] hover:bg-[#5E252E] text-white font-bold text-xs sm:text-sm tracking-wider uppercase border-2 border-[#B39A70] shadow-xl hover:shadow-2xl hover:scale-105 active:scale-95 transition-all"
             >
               {currentItem.icon}
-              <span>{currentItem.btnText}</span>
+              <span>{currentItem.primaryBtnText}</span>
             </a>
           ) : (
             <Link
-              href={currentItem.btnHref}
+              href={currentItem.primaryBtnHref}
               className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-2xl bg-[#762F3A] hover:bg-[#5E252E] text-white font-bold text-xs sm:text-sm tracking-wider uppercase border-2 border-[#B39A70] shadow-xl hover:shadow-2xl hover:scale-105 active:scale-95 transition-all"
             >
               {currentItem.icon}
-              <span>{currentItem.btnText}</span>
+              <span>{currentItem.primaryBtnText}</span>
             </Link>
           )}
 
-          <a
-            href="#phung-vu"
-            onClick={(e) => handleSmoothScroll(e, 'phung-vu')}
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-2xl bg-white/15 hover:bg-white/25 text-[#F7F4EE] font-bold text-xs sm:text-sm tracking-wider uppercase border border-white/40 hover:border-white/70 backdrop-blur-md shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all"
-          >
-            <Calendar className="w-4 h-4 text-[#F7F4EE]" />
-            <span>Phụng Vụ Hôm Nay</span>
-          </a>
+          {/* Nút phụ (Chỉ hiển thị riêng trên Slide 0 Master) */}
+          {currentItem.secondaryBtnText && currentItem.secondaryBtnHref && (
+            <a
+              href={currentItem.secondaryBtnHref}
+              onClick={(e) => handleSmoothScroll(e, currentItem.secondaryBtnHref!.replace('#', ''))}
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-2xl bg-white/15 hover:bg-white/25 text-[#F7F4EE] font-bold text-xs sm:text-sm tracking-wider uppercase border border-white/40 hover:border-white/70 backdrop-blur-md shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all"
+            >
+              <Calendar className="w-4 h-4 text-[#F7F4EE]" />
+              <span>{currentItem.secondaryBtnText}</span>
+            </a>
+          )}
         </div>
 
       </div>

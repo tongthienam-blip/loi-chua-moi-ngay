@@ -88,6 +88,41 @@ function CatechismContent() {
     }
   }, [selectedArticle]);
 
+  // Nạp nguyên văn chính thức từ API /api/catechism-fetch khi chọn điều khoản
+  useEffect(() => {
+    if (!selectedArticle) return;
+    const num = selectedArticle.paragraphNumber;
+    let isCancelled = false;
+
+    async function loadFullVerbatimText() {
+      try {
+        const res = await fetch(`/api/catechism-fetch?num=${num}`);
+        const data = await res.json();
+        if (!isCancelled && data.success && data.content) {
+          setSelectedArticle(prev => {
+            if (prev && prev.paragraphNumber === num) {
+              return {
+                ...prev,
+                title: data.title || prev.title,
+                content: data.content,
+                isFullVerbatimText: true
+              };
+            }
+            return prev;
+          });
+        }
+      } catch {
+        // LocalStorage fallback
+      }
+    }
+
+    loadFullVerbatimText();
+
+    return () => {
+      isCancelled = true;
+    };
+  }, [selectedArticle.paragraphNumber]);
+
   // URL sync handler
   const handleSelectNumber = (num: number) => {
     if (num < 1 || num > 2865) return;

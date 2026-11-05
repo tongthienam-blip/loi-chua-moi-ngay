@@ -550,7 +550,7 @@ export default function HomePage() {
         {/* 7. HỌC GIÁO LÝ HỘI THÁNH CÔNG GIÁO (GLHTCG) */}
         <section 
           aria-label="Học Giáo lý Hội Thánh Công giáo"
-          className="bg-white dark:bg-[#241C18] rounded-3xl p-5 sm:p-7 border border-[#E7E0D5] dark:border-[#3E302A] shadow-sm flex flex-col justify-between"
+          className="bg-white dark:bg-[#241C18] rounded-3xl p-5 sm:p-7 border border-[#E7E0D5] dark:border-[#3E302A] shadow-sm flex flex-col justify-between sacred-card-hover transition-all"
         >
           <div className="space-y-4">
             <div className="flex items-center gap-3">
@@ -594,7 +594,7 @@ export default function HomePage() {
         {/* 8. HỌC HỎI VÀ NGHIÊN CỨU THẦN HỌC */}
         <section 
           aria-label="Học hỏi và nghiên cứu thần học"
-          className="bg-white dark:bg-[#241C18] rounded-3xl p-5 sm:p-7 border border-[#E7E0D5] dark:border-[#3E302A] shadow-sm flex flex-col justify-between"
+          className="bg-white dark:bg-[#241C18] rounded-3xl p-5 sm:p-7 border border-[#E7E0D5] dark:border-[#3E302A] shadow-sm flex flex-col justify-between sacred-card-hover transition-all"
         >
           <div className="space-y-4">
             <div className="flex items-center gap-3">
@@ -645,7 +645,7 @@ export default function HomePage() {
         {/* 9. VĂN KIỆN HỘI THÁNH */}
         <section 
           aria-label="Văn kiện Hội Thánh"
-          className="bg-white dark:bg-[#241C18] rounded-3xl p-5 sm:p-6 border border-[#E7E0D5] dark:border-[#3E302A] shadow-sm flex flex-col justify-between"
+          className="bg-white dark:bg-[#241C18] rounded-3xl p-5 sm:p-6 border border-[#E7E0D5] dark:border-[#3E302A] shadow-sm flex flex-col justify-between sacred-card-hover transition-all"
         >
           <div className="space-y-3">
             <div className="w-10 h-10 rounded-2xl bg-amber-500/10 text-amber-700 dark:text-amber-400 flex items-center justify-center">
@@ -673,7 +673,7 @@ export default function HomePage() {
         {/* 10. KẾ HOẠCH ĐỌC KINH THÁNH */}
         <section 
           aria-label="Kế hoạch đọc Kinh Thánh"
-          className="bg-white dark:bg-[#241C18] rounded-3xl p-5 sm:p-6 border border-[#E7E0D5] dark:border-[#3E302A] shadow-sm flex flex-col justify-between"
+          className="bg-white dark:bg-[#241C18] rounded-3xl p-5 sm:p-6 border border-[#E7E0D5] dark:border-[#3E302A] shadow-sm flex flex-col justify-between sacred-card-hover transition-all"
         >
           <div className="space-y-3">
             <div className="w-10 h-10 rounded-2xl bg-[#762F3A]/10 text-[#762F3A] dark:text-[#E5BE53] flex items-center justify-center">
@@ -701,7 +701,7 @@ export default function HomePage() {
         {/* 11. TRỢ LÝ HỌC HỎI KINH THÁNH CÔNG GIÁO */}
         <section 
           aria-label="Trợ lý học hỏi Kinh Thánh Công giáo"
-          className="bg-white dark:bg-[#241C18] rounded-3xl p-5 sm:p-6 border border-[#E7E0D5] dark:border-[#3E302A] shadow-sm flex flex-col justify-between"
+          className="bg-white dark:bg-[#241C18] rounded-3xl p-5 sm:p-6 border border-[#E7E0D5] dark:border-[#3E302A] shadow-sm flex flex-col justify-between sacred-card-hover transition-all"
         >
           <div className="space-y-3">
             <div className="w-10 h-10 rounded-2xl bg-[#B39A70]/15 text-[#B39A70] dark:text-[#E5BE53] flex items-center justify-center">

@@ -1,0 +1,747 @@
+// Bảng ánh xạ 122 phân đoạn Sách Giáo Lý Hội Thánh Công Giáo (GLHTCG)
+export interface CatechismSectionRange {
+  from: number;
+  to: number;
+  slug: string;
+  span?: number;
+}
+
+export const CATECHISM_SECTION_RANGES: CatechismSectionRange[] = [
+  {
+    "from": 1061,
+    "to": 1065,
+    "slug": "/giao-ly-so-1061-1065",
+    "span": 4
+  },
+  {
+    "from": 632,
+    "to": 637,
+    "slug": "/giao-ly-so-632-637",
+    "span": 5
+  },
+  {
+    "from": 624,
+    "to": 630,
+    "slug": "/giao-ly-so-624-630",
+    "span": 6
+  },
+  {
+    "from": 659,
+    "to": 667,
+    "slug": "/giao-ly-so-659-667",
+    "span": 8
+  },
+  {
+    "from": 1200,
+    "to": 1209,
+    "slug": "/giao-ly-so-1200-1209",
+    "span": 9
+  },
+  {
+    "from": 268,
+    "to": 278,
+    "slug": "/giao-ly-so-268-278",
+    "span": 10
+  },
+  {
+    "from": 1680,
+    "to": 1690,
+    "slug": "/giao-ly-so-1680-1690",
+    "span": 10
+  },
+  {
+    "from": 2652,
+    "to": 2662,
+    "slug": "/giao-ly-so-2652-2662",
+    "span": 10
+  },
+  {
+    "from": 2855,
+    "to": 2865,
+    "slug": "/giao-ly-so-2855-2865",
+    "span": 10
+  },
+  {
+    "from": 976,
+    "to": 987,
+    "slug": "/giao-ly-so-976-987",
+    "span": 11
+  },
+  {
+    "from": 963,
+    "to": 975,
+    "slug": "/giao-ly-so-963-975",
+    "span": 12
+  },
+  {
+    "from": 1667,
+    "to": 1679,
+    "slug": "/giao-ly-so-1667-1679",
+    "span": 12
+  },
+  {
+    "from": 1749,
+    "to": 1761,
+    "slug": "/giao-ly-so-1749-1761",
+    "span": 12
+  },
+  {
+    "from": 2746,
+    "to": 2758,
+    "slug": "/giao-ly-so-2746-2758",
+    "span": 12
+  },
+  {
+    "from": 1716,
+    "to": 1729,
+    "slug": "/giao-ly-so-1716-1729",
+    "span": 13
+  },
+  {
+    "from": 1762,
+    "to": 1775,
+    "slug": "/giao-ly-so-1762-1775",
+    "span": 13
+  },
+  {
+    "from": 2683,
+    "to": 2696,
+    "slug": "/giao-ly-so-2683-2696",
+    "span": 13
+  },
+  {
+    "from": 668,
+    "to": 682,
+    "slug": "/giao-ly-so-668-682",
+    "span": 14
+  },
+  {
+    "from": 1701,
+    "to": 1715,
+    "slug": "/giao-ly-so-1701-1715",
+    "span": 14
+  },
+  {
+    "from": 2761,
+    "to": 2776,
+    "slug": "/giao-ly-so-2761-2776",
+    "span": 15
+  },
+  {
+    "from": 946,
+    "to": 962,
+    "slug": "/giao-ly-so-946-962",
+    "span": 16
+  },
+  {
+    "from": 166,
+    "to": 184,
+    "slug": "/giao-ly-so-166-184",
+    "span": 18
+  },
+  {
+    "from": 1730,
+    "to": 1748,
+    "slug": "/giao-ly-so-1730-1748",
+    "span": 18
+  },
+  {
+    "from": 1878,
+    "to": 1896,
+    "slug": "/giao-ly-so-1878-1896",
+    "span": 18
+  },
+  {
+    "from": 2514,
+    "to": 2533,
+    "slug": "/giao-ly-so-2514-2533",
+    "span": 19
+  },
+  {
+    "from": 2663,
+    "to": 2682,
+    "slug": "/giao-ly-so-2663-2682",
+    "span": 19
+  },
+  {
+    "from": 574,
+    "to": 594,
+    "slug": "/giao-ly-so-574-594",
+    "span": 20
+  },
+  {
+    "from": 638,
+    "to": 658,
+    "slug": "/giao-ly-so-638-658",
+    "span": 20
+  },
+  {
+    "from": 1928,
+    "to": 1948,
+    "slug": "/giao-ly-so-1928-1948",
+    "span": 20
+  },
+  {
+    "from": 2725,
+    "to": 2745,
+    "slug": "/giao-ly-so-2725-2745",
+    "span": 20
+  },
+  {
+    "from": 144,
+    "to": 165,
+    "slug": "/giao-ly-so-144-165",
+    "span": 21
+  },
+  {
+    "from": 1113,
+    "to": 1134,
+    "slug": "/giao-ly-so-1113-1134",
+    "span": 21
+  },
+  {
+    "from": 2030,
+    "to": 2051,
+    "slug": "/giao-ly-so-2030-2051",
+    "span": 21
+  },
+  {
+    "from": 27,
+    "to": 49,
+    "slug": "/giao-ly-so-27-49",
+    "span": 22
+  },
+  {
+    "from": 51,
+    "to": 73,
+    "slug": "/giao-ly-so-51-73",
+    "span": 22
+  },
+  {
+    "from": 1667,
+    "to": 1690,
+    "slug": "/giao-ly-so-1667-1690",
+    "span": 23
+  },
+  {
+    "from": 2534,
+    "to": 2557,
+    "slug": "/giao-ly-so-2534-2557",
+    "span": 23
+  },
+  {
+    "from": 1,
+    "to": 25,
+    "slug": "/giao-ly-so-1-25",
+    "span": 24
+  },
+  {
+    "from": 2598,
+    "to": 2622,
+    "slug": "/giao-ly-so-2598-2622",
+    "span": 24
+  },
+  {
+    "from": 2700,
+    "to": 2724,
+    "slug": "/giao-ly-so-2700-2724",
+    "span": 24
+  },
+  {
+    "from": 430,
+    "to": 455,
+    "slug": "/giao-ly-so-430-455",
+    "span": 25
+  },
+  {
+    "from": 2142,
+    "to": 2167,
+    "slug": "/giao-ly-so-2142-2167",
+    "span": 25
+  },
+  {
+    "from": 2777,
+    "to": 2802,
+    "slug": "/giao-ly-so-2777-2802",
+    "span": 25
+  },
+  {
+    "from": 74,
+    "to": 100,
+    "slug": "/giao-ly-so-74-100",
+    "span": 26
+  },
+  {
+    "from": 1776,
+    "to": 1802,
+    "slug": "/giao-ly-so-1776-1802",
+    "span": 26
+  },
+  {
+    "from": 2623,
+    "to": 2649,
+    "slug": "/giao-ly-so-2623-2649",
+    "span": 26
+  },
+  {
+    "from": 456,
+    "to": 483,
+    "slug": "/giao-ly-so-456-483",
+    "span": 27
+  },
+  {
+    "from": 484,
+    "to": 511,
+    "slug": "/giao-ly-so-484-511",
+    "span": 27
+  },
+  {
+    "from": 631,
+    "to": 658,
+    "slug": "/giao-ly-so-631-658",
+    "span": 27
+  },
+  {
+    "from": 2168,
+    "to": 2195,
+    "slug": "/giao-ly-so-2168-2195",
+    "span": 27
+  },
+  {
+    "from": 595,
+    "to": 623,
+    "slug": "/giao-ly-so-595-623",
+    "span": 28
+  },
+  {
+    "from": 325,
+    "to": 354,
+    "slug": "/giao-ly-so-325-354",
+    "span": 29
+  },
+  {
+    "from": 355,
+    "to": 384,
+    "slug": "/giao-ly-so-355-384",
+    "span": 29
+  },
+  {
+    "from": 751,
+    "to": 780,
+    "slug": "/giao-ly-so-751-780",
+    "span": 29
+  },
+  {
+    "from": 781,
+    "to": 810,
+    "slug": "/giao-ly-so-781-810",
+    "span": 29
+  },
+  {
+    "from": 2568,
+    "to": 2597,
+    "slug": "/giao-ly-so-2568-2597",
+    "span": 29
+  },
+  {
+    "from": 1846,
+    "to": 1876,
+    "slug": "/giao-ly-so-1846-1876",
+    "span": 30
+  },
+  {
+    "from": 1897,
+    "to": 1927,
+    "slug": "/giao-ly-so-1897-1927",
+    "span": 30
+  },
+  {
+    "from": 988,
+    "to": 1019,
+    "slug": "/giao-ly-so-988-1019",
+    "span": 31
+  },
+  {
+    "from": 199,
+    "to": 231,
+    "slug": "/giao-ly-so-199-231",
+    "span": 32
+  },
+  {
+    "from": 1499,
+    "to": 1532,
+    "slug": "/giao-ly-so-1499-1532",
+    "span": 33
+  },
+  {
+    "from": 232,
+    "to": 267,
+    "slug": "/giao-ly-so-232-267",
+    "span": 35
+  },
+  {
+    "from": 1077,
+    "to": 1112,
+    "slug": "/giao-ly-so-1077-1112",
+    "span": 35
+  },
+  {
+    "from": 385,
+    "to": 421,
+    "slug": "/giao-ly-so-385-421",
+    "span": 36
+  },
+  {
+    "from": 1285,
+    "to": 1321,
+    "slug": "/giao-ly-so-1285-1321",
+    "span": 36
+  },
+  {
+    "from": 1950,
+    "to": 1986,
+    "slug": "/giao-ly-so-1950-1986",
+    "span": 36
+  },
+  {
+    "from": 101,
+    "to": 141,
+    "slug": "/giao-ly-so-101-141",
+    "span": 40
+  },
+  {
+    "from": 1020,
+    "to": 1060,
+    "slug": "/giao-ly-so-1020-1060",
+    "span": 40
+  },
+  {
+    "from": 142,
+    "to": 184,
+    "slug": "/giao-ly-so-142-184",
+    "span": 42
+  },
+  {
+    "from": 1803,
+    "to": 1845,
+    "slug": "/giao-ly-so-1803-1845",
+    "span": 42
+  },
+  {
+    "from": 1987,
+    "to": 2029,
+    "slug": "/giao-ly-so-1987-2029",
+    "span": 42
+  },
+  {
+    "from": 279,
+    "to": 324,
+    "slug": "/giao-ly-so-279-324",
+    "span": 45
+  },
+  {
+    "from": 2650,
+    "to": 2696,
+    "slug": "/giao-ly-so-2650-2696",
+    "span": 46
+  },
+  {
+    "from": 2464,
+    "to": 2513,
+    "slug": "/giao-ly-so-2464-2513",
+    "span": 49
+  },
+  {
+    "from": 2803,
+    "to": 2854,
+    "slug": "/giao-ly-so-2803-2854",
+    "span": 51
+  },
+  {
+    "from": 1077,
+    "to": 1134,
+    "slug": "/giao-ly-so-1077-1134",
+    "span": 57
+  },
+  {
+    "from": 2084,
+    "to": 2141,
+    "slug": "/giao-ly-so-2084-2141",
+    "span": 57
+  },
+  {
+    "from": 512,
+    "to": 570,
+    "slug": "/giao-ly-so-512-570",
+    "span": 58
+  },
+  {
+    "from": 571,
+    "to": 630,
+    "slug": "/giao-ly-so-571-630",
+    "span": 59
+  },
+  {
+    "from": 811,
+    "to": 870,
+    "slug": "/giao-ly-so-811-870",
+    "span": 59
+  },
+  {
+    "from": 687,
+    "to": 747,
+    "slug": "/giao-ly-so-687-747",
+    "span": 60
+  },
+  {
+    "from": 2197,
+    "to": 2257,
+    "slug": "/giao-ly-so-2197-2257",
+    "span": 60
+  },
+  {
+    "from": 2697,
+    "to": 2758,
+    "slug": "/giao-ly-so-2697-2758",
+    "span": 61
+  },
+  {
+    "from": 2401,
+    "to": 2463,
+    "slug": "/giao-ly-so-2401-2463",
+    "span": 62
+  },
+  {
+    "from": 1136,
+    "to": 1199,
+    "slug": "/giao-ly-so-1136-1199",
+    "span": 63
+  },
+  {
+    "from": 1536,
+    "to": 1600,
+    "slug": "/giao-ly-so-1536-1600",
+    "span": 64
+  },
+  {
+    "from": 1601,
+    "to": 1666,
+    "slug": "/giao-ly-so-1601-1666",
+    "span": 65
+  },
+  {
+    "from": 2331,
+    "to": 2400,
+    "slug": "/giao-ly-so-2331-2400",
+    "span": 69
+  },
+  {
+    "from": 1213,
+    "to": 1284,
+    "slug": "/giao-ly-so-1213-1284",
+    "span": 71
+  },
+  {
+    "from": 1877,
+    "to": 1948,
+    "slug": "/giao-ly-so-1877-1948",
+    "span": 71
+  },
+  {
+    "from": 2258,
+    "to": 2330,
+    "slug": "/giao-ly-so-2258-2330",
+    "span": 72
+  },
+  {
+    "from": 871,
+    "to": 945,
+    "slug": "/giao-ly-so-871-945",
+    "span": 74
+  },
+  {
+    "from": 1135,
+    "to": 1209,
+    "slug": "/giao-ly-so-1135-1209",
+    "span": 74
+  },
+  {
+    "from": 1422,
+    "to": 1498,
+    "slug": "/giao-ly-so-1422-1498",
+    "span": 76
+  },
+  {
+    "from": 2566,
+    "to": 2649,
+    "slug": "/giao-ly-so-2566-2649",
+    "span": 83
+  },
+  {
+    "from": 50,
+    "to": 141,
+    "slug": "/giao-ly-so-50-141",
+    "span": 91
+  },
+  {
+    "from": 1322,
+    "to": 1419,
+    "slug": "/giao-ly-so-1322-1419",
+    "span": 97
+  },
+  {
+    "from": 1949,
+    "to": 2051,
+    "slug": "/giao-ly-so-1949-2051",
+    "span": 102
+  },
+  {
+    "from": 2759,
+    "to": 2865,
+    "slug": "/giao-ly-so-2759-2865",
+    "span": 106
+  },
+  {
+    "from": 1420,
+    "to": 1532,
+    "slug": "/giao-ly-so-1420-1532",
+    "span": 112
+  },
+  {
+    "from": 2083,
+    "to": 2195,
+    "slug": "/giao-ly-so-2083-2195",
+    "span": 112
+  },
+  {
+    "from": 456,
+    "to": 570,
+    "slug": "/giao-ly-so-456-570",
+    "span": 114
+  },
+  {
+    "from": 1076,
+    "to": 1209,
+    "slug": "/giao-ly-so-1076-1209",
+    "span": 133
+  },
+  {
+    "from": 1533,
+    "to": 1666,
+    "slug": "/giao-ly-so-1533-1666",
+    "span": 133
+  },
+  {
+    "from": 26,
+    "to": 184,
+    "slug": "/giao-ly-so-26-184",
+    "span": 158
+  },
+  {
+    "from": 1700,
+    "to": 1876,
+    "slug": "/giao-ly-so-1700-1876",
+    "span": 176
+  },
+  {
+    "from": 2558,
+    "to": 2758,
+    "slug": "/giao-ly-so-2558-2758",
+    "span": 200
+  },
+  {
+    "from": 1212,
+    "to": 1419,
+    "slug": "/giao-ly-so-1212-1419",
+    "span": 207
+  },
+  {
+    "from": 199,
+    "to": 421,
+    "slug": "/giao-ly-so-199-421",
+    "span": 222
+  },
+  {
+    "from": 198,
+    "to": 421,
+    "slug": "/giao-ly-so-198-421",
+    "span": 223
+  },
+  {
+    "from": 748,
+    "to": 975,
+    "slug": "/giao-ly-so-748-975",
+    "span": 227
+  },
+  {
+    "from": 422,
+    "to": 682,
+    "slug": "/giao-ly-so-422-682",
+    "span": 260
+  },
+  {
+    "from": 2558,
+    "to": 2865,
+    "slug": "/giao-ly-so-2558-2865",
+    "span": 307
+  },
+  {
+    "from": 1699,
+    "to": 2051,
+    "slug": "/giao-ly-so-1699-2051",
+    "span": 352
+  },
+  {
+    "from": 2196,
+    "to": 2557,
+    "slug": "/giao-ly-so-2196-2557",
+    "span": 361
+  },
+  {
+    "from": 683,
+    "to": 1065,
+    "slug": "/giao-ly-so-683-1065",
+    "span": 382
+  },
+  {
+    "from": 1210,
+    "to": 1690,
+    "slug": "/giao-ly-so-1210-1690",
+    "span": 480
+  },
+  {
+    "from": 2052,
+    "to": 2557,
+    "slug": "/giao-ly-so-2052-2557",
+    "span": 505
+  },
+  {
+    "from": 1066,
+    "to": 1690,
+    "slug": "/giao-ly-so-1066-1690",
+    "span": 624
+  },
+  {
+    "from": 1691,
+    "to": 2557,
+    "slug": "/giao-ly-so-1691-2557",
+    "span": 866
+  },
+  {
+    "from": 185,
+    "to": 1065,
+    "slug": "/giao-ly-so-185-1065",
+    "span": 880
+  },
+  {
+    "from": 26,
+    "to": 1065,
+    "slug": "/giao-ly-so-26-1065",
+    "span": 1039
+  }
+];
+
+export function getCatechismSlugForNumber(num: number): string {
+  const found = CATECHISM_SECTION_RANGES.find(item => num >= item.from && num <= item.to);
+  return found ? found.slug : '/giao-ly-so-1-25';
+}
