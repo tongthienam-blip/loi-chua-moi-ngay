@@ -37,7 +37,7 @@ export const HERO_SLIDES: SlideItem[] = [
     btnText: 'KHÁM PHÁ KINH THÁNH',
     btnHref: '/kinh-thanh/mat-theu',
     imageUrl: 'https://images.unsplash.com/photo-1544717305-2782549b5136?q=80&w=1920&auto=format&fit=crop',
-    imageAlt: 'Quyển Kinh Thánh mở rộng dưới ánh nến ấm áp trang nghiêm nơi Thánh đường',
+    imageAlt: 'Quyển Kinh Thánh cổ mở rộng dưới ánh nến ấm áp sang trọng nơi Thánh đường',
     icon: <BookOpen className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#E5BE53]" />
   },
   // SLIDE 1 CHUYÊN BỆT - KHÁM PHÁ KINH THÁNH
@@ -72,8 +72,8 @@ export const HERO_SLIDES: SlideItem[] = [
     subtitle: 'Đào sâu nền tảng đức tin qua 2.865 điều khoản chuẩn mực.',
     btnText: 'KHÁM PHÁ GIÁO LÝ →',
     btnHref: '/giao-ly',
-    imageUrl: 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?q=85&w=1800&auto=format&fit=crop',
-    imageAlt: 'Thư viện thần học cổ điển và các cuốn sách thánh uyên bác',
+    imageUrl: 'https://images.unsplash.com/photo-1473177104440-ffee2f376098?q=85&w=1800&auto=format&fit=crop',
+    imageAlt: 'Thánh đường cổ kính Gothic uy nghi với vòm đá và kho tàng giáo lý thánh thiêng',
     icon: <BookMarked className="w-4 h-4 text-[#E5BE53]" />
   },
   // SLIDE 4 CHUYÊN BỆT - VĂN KIỆN CÔNG GIÁO
@@ -222,9 +222,9 @@ export function HeroCarousel() {
             }`}
           />
 
-          {/* Lớp phủ Gradient Overlay chuẩn mực đảm bảo độ tương phản cao, chống lóa */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/50 to-black/85" />
-          <div className="absolute inset-0 bg-[#762F3A]/25 mix-blend-color-burn" />
+          {/* Lớp phủ Gradient Overlay chuẩn mực: sáng rõ, ấm áp trên Mobile, chống tối đen */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/60 md:from-black/65 md:via-black/40 md:to-black/75" />
+          <div className="absolute inset-0 bg-[#762F3A]/10 md:bg-[#762F3A]/20 mix-blend-overlay pointer-events-none" />
         </div>
       ))}
 
@@ -267,7 +267,7 @@ export function HeroCarousel() {
         </div>
 
         {/* Tiêu đề lớn Serif trang nghiêm */}
-        <h1 className="font-serif text-xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-[#F7F4EE] leading-tight drop-shadow-md max-w-2xl px-2">
+        <h1 className="font-serif text-xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-[#F7F4EE] leading-tight drop-shadow-[0_2px_8px_rgba(0,0,0,0.85)] max-w-2xl px-2">
           {currentItem.title}
         </h1>
 
@@ -275,7 +275,7 @@ export function HeroCarousel() {
         <div className="w-24 sm:w-36 h-px bg-gradient-to-r from-transparent via-[#B39A70] to-transparent my-0.5" />
 
         {/* Dòng mô tả căn giữa */}
-        <p className="text-xs sm:text-sm md:text-base text-[#F7F4EE]/90 font-light max-w-xl leading-relaxed tracking-wide drop-shadow-xs px-2 line-clamp-2 sm:line-clamp-none">
+        <p className="text-xs sm:text-sm md:text-base text-[#F7F4EE] font-medium max-w-xl leading-relaxed tracking-wide drop-shadow-[0_1px_4px_rgba(0,0,0,0.95)] px-2 line-clamp-2 sm:line-clamp-none">
           {currentItem.subtitle}
         </p>
 

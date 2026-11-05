@@ -618,10 +618,10 @@ export default function HomePage() {
           aria-label="Học Giáo lý Hội Thánh Công giáo"
           className="relative overflow-hidden bg-white dark:bg-[#272220] rounded-3xl p-5 sm:p-7 border border-[#E7E0D5] dark:border-[#B39A70]/40 shadow-sm flex flex-col justify-between hover:-translate-y-1 hover:shadow-xl hover:border-amber-500/40 transition-all duration-300"
         >
-          {/* Hình ảnh nền chìm thư viện thần học cổ điển */}
+          {/* Hình ảnh nền chìm kiến trúc thánh đường & thần học cổ điển */}
           <div 
             className="absolute inset-0 bg-cover bg-center opacity-10 dark:opacity-15 pointer-events-none"
-            style={{ backgroundImage: `url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?q=40&w=1200&auto=format&fit=crop')` }}
+            style={{ backgroundImage: `url('https://images.unsplash.com/photo-1473177104440-ffee2f376098?q=40&w=1200&auto=format&fit=crop')` }}
           />
           <div className="relative z-10 space-y-4">
             <div className="flex items-center gap-3">
