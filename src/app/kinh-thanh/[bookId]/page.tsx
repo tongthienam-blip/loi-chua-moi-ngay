@@ -151,7 +151,7 @@ function BibleReaderContent() {
             chapterNumber: chapterParam,
             summary: localStudy?.summary || `Bản văn Lời Chúa ${book.name} chương ${chapterParam}`,
             content: data.html,
-            verses: localStudy?.verses || [],
+            verses: (data.verses && data.verses.length > 0) ? data.verses : (localStudy?.verses || []),
             historicalContext: localStudy?.historicalContext,
             geographyAndCulture: localStudy?.geographyAndCulture,
             authorAndAudience: localStudy?.authorAndAudience,
@@ -705,7 +705,9 @@ function BibleReaderContent() {
                   {currentBook.name} &bull; Toàn Văn Chương {chapterNum}
                 </span>
                 <span className="text-xs text-stone-400">
-                  {currentChapter?.content ? 'Bản văn Lời Chúa' : `${currentChapter?.verses.length || 0} câu hiển thị`}
+                  {currentChapter?.verses && currentChapter.verses.length > 0
+                    ? `${currentChapter.verses.length} câu Lời Chúa`
+                    : (currentChapter?.content ? 'Toàn văn Lời Chúa' : 'Chưa có dữ liệu')}
                 </span>
               </div>
 

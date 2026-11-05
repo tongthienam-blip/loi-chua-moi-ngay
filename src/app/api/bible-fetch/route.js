@@ -193,28 +193,42 @@ function normalizeSlug(str) {
 }
 
 /**
- * Trích xuất khối nội dung chính từ HTML của augustino.net
+ * Trích xuất khối nội dung chính từ HTML của augustino.net và chuẩn hóa thẻ câu
  */
 function extractMainContent(htmlText) {
   if (!htmlText) return '';
 
-  // 1. Tìm thẻ nội dung chính theo thứ tự ưu tiên: .entry-content, div.content, article, main
+  // 1. Tìm thẻ nội dung chính theo thứ tự ưu tiên: #page-content, .entry-content, div.content, article, main
+  const pageContentMatch = htmlText.match(/<div[^>]*id="page-content"[^>]*>([\s\S]*?)<\/div>/i);
   const entryMatch = htmlText.match(/<div[^>]*class="[^"]*entry-content[^"]*"[^>]*>([\s\S]*?)<\/div>/i);
   const contentDivMatch = htmlText.match(/<div[^>]*class="[^"]*content[^"]*"[^>]*>([\s\S]*?)<\/div>\s*<\/main>/i) ||
                           htmlText.match(/<div[^>]*class="[^"]*content[^"]*"[^>]*>([\s\S]*?)<\/div>/i);
   const articleMatch = htmlText.match(/<article[\s\S]*?>([\s\S]*?)<\/article>/i);
   const mainMatch = htmlText.match(/<main[\s\S]*?>([\s\S]*?)<\/main>/i);
 
-  const rawBlock = (entryMatch && entryMatch[1]) ||
+  const rawBlock = (pageContentMatch && pageContentMatch[1]) ||
+                   (entryMatch && entryMatch[1]) ||
                    (contentDivMatch && contentDivMatch[1]) ||
                    (articleMatch && articleMatch[1]) ||
                    (mainMatch && mainMatch[1]) ||
                    htmlText;
 
-  // 2. Trích xuất các đoạn văn bản Lời Chúa (<p>...</p>), loại bỏ ảnh bìa hoặc thông tin tác quyền ngoài lề
+  // 2. Trích xuất các đoạn văn bản Lời Chúa (<p>...</p>), loại bỏ ảnh bìa, công cụ, hoặc thông tin tác quyền ngoài lề
   const paragraphs = [...rawBlock.matchAll(/<p[\s\S]*?>([\s\S]*?)<\/p>/gi)]
     .map(m => m[0])
-    .filter(p => !p.includes('<img') && !p.includes('thanhlinh.net'));
+    .filter(p => (
+      !p.includes('<img') &&
+      !p.includes('thanhlinh.net') &&
+      !p.includes('Nhóm Các Giờ Kinh Phụng Vụ') &&
+      !p.includes('data-slot=') &&
+      !p.includes('<button') &&
+      !p.includes('<svg')
+    ))
+    .map(p => {
+      // Chuẩn hóa thẻ <sub id="1">1</sub> thành huy hiệu câu đẹp
+      return p.replace(/<sub[^>]*id="(\d+)"[^>]*>\d+<\/sub>/gi, '<b class="font-serif text-[#762F3A] dark:text-[#E5B54C] mr-2 inline-block select-none font-bold">[$1]</b>')
+              .replace(/<sub[^>]*>(\d+)<\/sub>/gi, '<b class="font-serif text-[#762F3A] dark:text-[#E5B54C] mr-2 inline-block select-none font-bold">[$1]</b>');
+    });
 
   if (paragraphs.length > 0) {
     return paragraphs.join('\n');
@@ -222,6 +236,63 @@ function extractMainContent(htmlText) {
 
   return rawBlock;
 }
+
+/**
+ * Phân tích các câu riêng lẻ từ HTML để phục vụ tính năng đếm câu, sao chép và tra cứu từng câu
+ */
+function parseVersesFromHtml(extractedHtml, bookId, chapter) {
+  if (!extractedHtml) return [];
+  const verses = [];
+  const lines = extractedHtml.split('\n');
+  let currentVerseNum = null;
+  let currentVerseText = '';
+
+  for (const line of lines) {
+    const badgeMatch = line.match(/\[(\d+)\]/) || line.match(/<sub[^>]*>(\d+)<\/sub>/i);
+    const cleanText = line
+      .replace(/<b[^>]*>\[\d+\]<\/b>/gi, '')
+      .replace(/\[\d+\]/g, '')
+      .replace(/<sub[^>]*>.*?<\/sub>/gi, '')
+      .replace(/<[^>]+>/g, '')
+      .replace(/&amp;/g, '&')
+      .replace(/&quot;/g, '"')
+      .replace(/&#x27;/g, "'")
+      .trim();
+
+    if (badgeMatch) {
+      if (currentVerseNum !== null && currentVerseText.trim()) {
+        verses.push({
+          id: `${bookId}-${chapter}-${currentVerseNum}`,
+          bookId,
+          chapterNumber: chapter,
+          verseNumber: currentVerseNum,
+          text: currentVerseText.trim()
+        });
+      }
+      currentVerseNum = parseInt(badgeMatch[1], 10);
+      currentVerseText = cleanText;
+    } else if (cleanText) {
+      if (currentVerseNum !== null) {
+        currentVerseText += (currentVerseText ? ' ' : '') + cleanText;
+      }
+    }
+  }
+
+  if (currentVerseNum !== null && currentVerseText.trim()) {
+    verses.push({
+      id: `${bookId}-${chapter}-${currentVerseNum}`,
+      bookId,
+      chapterNumber: chapter,
+      verseNumber: currentVerseNum,
+      text: currentVerseText.trim()
+    });
+  }
+
+  return verses;
+}
+
+// Bộ nhớ đệm trong RAM để phản hồi tức thì
+const CHAPTER_CACHE = new Map();
 
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
@@ -247,20 +318,37 @@ export async function GET(request) {
   const canonicalId = bookInfo.id || cleanBook;
   const augustinoSlug = bookInfo.augustino || normalizedInput;
   const shortSlug = bookInfo.slug || normalizedInput;
+  const cacheKey = `${canonicalId}-${chapter}`;
+
+  if (CHAPTER_CACHE.has(cacheKey)) {
+    return NextResponse.json(CHAPTER_CACHE.get(cacheKey));
+  }
 
   // Danh sách các URL thử nghiệm trên augustino.net
-  const candidateUrls = [
-    // Định dạng 1: https://augustino.net/${augustinoSlug} (chương 1) hoặc -chuong-${chapter}
-    chapter === 1 
-      ? `https://augustino.net/${augustinoSlug}` 
-      : `https://augustino.net/${augustinoSlug}-chuong-${chapter}`,
-    // Định dạng 2: https://augustino.net/phung-vu/kinh-thanh/${shortSlug}/${chapter}
-    `https://augustino.net/phung-vu/kinh-thanh/${shortSlug}/${chapter}`,
-    // Định dạng 3: https://augustino.net/${shortSlug}${chapter === 1 ? '' : '-chuong-' + chapter}`
-    chapter === 1 
-      ? `https://augustino.net/${shortSlug}` 
-      : `https://augustino.net/${shortSlug}-chuong-${chapter}`
-  ];
+  const candidateUrls = [];
+
+  // Trường hợp đặc biệt: THÁNH VỊNH (ps / tv)
+  if (canonicalId === 'ps' || shortSlug === 'thanh-vinh') {
+    candidateUrls.push(`https://augustino.net/thanh-vinh-${chapter}`);
+    if (chapter === 1) {
+      candidateUrls.push('https://augustino.net/sach-thanh-vinh');
+      candidateUrls.push('https://augustino.net/thanh-vinh');
+    }
+    candidateUrls.push(`https://augustino.net/sach-thanh-vinh-chuong-${chapter}`);
+  } else {
+    // Các sách khác
+    if (chapter === 1) {
+      candidateUrls.push(`https://augustino.net/${augustinoSlug}`);
+      candidateUrls.push(`https://augustino.net/${augustinoSlug}-chuong-1`);
+      candidateUrls.push(`https://augustino.net/${shortSlug}`);
+    } else {
+      candidateUrls.push(`https://augustino.net/${augustinoSlug}-chuong-${chapter}`);
+      candidateUrls.push(`https://augustino.net/${shortSlug}-chuong-${chapter}`);
+    }
+    candidateUrls.push(`https://augustino.net/sach-${shortSlug}-chuong-${chapter}`);
+    candidateUrls.push(`https://augustino.net/tin-mung-theo-thanh-${shortSlug}-chuong-${chapter}`);
+    candidateUrls.push(`https://augustino.net/phung-vu/kinh-thanh/${shortSlug}/${chapter}`);
+  }
 
   // 1. CÀO DỮ LIỆU TỪ AUGUSTINO.NET
   for (const targetUrl of candidateUrls) {
@@ -278,14 +366,18 @@ export async function GET(request) {
         const extracted = extractMainContent(htmlText);
 
         if (extracted && extracted.trim().length > 60) {
-          return NextResponse.json({
+          const parsedVerses = parseVersesFromHtml(extracted, canonicalId, chapter);
+          const responsePayload = {
             success: true,
             source: 'augustino.net',
             bookId: canonicalId,
             bookName: bookInfo.name,
             chapter,
-            html: extracted
-          });
+            html: extracted,
+            verses: parsedVerses
+          };
+          CHAPTER_CACHE.set(cacheKey, responsePayload);
+          return NextResponse.json(responsePayload);
         }
       }
     } catch (augustinoErr) {
@@ -299,17 +391,20 @@ export async function GET(request) {
     const localChapter = getChapterData(canonicalId, chapter);
     if (localChapter && localChapter.verses && localChapter.verses.length > 0) {
       const formattedHtml = localChapter.verses.map((v) => (
-        `<p class="mb-3 leading-relaxed text-justify"><b class="font-serif text-[#762F3A] dark:text-[#E5B54C] mr-2 inline-block select-none">[${v.verseNumber}]</b>${v.text}</p>`
+        `<p class="mb-3 leading-relaxed text-justify"><b class="font-serif text-[#762F3A] dark:text-[#E5B54C] mr-2 inline-block select-none font-bold">[${v.verseNumber}]</b>${v.text}</p>`
       )).join('\n');
 
-      return NextResponse.json({
+      const responsePayload = {
         success: true,
         source: 'local-canonical-vietnamese',
         bookId: canonicalId,
         bookName: bookInfo.name,
         chapter,
-        html: formattedHtml
-      });
+        html: formattedHtml,
+        verses: localChapter.verses
+      };
+      CHAPTER_CACHE.set(cacheKey, responsePayload);
+      return NextResponse.json(responsePayload);
     }
   } catch (localErr) {
     console.error('Lỗi nạp kho dự phòng tiếng Việt:', localErr);
