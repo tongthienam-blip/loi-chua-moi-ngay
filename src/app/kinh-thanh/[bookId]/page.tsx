@@ -81,19 +81,34 @@ function BibleReaderContent() {
     : null;
 
   useEffect(() => {
-    setIsLoading(true);
-    const book = CATHOLIC_BIBLE_BOOKS.find((b) => b.id === bookId);
-    if (book) {
-      setCurrentBook(book);
-      setChapterNum(chapterParam);
-      const chapterData = getChapterData(book.id, chapterParam);
-      setCurrentChapter(chapterData);
+    async function fetchBibleData() {
+      setIsLoading(true);
+      const book = CATHOLIC_BIBLE_BOOKS.find((b) => b.id === bookId);
+      if (book) {
+        setCurrentBook(book);
+        setChapterNum(chapterParam);
 
-      // Track streak and last read location
-      BibleStore.recordReadingActivity();
-      BibleStore.saveLastReadLocation(book.id, chapterParam);
+        try {
+          const res = await fetch(`/api/bible-fetch?book=${book.id}&chapter=${chapterParam}`);
+          const data = await res.json();
+          if (data.success) {
+            setCurrentChapter({
+              bookId: book.id,
+              chapter: chapterParam,
+              content: data.html,
+              verses: []
+            });
+          }
+        } catch (err) {
+          console.error('Lỗi tải dữ liệu augustino:', err);
+        }
+
+        BibleStore.recordReadingActivity();
+        BibleStore.saveLastReadLocation(book.id, chapterParam);
+      }
+      setIsLoading(false);
     }
-    setIsLoading(false);
+    fetchBibleData();
   }, [bookId, chapterParam]);
 
   const currentArtwork: SacredArtwork = useMemo(() => {
