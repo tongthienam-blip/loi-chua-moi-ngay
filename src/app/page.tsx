@@ -39,7 +39,7 @@ import {
 import { getVietnamTodayString, formatVietnamDateFull } from '@/lib/liturgy/timezone';
 import { BibleStore } from '@/lib/bible-store';
 import { DailyLiturgicalReading, DailyReflectionItem, UserPersonalData } from '@/types';
-import { HeroSacred } from '@/components/HeroSacred';
+import { HeroCarousel } from '@/components/HeroCarousel';
 
 export default function HomePage() {
   const [currentDate, setCurrentDate] = useState<string>(() => getVietnamTodayString());
@@ -214,9 +214,9 @@ export default function HomePage() {
     <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-6 space-y-8 sm:space-y-12 animate-fade-in relative pb-24 md:pb-12">
       
       {/* =========================================================================
-          HERO BANNER NGHỆ THUẬT CÔNG GIÁO (PREMIUM SACRED VISUAL EXPERIENCE)
+          HERO CAROUSEL 4 BANNER CHUẨN MỰC CÔNG GIÁO (PRELOADED & ZERO DELAY)
           ========================================================================= */}
-      <HeroSacred />
+      <HeroCarousel />
 
       {/* =========================================================================
           1. LỜI CHÚA VÀ PHỤNG VỤ HÔM NAY (COMPACT BANNER - MOBILE FRIENDLY)
@@ -224,11 +224,22 @@ export default function HomePage() {
       <section 
         id="phung-vu"
         aria-label="Lời Chúa và Phụng vụ hôm nay"
-        className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#F7F4EE] via-[#F4EFE6] to-[#E7E0D5] border border-[#E7E0D5] dark:border-[#3E302A] p-4 sm:p-6 md:p-8 shadow-sacred transition-all sacred-card-hover"
+        className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#F7F4EE] via-[#F4EFE6] to-[#E7E0D5] dark:from-[#241C18] dark:via-[#1F1714] dark:to-[#1A1412] border border-[#E7E0D5] dark:border-[#3E302A] p-4 sm:p-6 md:p-8 shadow-sacred transition-all sacred-card-hover"
       >
+        {/* Hình nền họa tiết kính màu & thánh đường chìm nhẹ */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center opacity-[0.07] dark:opacity-[0.04] pointer-events-none mix-blend-overlay"
+          style={{ backgroundImage: `url('https://images.unsplash.com/photo-1548625361-165b4c693a10?q=30&w=1200&auto=format&fit=crop')` }}
+        />
+
+        {/* Thập Giá chìm thánh thiêng */}
+        <div className="absolute -right-8 -bottom-8 opacity-[0.06] dark:opacity-[0.04] pointer-events-none select-none">
+          <SacredCrossIcon size={220} className="text-[#B39A70]" />
+        </div>
+
         {/* Họa tiết góc trang nghiêm */}
-        <SacredCornerOrnament position="top-left" className="absolute top-2 left-2 text-[#B39A70]/30" />
-        <SacredCornerOrnament position="bottom-right" className="absolute bottom-2 right-2 text-[#B39A70]/30" />
+        <SacredCornerOrnament position="top-left" className="absolute top-2 left-2 text-[#B39A70]/40" />
+        <SacredCornerOrnament position="bottom-right" className="absolute bottom-2 right-2 text-[#B39A70]/40" />
 
         {/* Hào quang phụng vụ nền */}
         <div className="absolute top-0 right-0 -mr-10 -mt-10 w-64 h-64 rounded-full bg-radial-gradient from-[#B39A70]/20 via-[#F7F4EE]/10 to-transparent blur-2xl pointer-events-none" />
@@ -296,126 +307,136 @@ export default function HomePage() {
 
       {/* =========================================================================
           2 & 3 & 4. CÂU LỜI CHÚA HÔM NAY • SUY NIỆM TIN MỪNG • LINH ĐẠO THỰC HÀNH
+          (NỀN ẢNH BÌNH MINH THIÊN NHIÊN & THẺ MẠ VÀNG KEM MỜ BACKDROP BLUR)
           ========================================================================= */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
-        
-        {/* 2. CÂU LỜI CHÚA HÔM NAY (7 Cols) */}
-        <section 
-          aria-label="Câu Lời Chúa hôm nay"
-          className="lg:col-span-7 relative overflow-hidden bg-white dark:bg-[#241C18] rounded-3xl p-5 sm:p-7 md:p-8 border border-[#E7E0D5] dark:border-[#3E302A] shadow-sm flex flex-col justify-between group transition-all sacred-card-hover"
-        >
-          <SacredCornerOrnament position="top-right" className="absolute top-2 right-2 text-[#B39A70]/30" />
-          <SacredCornerOrnament position="bottom-left" className="absolute bottom-2 left-2 text-[#B39A70]/30" />
-          <FloatingSparks />
+      <div className="relative rounded-3xl overflow-hidden p-2 sm:p-4 border border-[#E7E0D5]/70 dark:border-[#3E302A] transition-all">
+        {/* Nền ảnh thiên nhiên / ánh sáng bình minh thánh thiêng mờ dịu */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center opacity-[0.09] dark:opacity-[0.05] pointer-events-none"
+          style={{ backgroundImage: `url('https://images.unsplash.com/photo-1507692049790-de58290a4334?q=40&w=1400&auto=format&fit=crop')` }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#F7F4EE]/60 via-[#F7F4EE]/90 to-[#F7F4EE] dark:from-[#1A1412]/60 dark:via-[#1A1412]/90 dark:to-[#1A1412] pointer-events-none" />
 
-          <div className="relative z-10">
-            <div className="flex items-center justify-between mb-3">
-              <div className="flex items-center gap-2 text-xs font-bold text-[#762F3A] dark:text-[#E5BE53] uppercase tracking-wider">
-                <Sparkles className="w-4 h-4 text-[#B39A70]" />
-                <span>Câu Lời Chúa Hôm Nay</span>
-              </div>
-              <div className="flex items-center gap-1.5 text-xs font-semibold text-[#B39A70] dark:text-[#E5BE53] bg-[#F7F4EE] dark:bg-[#1A1412] px-3 py-1 rounded-full border border-[#B39A70]/30 shadow-xs">
-                <EucharisticWheatGrapesIcon size={16} className="text-[#762F3A] dark:text-[#E5BE53]" />
-                <span>{todayReading.gospel.reference}</span>
-              </div>
-            </div>
+        <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+          
+          {/* 2. CÂU LỜI CHÚA HÔM NAY (7 Cols) */}
+          <section 
+            aria-label="Câu Lời Chúa hôm nay"
+            className="lg:col-span-7 relative overflow-hidden bg-white/90 dark:bg-[#241C18]/90 backdrop-blur-md rounded-3xl p-5 sm:p-7 md:p-8 border border-[#B39A70]/30 shadow-md flex flex-col justify-between group transition-all sacred-card-hover"
+          >
+            <SacredCornerOrnament position="top-right" className="absolute top-2 right-2 text-[#B39A70]/35" />
+            <SacredCornerOrnament position="bottom-left" className="absolute bottom-2 left-2 text-[#B39A70]/35" />
+            <FloatingSparks />
 
-            <blockquote className="font-serif text-lg sm:text-xl md:text-2xl text-[#403A34] dark:text-[#F7F4EE] leading-relaxed italic border-l-4 border-[#762F3A] pl-4 my-4 group-hover:text-[#762F3A] dark:group-hover:text-[#E5BE53] transition-colors">
-              &ldquo;{todayReading.gospel.theme}&rdquo;
-            </blockquote>
-
-            <p className="text-xs sm:text-sm text-[#736B63] dark:text-[#D7CCC8] leading-relaxed line-clamp-3 pl-1">
-              {todayReading.gospel.text}
-            </p>
-
-            <SacredOrnamentDivider className="my-5" />
-          </div>
-
-          <div className="relative z-10 pt-2 flex flex-wrap items-center justify-between gap-3 border-t border-[#E7E0D5]/50 dark:border-[#3E302A]">
-            <Link
-              href={`/tao-anh?quote=${encodeURIComponent(todayReading.gospel.theme || '')}&ref=${encodeURIComponent(todayReading.gospel.reference)}`}
-              className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#762F3A] dark:text-[#E5BE53] hover:underline transition"
-            >
-              <ImageIcon className="w-4 h-4 text-[#B39A70]" />
-              <span>Tạo Ảnh Câu Lời Chúa</span>
-            </Link>
-            <Link
-              href="/phung-vu"
-              className="text-xs font-semibold text-[#B39A70] dark:text-[#E5BE53] hover:underline inline-flex items-center gap-1"
-            >
-              <span>Đọc trọn bài Tin Mừng</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </Link>
-          </div>
-        </section>
-
-        {/* 3 & 4. SUY NIỆM TIN MỪNG & LINH ĐẠO THỰC HÀNH (5 Cols) */}
-        <section 
-          id="suy-niem"
-          aria-label="Suy niệm Tin Mừng và Linh đạo thực hành"
-          className="lg:col-span-5 bg-gradient-to-br from-[#F7F4EE] to-[#E7E0D5]/40 dark:from-[#241C18] dark:to-[#1A1412] rounded-3xl p-5 sm:p-7 md:p-8 border border-[#E7E0D5] dark:border-[#3E302A] shadow-sm flex flex-col justify-between relative overflow-hidden sacred-card-hover"
-        >
-          <div className="absolute top-0 right-0 p-4 opacity-10 pointer-events-none">
-            <SacredCrossIcon size={80} className="text-[#762F3A]" />
-          </div>
-
-          <div className="relative z-10 space-y-4">
-            {/* Header Suy niệm */}
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-[#B39A70] dark:text-[#E5BE53] uppercase tracking-wider flex items-center gap-1.5">
-                <LiturgicalHaloIcon size={15} className="text-[#B39A70]" />
-                3. Suy Niệm Tin Mừng
-              </span>
-              <button
-                onClick={handleListenReflection}
-                className="p-1.5 rounded-xl bg-white/90 dark:bg-[#342823] text-[#762F3A] dark:text-[#E5BE53] transition shadow-xs hover:scale-105"
-                title="Nghe bài suy niệm"
-              >
-                <Volume2 className="w-4 h-4" />
-              </button>
-            </div>
-
-            <div>
-              <h3 className="font-serif text-base sm:text-lg font-bold text-[#403A34] dark:text-[#F7F4EE] leading-snug">
-                {todayReflection.title}
-              </h3>
-              <p className="text-xs text-[#736B63] dark:text-[#A1887F] mt-1.5 line-clamp-3 leading-relaxed">
-                {todayReflection.coreMessage}
-              </p>
-            </div>
-
-            {/* 4. LINH ĐẠO VÀ THỰC HÀNH SỐNG LỜI CHÚA */}
-            <div className="p-4 rounded-2xl bg-white/95 dark:bg-[#2A201C] border border-[#E7E0D5] dark:border-[#3E302A] space-y-2 shadow-xs">
-              <div className="flex items-center gap-1.5 text-xs font-bold text-[#762F3A] dark:text-[#E5BE53] uppercase tracking-wider">
-                <Sparkles className="w-3.5 h-3.5 text-[#B39A70]" />
-                <span>4. Linh Đạo & Quyết Tâm Sống</span>
-              </div>
-              <p className="italic text-xs sm:text-sm text-[#403A34] dark:text-[#D7CCC8] leading-relaxed">
-                &ldquo;{todayReflection.practicalResolution}&rdquo;
-              </p>
-              {todayReflection.prayer && (
-                <div className="pt-2 border-t border-[#E7E0D5]/60 dark:border-[#3E302A] text-[11px] text-[#736B63] dark:text-[#A1887F] italic line-clamp-2">
-                  <span className="font-bold not-italic text-[#B39A70]">Lời nguyện: </span>
-                  {todayReflection.prayer}
+            <div className="relative z-10">
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center gap-2 text-xs font-bold text-[#762F3A] dark:text-[#E5BE53] uppercase tracking-wider">
+                  <Sparkles className="w-4 h-4 text-[#B39A70]" />
+                  <span>Câu Lời Chúa Hôm Nay</span>
                 </div>
-              )}
+                <div className="flex items-center gap-1.5 text-xs font-semibold text-[#B39A70] dark:text-[#E5BE53] bg-[#F7F4EE] dark:bg-[#1A1412] px-3 py-1 rounded-full border border-[#B39A70]/30 shadow-xs">
+                  <EucharisticWheatGrapesIcon size={16} className="text-[#762F3A] dark:text-[#E5BE53]" />
+                  <span>{todayReading.gospel.reference}</span>
+                </div>
+              </div>
+
+              <blockquote className="font-serif text-lg sm:text-xl md:text-2xl text-[#403A34] dark:text-[#F7F4EE] leading-relaxed italic border-l-4 border-[#762F3A] pl-4 my-4 group-hover:text-[#762F3A] dark:group-hover:text-[#E5BE53] transition-colors">
+                &ldquo;{todayReading.gospel.theme}&rdquo;
+              </blockquote>
+
+              <p className="text-xs sm:text-sm text-[#736B63] dark:text-[#D7CCC8] leading-relaxed line-clamp-3 pl-1">
+                {todayReading.gospel.text}
+              </p>
+
+              <SacredOrnamentDivider className="my-5" />
             </div>
-          </div>
 
-          <div className="relative z-10 pt-4 mt-4 border-t border-[#E7E0D5]/70 dark:border-[#3E302A] flex items-center justify-between">
-            <span className="text-[11px] text-[#8F877F] dark:text-[#A1887F] truncate">
-              {todayReflection.author}
-            </span>
-            <Link
-              href="/suy-niem"
-              className="text-xs font-semibold text-[#762F3A] dark:text-[#E5BE53] hover:underline inline-flex items-center gap-1"
-            >
-              <span>Đọc trọn bài suy niệm</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </Link>
-          </div>
-        </section>
+            <div className="relative z-10 pt-2 flex flex-wrap items-center justify-between gap-3 border-t border-[#E7E0D5]/50 dark:border-[#3E302A]">
+              <Link
+                href={`/tao-anh?quote=${encodeURIComponent(todayReading.gospel.theme || '')}&ref=${encodeURIComponent(todayReading.gospel.reference)}`}
+                className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#762F3A] dark:text-[#E5BE53] hover:underline transition"
+              >
+                <ImageIcon className="w-4 h-4 text-[#B39A70]" />
+                <span>Tạo Ảnh Câu Lời Chúa</span>
+              </Link>
+              <Link
+                href="/phung-vu"
+                className="text-xs font-semibold text-[#B39A70] dark:text-[#E5BE53] hover:underline inline-flex items-center gap-1"
+              >
+                <span>Đọc trọn bài Tin Mừng</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+            </div>
+          </section>
 
+          {/* 3 & 4. SUY NIỆM TIN MỪNG & LINH ĐẠO THỰC HÀNH (5 Cols) */}
+          <section 
+            id="suy-niem"
+            aria-label="Suy niệm Tin Mừng và Linh đạo thực hành"
+            className="lg:col-span-5 bg-gradient-to-br from-[#F7F4EE]/95 to-[#E7E0D5]/60 dark:from-[#241C18]/95 dark:to-[#1A1412]/95 backdrop-blur-md rounded-3xl p-5 sm:p-7 md:p-8 border border-[#B39A70]/30 shadow-md flex flex-col justify-between relative overflow-hidden sacred-card-hover"
+          >
+            <div className="absolute top-0 right-0 p-4 opacity-10 pointer-events-none">
+              <SacredCrossIcon size={80} className="text-[#762F3A]" />
+            </div>
+
+            <div className="relative z-10 space-y-4">
+              {/* Header Suy niệm */}
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold text-[#B39A70] dark:text-[#E5BE53] uppercase tracking-wider flex items-center gap-1.5">
+                  <LiturgicalHaloIcon size={15} className="text-[#B39A70]" />
+                  3. Suy Niệm Tin Mừng
+                </span>
+                <button
+                  onClick={handleListenReflection}
+                  className="p-1.5 rounded-xl bg-white/90 dark:bg-[#342823] text-[#762F3A] dark:text-[#E5BE53] transition shadow-xs hover:scale-105"
+                  title="Nghe bài suy niệm"
+                >
+                  <Volume2 className="w-4 h-4" />
+                </button>
+              </div>
+
+              <div>
+                <h3 className="font-serif text-base sm:text-lg font-bold text-[#403A34] dark:text-[#F7F4EE] leading-snug">
+                  {todayReflection.title}
+                </h3>
+                <p className="text-xs text-[#736B63] dark:text-[#A1887F] mt-1.5 line-clamp-3 leading-relaxed">
+                  {todayReflection.coreMessage}
+                </p>
+              </div>
+
+              {/* 4. LINH ĐẠO VÀ THỰC HÀNH SỐNG LỜI CHÚA */}
+              <div className="p-4 rounded-2xl bg-white/95 dark:bg-[#2A201C] border border-[#E7E0D5] dark:border-[#3E302A] space-y-2 shadow-xs">
+                <div className="flex items-center gap-1.5 text-xs font-bold text-[#762F3A] dark:text-[#E5BE53] uppercase tracking-wider">
+                  <Sparkles className="w-3.5 h-3.5 text-[#B39A70]" />
+                  <span>4. Linh Đạo & Quyết Tâm Sống</span>
+                </div>
+                <p className="italic text-xs sm:text-sm text-[#403A34] dark:text-[#D7CCC8] leading-relaxed">
+                  &ldquo;{todayReflection.practicalResolution}&rdquo;
+                </p>
+                {todayReflection.prayer && (
+                  <div className="pt-2 border-t border-[#E7E0D5]/60 dark:border-[#3E302A] text-[11px] text-[#736B63] dark:text-[#A1887F] italic line-clamp-2">
+                    <span className="font-bold not-italic text-[#B39A70]">Lời nguyện: </span>
+                    {todayReflection.prayer}
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div className="relative z-10 pt-4 mt-4 border-t border-[#E7E0D5]/70 dark:border-[#3E302A] flex items-center justify-between">
+              <span className="text-[11px] text-[#8F877F] dark:text-[#A1887F] truncate">
+                {todayReflection.author}
+              </span>
+              <Link
+                href="/suy-niem"
+                className="text-xs font-semibold text-[#762F3A] dark:text-[#E5BE53] hover:underline inline-flex items-center gap-1"
+              >
+                <span>Đọc trọn bài suy niệm</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+            </div>
+          </section>
+
+        </div>
       </div>
 
       {/* =========================================================================
@@ -724,12 +745,21 @@ export default function HomePage() {
           </span>
         </div>
 
-        {/* Thông tin tác giả & Phân định pháp lý bản quyền */}
-        <div className="p-5 rounded-2xl bg-white dark:bg-[#241C18] border border-[#E7E0D5] dark:border-[#3E302A] max-w-3xl mx-auto space-y-2.5 text-xs text-[#736B63] dark:text-[#D7CCC8] shadow-xs text-left sm:text-center leading-relaxed">
-          <div className="font-bold text-[#762F3A] dark:text-[#E5BE53]">
-            Người sáng lập & Phát triển dự án: Lucas Nguyen &bull; Email: anhtuan.employ202@gmail.com &bull; SĐT: 0368727316
+        {/* Thông tin tác giả & Phân định pháp lý bản quyền - Khung mạ vàng cổ kính trên nền họa tiết phục hưng */}
+        <div className="relative overflow-hidden p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-white via-[#FDFBF7] to-[#F7F4EE] dark:from-[#241C18] dark:via-[#201815] dark:to-[#1A1412] border-2 border-[#B39A70]/40 shadow-xl max-w-3xl mx-auto space-y-3.5 text-xs text-[#736B63] dark:text-[#D7CCC8] shadow-sacred text-left sm:text-center leading-relaxed sacred-card-hover">
+          {/* Họa tiết phục hưng nghệ thuật mờ chìm phía sau */}
+          <div 
+            className="absolute inset-0 bg-cover bg-center opacity-[0.06] dark:opacity-[0.03] pointer-events-none"
+            style={{ backgroundImage: `url('https://images.unsplash.com/photo-1579783902614-a3fb3927b675?q=30&w=1200&auto=format&fit=crop')` }}
+          />
+          <SacredCornerOrnament position="top-left" className="absolute top-2 left-2 text-[#B39A70]/40 scale-110" />
+          <SacredCornerOrnament position="top-right" className="absolute top-2 right-2 text-[#B39A70]/40 scale-110" />
+
+          <div className="relative z-10 font-bold text-[#762F3A] dark:text-[#E5BE53] text-sm flex items-center justify-center gap-2">
+            <SacredCrossIcon size={16} className="text-[#B39A70] shrink-0" />
+            <span>Người sáng lập & Phát triển dự án: Lucas Nguyen &bull; Email: anhtuan.employ202@gmail.com &bull; SĐT: 0368727316</span>
           </div>
-          <div className="text-[11px] text-[#8F877F] dark:text-[#A1887F] border-t border-[#E7E0D5]/50 dark:border-[#3E302A] pt-2">
+          <div className="relative z-10 text-[11px] text-[#8F877F] dark:text-[#A1887F] border-t border-[#B39A70]/20 pt-2.5 max-w-2xl mx-auto">
             Bản quyền mã nguồn và giao diện thuộc về tác giả. 
             Bản văn Lời Chúa, Các Bài đọc Phụng vụ và Giáo lý Hội Thánh Công giáo thuộc thẩm quyền Tòa Thánh Vatican và Hội đồng Giám mục Việt Nam (HĐGMVN), được tôn kính trích dẫn nhằm phục vụ mục vụ và cộng đồng đức tin, phi thương mại.
           </div>
