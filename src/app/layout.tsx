@@ -50,6 +50,21 @@ export default function RootLayout({
         <script
           dangerouslySetInnerHTML={{
             __html: `
+              try {
+                var d = document.documentElement;
+                var t = localStorage.getItem('theme');
+                if (t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                  d.classList.add('dark');
+                } else {
+                  d.classList.remove('dark');
+                }
+              } catch (e) {}
+            `,
+          }}
+        />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
               if ('serviceWorker' in navigator && window.location.protocol === 'https:') {
                 window.addEventListener('load', function() {
                   navigator.serviceWorker.register('/sw.js').catch(function(err) {
@@ -61,7 +76,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={`${beVietnamPro.className} bg-[#F7F4EE] text-[#403A34] min-h-screen flex flex-col antialiased selection:bg-[#762F3A]/20 selection:text-[#762F3A] font-sans`}>
+      <body className={`${beVietnamPro.className} bg-[#F7F4EE] dark:bg-[#1A1615] text-[#403A34] dark:text-[#E7E0D5] min-h-screen flex flex-col antialiased selection:bg-[#762F3A]/20 selection:text-[#762F3A] font-sans transition-colors duration-200`}>
         <Navbar />
         <main className="flex-1 pb-20 md:pb-12">
           {children}

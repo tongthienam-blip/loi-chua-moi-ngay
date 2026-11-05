@@ -29,10 +29,23 @@ export function Navbar() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [currentTheme, setCurrentTheme] = useState<'light' | 'sepia' | 'dark'>('light');
+  const [isDarkMode, setIsDarkMode] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   
   const dropdownRef = useRef<HTMLDivElement | null>(null);
+
+  // Khởi tạo chế độ Sáng/Tối từ localStorage hoặc class trên thẻ html
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const isDark = document.documentElement.classList.contains('dark') || 
+                   localStorage.getItem('theme') === 'dark';
+    setIsDarkMode(isDark);
+    if (isDark) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, []);
 
   // Hiệu ứng phát hiện cuộn trang để tinh chỉnh hiệu ứng kính mờ (Glassmorphism)
   useEffect(() => {
@@ -80,13 +93,16 @@ export function Navbar() {
     setIsMobileMenuOpen(false);
   }, [pathname]);
 
-  const cycleTheme = () => {
-    const nextTheme = currentTheme === 'light' ? 'sepia' : currentTheme === 'sepia' ? 'dark' : 'light';
-    setCurrentTheme(nextTheme);
+  const toggleDarkMode = () => {
+    const willBeDark = !isDarkMode;
+    setIsDarkMode(willBeDark);
     if (typeof document !== 'undefined') {
-      document.documentElement.classList.remove('theme-sepia', 'theme-dark');
-      if (nextTheme !== 'light') {
-        document.documentElement.classList.add(`theme-${nextTheme}`);
+      if (willBeDark) {
+        document.documentElement.classList.add('dark');
+        localStorage.setItem('theme', 'dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+        localStorage.setItem('theme', 'light');
       }
     }
   };
@@ -208,16 +224,17 @@ export function Navbar() {
               </kbd>
             </button>
 
-            {/* Theme Toggle */}
+            {/* Theme Toggle (Dark Mode) */}
             <button
-              onClick={cycleTheme}
-              className="p-1.5 sm:p-2 rounded-xl bg-white dark:bg-[#271E1B] hover:bg-stone-50 text-[#655E57] dark:text-[#D7CCC8] border border-[#E7E0D5] dark:border-[#3E302A] shadow-xs transition shrink-0"
-              title={`Đổi giao diện (Hiện tại: ${currentTheme})`}
+              onClick={toggleDarkMode}
+              className="p-1.5 sm:p-2 rounded-xl bg-white dark:bg-[#272220] hover:bg-stone-50 dark:hover:bg-[#342D2A] text-[#655E57] dark:text-[#E7E0D5] border border-[#E7E0D5] dark:border-[#B39A70]/40 shadow-xs transition shrink-0"
+              title={isDarkMode ? 'Chuyển sang Giao diện Sáng (Ban Ngày)' : 'Chuyển sang Giao diện Thánh Đường Đêm (Dark Mode)'}
+              aria-label={isDarkMode ? 'Chuyển sang Giao diện Sáng' : 'Chuyển sang Giao diện Thánh Đường Đêm'}
             >
-              {currentTheme === 'dark' ? (
-                <Moon className="w-4 h-4 text-[#B39A70]" />
+              {isDarkMode ? (
+                <Sun className="w-4 h-4 text-[#E5BE53]" />
               ) : (
-                <Sun className="w-4 h-4 text-[#B39A70]" />
+                <Moon className="w-4 h-4 text-[#762F3A]" />
               )}
             </button>
 

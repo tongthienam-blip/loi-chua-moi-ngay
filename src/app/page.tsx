@@ -21,7 +21,9 @@ import {
   Quote,
   Flame,
   ArrowUpRight,
-  BookMarked
+  BookMarked,
+  Copy,
+  Check
 } from 'lucide-react';
 import { getLiturgicalReadingByDate } from '@/data/liturgical-readings';
 import { getReflectionByDate } from '@/data/daily-reflections';
@@ -66,6 +68,18 @@ export default function HomePage() {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [activeAudioText, setActiveAudioText] = useState<{ title: string; text: string } | null>(null);
   const [userData, setUserData] = useState<UserPersonalData | null>(null);
+  const [copiedGospel, setCopiedGospel] = useState(false);
+
+  const handleCopyGospel = () => {
+    if (!todayReading?.gospel) return;
+    const text = `CÂU LỜI CHÚA HÔM NAY (${todayReading.gospel.reference})\n\n"${todayReading.gospel.theme}"\n\n${todayReading.gospel.text}\n\n(Nguồn: Lời Chúa Mỗi Ngày - loi-chua-moi-ngay.vercel.app)`;
+    if (typeof navigator !== 'undefined' && navigator.clipboard) {
+      navigator.clipboard.writeText(text).then(() => {
+        setCopiedGospel(true);
+        setTimeout(() => setCopiedGospel(false), 2500);
+      });
+    }
+  };
 
   // Nạp dữ liệu phụng vụ cho ngày hiện tại theo giờ Việt Nam
   const loadLiturgicalData = useCallback((dateStr: string) => {
@@ -323,14 +337,19 @@ export default function HomePage() {
           {/* 2. CÂU LỜI CHÚA HÔM NAY (7 Cols) */}
           <section 
             aria-label="Câu Lời Chúa hôm nay"
-            className="lg:col-span-7 relative overflow-hidden bg-white/90 dark:bg-[#241C18]/90 backdrop-blur-md rounded-3xl p-5 sm:p-7 md:p-8 border border-[#B39A70]/30 shadow-md flex flex-col justify-between group transition-all sacred-card-hover"
+            className="lg:col-span-7 relative overflow-hidden bg-white/95 dark:bg-[#241C18]/95 backdrop-blur-md rounded-3xl p-5 sm:p-7 md:p-8 border border-[#B39A70]/30 shadow-md flex flex-col justify-between group hover:-translate-y-1 hover:shadow-xl hover:border-amber-500/40 transition-all duration-300"
           >
-            <SacredCornerOrnament position="top-right" className="absolute top-2 right-2 text-[#B39A70]/35" />
-            <SacredCornerOrnament position="bottom-left" className="absolute bottom-2 left-2 text-[#B39A70]/35" />
+            {/* Hình ảnh nền chìm quyển Kinh Thánh mở dưới ánh nến */}
+            <div 
+              className="absolute inset-0 bg-cover bg-center opacity-10 dark:opacity-15 pointer-events-none"
+              style={{ backgroundImage: `url('https://images.unsplash.com/photo-1519817650390-64a93db51149?q=40&w=1200&auto=format&fit=crop')` }}
+            />
+            <SacredCornerOrnament position="top-right" className="absolute top-2 right-2 text-[#B39A70]/35 pointer-events-none" />
+            <SacredCornerOrnament position="bottom-left" className="absolute bottom-2 left-2 text-[#B39A70]/35 pointer-events-none" />
             <FloatingSparks />
 
-            <div className="relative z-10">
-              <div className="flex items-center justify-between mb-3">
+            <div className="relative z-10 space-y-3.5">
+              <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2 text-xs font-bold text-[#762F3A] dark:text-[#E5BE53] uppercase tracking-wider">
                   <Sparkles className="w-4 h-4 text-[#B39A70]" />
                   <span>Câu Lời Chúa Hôm Nay</span>
@@ -341,28 +360,59 @@ export default function HomePage() {
                 </div>
               </div>
 
-              <blockquote className="font-serif text-lg sm:text-xl md:text-2xl text-[#403A34] dark:text-[#F7F4EE] leading-relaxed italic border-l-4 border-[#762F3A] pl-4 my-4 group-hover:text-[#762F3A] dark:group-hover:text-[#E5BE53] transition-colors">
+              <blockquote className="font-serif text-lg sm:text-xl md:text-2xl text-[#762F3A] dark:text-[#E5BE53] leading-relaxed italic border-l-4 border-[#B39A70] pl-4 py-1">
                 &ldquo;{todayReading.gospel.theme}&rdquo;
               </blockquote>
 
-              <p className="text-xs sm:text-sm text-[#736B63] dark:text-[#D7CCC8] leading-relaxed line-clamp-3 pl-1">
+              <p className="font-serif text-xs sm:text-sm md:text-base text-[#403A34] dark:text-[#E7E0D5] leading-relaxed text-justify px-1">
                 {todayReading.gospel.text}
               </p>
 
-              <SacredOrnamentDivider className="my-5" />
+              <SacredOrnamentDivider className="my-3 sm:my-4" />
             </div>
 
-            <div className="relative z-10 pt-2 flex flex-wrap items-center justify-between gap-3 border-t border-[#E7E0D5]/50 dark:border-[#3E302A]">
-              <Link
-                href={`/tao-anh?quote=${encodeURIComponent(todayReading.gospel.theme || '')}&ref=${encodeURIComponent(todayReading.gospel.reference)}`}
-                className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#762F3A] dark:text-[#E5BE53] hover:underline transition"
-              >
-                <ImageIcon className="w-4 h-4 text-[#B39A70]" />
-                <span>Tạo Ảnh Câu Lời Chúa</span>
-              </Link>
+            {/* Thanh công cụ chân card: Tạo Ảnh, Sao Chép, Nghe & Đọc trọn bài */}
+            <div className="relative z-10 pt-3 flex flex-wrap items-center justify-between gap-2.5 border-t border-[#E7E0D5]/60 dark:border-[#3E302A]">
+              <div className="flex flex-wrap items-center gap-2">
+                <Link
+                  href={`/tao-anh?quote=${encodeURIComponent(todayReading.gospel.theme || '')}&ref=${encodeURIComponent(todayReading.gospel.reference)}`}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#F7F4EE] dark:bg-[#1A1412] text-xs font-bold text-[#762F3A] dark:text-[#E5BE53] border border-[#B39A70]/30 hover:border-[#B39A70] hover:bg-white transition shadow-xs"
+                >
+                  <ImageIcon className="w-3.5 h-3.5 text-[#B39A70]" />
+                  <span>Tạo Ảnh Câu Lời Chúa</span>
+                </Link>
+
+                <button
+                  onClick={handleCopyGospel}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#F7F4EE] dark:bg-[#1A1412] text-xs font-bold text-[#762F3A] dark:text-[#E5BE53] border border-[#B39A70]/30 hover:border-[#B39A70] hover:bg-white transition shadow-xs"
+                  title="Sao chép câu Lời Chúa"
+                >
+                  {copiedGospel ? (
+                    <>
+                      <Check className="w-3.5 h-3.5 text-green-600 dark:text-green-400" />
+                      <span>Đã sao chép!</span>
+                    </>
+                  ) : (
+                    <>
+                      <Copy className="w-3.5 h-3.5 text-[#B39A70]" />
+                      <span>Sao Chép</span>
+                    </>
+                  )}
+                </button>
+
+                <button
+                  onClick={handleListenGospel}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#F7F4EE] dark:bg-[#1A1412] text-xs font-bold text-[#762F3A] dark:text-[#E5BE53] border border-[#B39A70]/30 hover:border-[#B39A70] hover:bg-white transition shadow-xs"
+                  title="Nghe công bố Tin Mừng"
+                >
+                  <Volume2 className="w-3.5 h-3.5 text-[#B39A70]" />
+                  <span>Nghe Tin Mừng</span>
+                </button>
+              </div>
+
               <Link
                 href="/phung-vu"
-                className="text-xs font-semibold text-[#B39A70] dark:text-[#E5BE53] hover:underline inline-flex items-center gap-1"
+                className="text-xs font-bold text-[#762F3A] dark:text-[#E5BE53] hover:underline inline-flex items-center gap-1 ml-auto"
               >
                 <span>Đọc trọn bài Tin Mừng</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -374,8 +424,13 @@ export default function HomePage() {
           <section 
             id="suy-niem"
             aria-label="Suy niệm Tin Mừng và Linh đạo thực hành"
-            className="lg:col-span-5 bg-gradient-to-br from-[#F7F4EE]/95 to-[#E7E0D5]/60 dark:from-[#241C18]/95 dark:to-[#1A1412]/95 backdrop-blur-md rounded-3xl p-5 sm:p-7 md:p-8 border border-[#B39A70]/30 shadow-md flex flex-col justify-between relative overflow-hidden sacred-card-hover"
+            className="lg:col-span-5 bg-gradient-to-br from-[#F7F4EE]/95 to-[#E7E0D5]/60 dark:from-[#241C18]/95 dark:to-[#1A1412]/95 backdrop-blur-md rounded-3xl p-5 sm:p-7 md:p-8 border border-[#B39A70]/30 shadow-md flex flex-col justify-between relative overflow-hidden hover:-translate-y-1 hover:shadow-xl hover:border-amber-500/40 transition-all duration-300"
           >
+            {/* Hình ảnh nền chìm cung thánh nhà thờ mờ dịu */}
+            <div 
+              className="absolute inset-0 bg-cover bg-center opacity-10 dark:opacity-15 pointer-events-none"
+              style={{ backgroundImage: `url('https://images.unsplash.com/photo-1438232992991-995b7058bbb3?q=40&w=1200&auto=format&fit=crop')` }}
+            />
             <div className="absolute top-0 right-0 p-4 opacity-10 pointer-events-none">
               <SacredCrossIcon size={80} className="text-[#762F3A]" />
             </div>
@@ -445,9 +500,14 @@ export default function HomePage() {
           ========================================================================= */}
       <section 
         aria-label="Tiếp tục đọc Kinh Thánh"
-        className="rounded-3xl bg-white dark:bg-[#241C18] border border-[#E7E0D5] dark:border-[#3E302A] p-5 sm:p-6 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4 transition-all sacred-card-hover"
+        className="relative overflow-hidden rounded-3xl bg-white dark:bg-[#272220] border border-[#E7E0D5] dark:border-[#B39A70]/40 p-5 sm:p-6 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4 hover:-translate-y-1 hover:shadow-xl hover:border-amber-500/40 transition-all duration-300"
       >
-        <div className="flex items-start sm:items-center gap-3.5">
+        {/* Hình ảnh nền chìm trang sách thánh cổ điển */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center opacity-10 dark:opacity-15 pointer-events-none"
+          style={{ backgroundImage: `url('https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=40&w=1200&auto=format&fit=crop')` }}
+        />
+        <div className="relative z-10 flex items-start sm:items-center gap-3.5">
           <div className="w-12 h-12 rounded-2xl bg-[#762F3A]/10 dark:bg-[#E5BE53]/15 text-[#762F3A] dark:text-[#E5BE53] flex items-center justify-center shrink-0">
             <Bookmark className="w-6 h-6" />
           </div>
@@ -472,7 +532,7 @@ export default function HomePage() {
           </div>
         </div>
 
-        <div className="flex items-center gap-3 shrink-0 pt-2 md:pt-0">
+        <div className="relative z-10 flex items-center gap-3 shrink-0 pt-2 md:pt-0">
           <Link
             href={`/kinh-thanh/${lastReadBookId}?chapter=${lastReadChapter}`}
             className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-[#762F3A] hover:bg-[#5E252E] text-white text-xs font-semibold shadow-xs transition hover:shadow-md"
@@ -488,9 +548,14 @@ export default function HomePage() {
           ========================================================================= */}
       <section 
         aria-label="Khám phá 73 sách Kinh Thánh"
-        className="bg-white dark:bg-[#241C18] rounded-3xl p-5 sm:p-7 md:p-8 border border-[#E7E0D5] dark:border-[#3E302A] shadow-sm space-y-6"
+        className="relative overflow-hidden bg-white dark:bg-[#272220] rounded-3xl p-5 sm:p-7 md:p-8 border border-[#E7E0D5] dark:border-[#B39A70]/40 shadow-sm space-y-6 hover:-translate-y-1 hover:shadow-xl hover:border-amber-500/40 transition-all duration-300"
       >
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[#E7E0D5] dark:border-[#3E302A] pb-4">
+        {/* Hình ảnh nền chìm kính màu thánh đường cổ kính */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center opacity-10 dark:opacity-15 pointer-events-none"
+          style={{ backgroundImage: `url('https://images.unsplash.com/photo-1543807535-eceef0bc6599?q=40&w=1200&auto=format&fit=crop')` }}
+        />
+        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[#E7E0D5] dark:border-[#3E302A] pb-4">
           <div>
             <div className="flex items-center gap-2">
               <SacredCrossIcon size={22} className="text-[#762F3A] dark:text-[#E5BE53]" />
@@ -551,9 +616,14 @@ export default function HomePage() {
         {/* 7. HỌC GIÁO LÝ HỘI THÁNH CÔNG GIÁO (GLHTCG) */}
         <section 
           aria-label="Học Giáo lý Hội Thánh Công giáo"
-          className="bg-white dark:bg-[#241C18] rounded-3xl p-5 sm:p-7 border border-[#E7E0D5] dark:border-[#3E302A] shadow-sm flex flex-col justify-between sacred-card-hover transition-all"
+          className="relative overflow-hidden bg-white dark:bg-[#272220] rounded-3xl p-5 sm:p-7 border border-[#E7E0D5] dark:border-[#B39A70]/40 shadow-sm flex flex-col justify-between hover:-translate-y-1 hover:shadow-xl hover:border-amber-500/40 transition-all duration-300"
         >
-          <div className="space-y-4">
+          {/* Hình ảnh nền chìm thư viện thần học cổ điển */}
+          <div 
+            className="absolute inset-0 bg-cover bg-center opacity-10 dark:opacity-15 pointer-events-none"
+            style={{ backgroundImage: `url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?q=40&w=1200&auto=format&fit=crop')` }}
+          />
+          <div className="relative z-10 space-y-4">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-2xl bg-[#762F3A]/10 text-[#762F3A] dark:text-[#E5BE53] flex items-center justify-center">
                 <BookMarked className="w-5 h-5" />
@@ -580,7 +650,7 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="pt-5 mt-4 border-t border-[#E7E0D5] dark:border-[#3E302A] flex items-center justify-between">
+          <div className="relative z-10 pt-5 mt-4 border-t border-[#E7E0D5] dark:border-[#3E302A] flex items-center justify-between">
             <span className="text-xs text-[#8F877F] dark:text-[#A1887F]">Tra cứu nhanh số điều 1 – 2865</span>
             <Link
               href="/giao-ly"
@@ -595,9 +665,14 @@ export default function HomePage() {
         {/* 8. HỌC HỎI VÀ NGHIÊN CỨU THẦN HỌC */}
         <section 
           aria-label="Học hỏi và nghiên cứu thần học"
-          className="bg-white dark:bg-[#241C18] rounded-3xl p-5 sm:p-7 border border-[#E7E0D5] dark:border-[#3E302A] shadow-sm flex flex-col justify-between sacred-card-hover transition-all"
+          className="relative overflow-hidden bg-white dark:bg-[#272220] rounded-3xl p-5 sm:p-7 border border-[#E7E0D5] dark:border-[#B39A70]/40 shadow-sm flex flex-col justify-between hover:-translate-y-1 hover:shadow-xl hover:border-amber-500/40 transition-all duration-300"
         >
-          <div className="space-y-4">
+          {/* Hình ảnh nền chìm tri thức thần học mờ dịu */}
+          <div 
+            className="absolute inset-0 bg-cover bg-center opacity-10 dark:opacity-15 pointer-events-none"
+            style={{ backgroundImage: `url('https://images.unsplash.com/photo-1507692049790-de58290a4334?q=40&w=1200&auto=format&fit=crop')` }}
+          />
+          <div className="relative z-10 space-y-4">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-2xl bg-[#B39A70]/15 text-[#B39A70] dark:text-[#E5BE53] flex items-center justify-center">
                 <Compass className="w-5 h-5" />
@@ -624,7 +699,7 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="pt-5 mt-4 border-t border-[#E7E0D5] dark:border-[#3E302A] flex items-center justify-between">
+          <div className="relative z-10 pt-5 mt-4 border-t border-[#E7E0D5] dark:border-[#3E302A] flex items-center justify-between">
             <span className="text-xs text-[#8F877F] dark:text-[#A1887F]">Công cụ nghiên cứu sâu rộng</span>
             <Link
               href="/nghien-cuu"
@@ -646,9 +721,14 @@ export default function HomePage() {
         {/* 9. VĂN KIỆN HỘI THÁNH */}
         <section 
           aria-label="Văn kiện Hội Thánh"
-          className="bg-white dark:bg-[#241C18] rounded-3xl p-5 sm:p-6 border border-[#E7E0D5] dark:border-[#3E302A] shadow-sm flex flex-col justify-between sacred-card-hover transition-all"
+          className="relative overflow-hidden bg-white dark:bg-[#272220] rounded-3xl p-5 sm:p-6 border border-[#E7E0D5] dark:border-[#B39A70]/40 shadow-sm flex flex-col justify-between hover:-translate-y-1 hover:shadow-xl hover:border-amber-500/40 transition-all duration-300"
         >
-          <div className="space-y-3">
+          {/* Hình ảnh nền chìm Tòa thánh Vatican uy nghiêm */}
+          <div 
+            className="absolute inset-0 bg-cover bg-center opacity-10 dark:opacity-15 pointer-events-none"
+            style={{ backgroundImage: `url('https://images.unsplash.com/photo-1515542622106-78bda8ba0e5b?q=40&w=1200&auto=format&fit=crop')` }}
+          />
+          <div className="relative z-10 space-y-3">
             <div className="w-10 h-10 rounded-2xl bg-amber-500/10 text-amber-700 dark:text-amber-400 flex items-center justify-center">
               <FileText className="w-5 h-5" />
             </div>
@@ -660,7 +740,7 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="pt-4 mt-4 border-t border-[#E7E0D5] dark:border-[#3E302A]">
+          <div className="relative z-10 pt-4 mt-4 border-t border-[#E7E0D5] dark:border-[#3E302A]">
             <Link
               href="/nghien-cuu?tab=documents"
               className="inline-flex items-center gap-1 text-xs font-semibold text-[#762F3A] dark:text-[#E5BE53] hover:underline"
@@ -674,9 +754,14 @@ export default function HomePage() {
         {/* 10. KẾ HOẠCH ĐỌC KINH THÁNH */}
         <section 
           aria-label="Kế hoạch đọc Kinh Thánh"
-          className="bg-white dark:bg-[#241C18] rounded-3xl p-5 sm:p-6 border border-[#E7E0D5] dark:border-[#3E302A] shadow-sm flex flex-col justify-between sacred-card-hover transition-all"
+          className="relative overflow-hidden bg-white dark:bg-[#272220] rounded-3xl p-5 sm:p-6 border border-[#E7E0D5] dark:border-[#B39A70]/40 shadow-sm flex flex-col justify-between hover:-translate-y-1 hover:shadow-xl hover:border-amber-500/40 transition-all duration-300"
         >
-          <div className="space-y-3">
+          {/* Hình ảnh nền chìm nến thánh và kinh nguyện */}
+          <div 
+            className="absolute inset-0 bg-cover bg-center opacity-10 dark:opacity-15 pointer-events-none"
+            style={{ backgroundImage: `url('https://images.unsplash.com/photo-1519817650390-64a93db51149?q=40&w=1200&auto=format&fit=crop')` }}
+          />
+          <div className="relative z-10 space-y-3">
             <div className="w-10 h-10 rounded-2xl bg-[#762F3A]/10 text-[#762F3A] dark:text-[#E5BE53] flex items-center justify-center">
               <Clock className="w-5 h-5" />
             </div>
@@ -688,7 +773,7 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="pt-4 mt-4 border-t border-[#E7E0D5] dark:border-[#3E302A]">
+          <div className="relative z-10 pt-4 mt-4 border-t border-[#E7E0D5] dark:border-[#3E302A]">
             <Link
               href="/ke-hoach-doc"
               className="inline-flex items-center gap-1 text-xs font-semibold text-[#762F3A] dark:text-[#E5BE53] hover:underline"
@@ -702,9 +787,14 @@ export default function HomePage() {
         {/* 11. TRỢ LÝ HỌC HỎI KINH THÁNH CÔNG GIÁO */}
         <section 
           aria-label="Trợ lý học hỏi Kinh Thánh Công giáo"
-          className="bg-white dark:bg-[#241C18] rounded-3xl p-5 sm:p-6 border border-[#E7E0D5] dark:border-[#3E302A] shadow-sm flex flex-col justify-between sacred-card-hover transition-all"
+          className="relative overflow-hidden bg-white dark:bg-[#272220] rounded-3xl p-5 sm:p-6 border border-[#E7E0D5] dark:border-[#B39A70]/40 shadow-sm flex flex-col justify-between hover:-translate-y-1 hover:shadow-xl hover:border-amber-500/40 transition-all duration-300"
         >
-          <div className="space-y-3">
+          {/* Hình ảnh nền chìm ánh sáng thánh đường */}
+          <div 
+            className="absolute inset-0 bg-cover bg-center opacity-10 dark:opacity-15 pointer-events-none"
+            style={{ backgroundImage: `url('https://images.unsplash.com/photo-1543807535-eceef0bc6599?q=40&w=1200&auto=format&fit=crop')` }}
+          />
+          <div className="relative z-10 space-y-3">
             <div className="w-10 h-10 rounded-2xl bg-[#B39A70]/15 text-[#B39A70] dark:text-[#E5BE53] flex items-center justify-center">
               <Bot className="w-5 h-5" />
             </div>
@@ -716,7 +806,7 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="pt-4 mt-4 border-t border-[#E7E0D5] dark:border-[#3E302A]">
+          <div className="relative z-10 pt-4 mt-4 border-t border-[#E7E0D5] dark:border-[#3E302A]">
             <Link
               href="/tro-ly-ai"
               className="inline-flex items-center gap-1 text-xs font-semibold text-[#762F3A] dark:text-[#E5BE53] hover:underline"

@@ -300,8 +300,13 @@ export function DailyPrayersWidget() {
   return (
     <section 
       aria-label="Góc Kinh Nguyện Hằng Ngày" 
-      className="relative w-full overflow-hidden rounded-3xl bg-gradient-to-br from-[#F7F4EE] via-[#FCFBF8] to-[#F1ECE1] dark:from-[#241C18] dark:via-[#1F1714] dark:to-[#181210] border border-[#B39A70]/30 shadow-sacred p-4 sm:p-6 md:p-10 my-8 transition-all"
+      className="relative w-full overflow-hidden rounded-3xl bg-gradient-to-br from-[#F7F4EE] via-[#FCFBF8] to-[#F1ECE1] dark:from-[#241C18] dark:via-[#1F1714] dark:to-[#181210] border border-[#B39A70]/30 shadow-sacred p-4 sm:p-6 md:p-10 my-8 hover:-translate-y-1 hover:shadow-xl hover:border-amber-500/40 transition-all duration-300"
     >
+      {/* Hình ảnh nền chìm nghệ thuật Công Giáo */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center opacity-10 dark:opacity-15 pointer-events-none"
+        style={{ backgroundImage: `url('https://images.unsplash.com/photo-1507692049790-de58290a4334?q=40&w=1200&auto=format&fit=crop')` }}
+      />
       {/* Hoa văn góc mạ vàng tôn nghiêm */}
       <SacredCornerOrnament position="top-left" className="absolute top-3 left-3 text-[#B39A70]/40 scale-100 sm:scale-110 pointer-events-none" />
       <SacredCornerOrnament position="top-right" className="absolute top-3 right-3 text-[#B39A70]/40 scale-100 sm:scale-110 pointer-events-none" />

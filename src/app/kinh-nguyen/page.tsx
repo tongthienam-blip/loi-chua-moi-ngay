@@ -21,7 +21,7 @@ import {
 } from 'lucide-react';
 import { SacredCrossIcon, SacredCornerOrnament } from '@/components/SacredIcons';
 
-export interface PrayerDetail {
+interface PrayerDetail {
   id: string;
   tabId: 'morning' | 'evening' | 'sunday' | 'rosary' | 'common';
   title: string;
@@ -32,7 +32,7 @@ export interface PrayerDetail {
   content: string[];
 }
 
-export const CATHOLIC_PRAYERS_DB: PrayerDetail[] = [
+const CATHOLIC_PRAYERS_DB: PrayerDetail[] = [
   // =========================================================================
   // TAB 1: KINH SÁNG
   // =========================================================================
@@ -420,7 +420,7 @@ export const CATHOLIC_PRAYERS_DB: PrayerDetail[] = [
   }
 ];
 
-export const TABS_CONFIG = [
+const TABS_CONFIG = [
   { id: 'morning', label: 'KINH SÁNG', icon: Sun, badge: 'Đầu Ngày', count: 5 },
   { id: 'evening', label: 'KINH TỐI', icon: Moon, badge: 'Cuối Ngày', count: 4 },
   { id: 'sunday', label: 'KINH CHÚA NHẬT', icon: Church, badge: 'Ngày Của Chúa', count: 4 },
