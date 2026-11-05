@@ -17,7 +17,10 @@ export function BottomNav() {
   ];
 
   return (
-    <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#FAF7F2]/95 backdrop-blur-lg border-t border-[#E8DFC8] px-2 py-1.5 flex items-center justify-around shadow-lg">
+    <nav 
+      aria-label="Thanh điều hướng dưới di động"
+      className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#F7F4EE]/95 dark:bg-[#1A1412]/95 backdrop-blur-md border-t border-[#E7E0D5] dark:border-[#3E302A] px-2 pt-1 pb-[max(0.5rem,env(safe-area-inset-bottom))] flex items-center justify-around shadow-md transition-colors"
+    >
       {tabs.map((tab) => {
         const Icon = tab.icon;
         const isActive = pathname === tab.href || (tab.href !== '/' && pathname.startsWith(tab.href));
@@ -25,14 +28,14 @@ export function BottomNav() {
           <Link
             key={tab.href}
             href={tab.href}
-            className={`flex flex-col items-center justify-center py-1 px-2 rounded-xl transition ${
+            className={`flex flex-col items-center justify-center py-1 px-3 rounded-xl transition ${
               isActive
-                ? 'text-[#8B1E2D] font-bold'
-                : 'text-[#8D6E63] hover:text-[#5D4037]'
+                ? 'text-[#762F3A] dark:text-[#E5BE53] font-bold'
+                : 'text-[#8F877F] dark:text-[#A1887F] hover:text-[#403A34]'
             }`}
           >
-            <div className={`p-1 rounded-xl transition ${isActive ? 'bg-[#8B1E2D]/10' : ''}`}>
-              <Icon className="w-5 h-5 stroke-[1.8]" />
+            <div className={`p-1 rounded-lg transition ${isActive ? 'bg-[#762F3A]/10 dark:bg-[#E5BE53]/15' : ''}`}>
+              <Icon className="w-4 h-4 sm:w-5 sm:h-5 stroke-[1.8]" />
             </div>
             <span className="text-[10px] mt-0.5 tracking-tight">
               {tab.label}
@@ -40,6 +43,6 @@ export function BottomNav() {
           </Link>
         );
       })}
-    </div>
+    </nav>
   );
 }

@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { Calendar, Plus, Save, CheckCircle2, AlertCircle, Volume2, Edit3, Trash2 } from 'lucide-react';
 import { DailyLiturgicalReading, LiturgicalSeason, LiturgicalColor, FeastRank } from '@/types';
 import { BibleStore } from '@/lib/bible-store';
+import { getVietnamTodayString } from '@/lib/liturgy/timezone';
 
 export default function AdminLiturgicalReadingsPage() {
   const [readingsList, setReadingsList] = useState<DailyLiturgicalReading[]>([]);
@@ -14,7 +15,7 @@ export default function AdminLiturgicalReadingsPage() {
   // Form State
   const [formData, setFormData] = useState<DailyLiturgicalReading>({
     id: '',
-    date: '2026-11-06',
+    date: getVietnamTodayString(),
     title: 'Thứ Sáu Tuần XXXI Mùa Thường Niên',
     season: 'ORDINARY_TIME',
     seasonName: 'Mùa Thường Niên',

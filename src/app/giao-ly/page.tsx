@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useState, useMemo, Suspense } from 'react';
+import React, { useState, useMemo, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { 
   BookMarked, 
   Search, 
@@ -16,18 +16,27 @@ import {
   ArrowRight, 
   ExternalLink,
   ChevronRight,
+  ChevronLeft,
   Shield,
   HelpCircle,
-  Type,
-  Palette,
+  Copy,
+  Check,
+  Share2,
+  Bookmark,
+  BookmarkCheck,
+  Edit3,
   FileText,
-  Bookmark
+  Compass,
+  Info,
+  CheckCircle2
 } from 'lucide-react';
 import { 
   CATECHISM_DATABASE, 
+  CATECHISM_THEMES,
   searchCatechism, 
   getCatechismByNumber,
-  searchCatechismAndDocuments 
+  searchCatechismAndDocuments,
+  CatechismTheme
 } from '@/data/catechism-data';
 import { getArtworkForPillar, SacredArtwork } from '@/data/sacred-art';
 import { CatechismArticle } from '@/types';
@@ -36,32 +45,137 @@ type ReaderTheme = 'parchment' | 'sepia' | 'dark';
 type ReaderFontSize = 'text-sm' | 'text-base' | 'text-lg' | 'text-xl';
 
 function CatechismContent() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const initialNum = searchParams.get('num') ? parseInt(searchParams.get('num')!, 10) : null;
   const initialQuery = searchParams.get('q') || '';
+  const initialTheme = searchParams.get('theme') ? parseInt(searchParams.get('theme')!, 10) : 0;
 
   const [searchQuery, setSearchQuery] = useState(initialQuery);
+  const [quickJumpNum, setQuickJumpNum] = useState<string>('');
   const [selectedPillar, setSelectedPillar] = useState<number>(0);
+  const [selectedThemeId, setSelectedThemeId] = useState<number>(initialTheme);
   const [viewTab, setViewTab] = useState<'catechism' | 'documents'>('catechism');
   const [theme, setTheme] = useState<ReaderTheme>('parchment');
   const [fontSize, setFontSize] = useState<ReaderFontSize>('text-base');
 
-  const [selectedArticle, setSelectedArticle] = useState<CatechismArticle | null>(() => {
-    if (initialNum) {
-      return getCatechismByNumber(initialNum) || CATECHISM_DATABASE[0];
+  // Bookmark & Note local states
+  const [isBookmarked, setIsBookmarked] = useState<boolean>(false);
+  const [userNote, setUserNote] = useState<string>('');
+  const [showNoteEditor, setShowNoteEditor] = useState<boolean>(false);
+  const [copySuccess, setCopySuccess] = useState<boolean>(false);
+  const [shareSuccess, setShareSuccess] = useState<boolean>(false);
+
+  const [selectedArticle, setSelectedArticle] = useState<CatechismArticle>(() => {
+    if (initialNum && initialNum >= 1 && initialNum <= 2865) {
+      const found = getCatechismByNumber(initialNum);
+      if (found) return found;
     }
     return CATECHISM_DATABASE[0];
   });
 
+  // Sync bookmark and note from localStorage on article change
+  useEffect(() => {
+    if (!selectedArticle) return;
+    try {
+      const savedBookmarks = JSON.parse(localStorage.getItem('ccc_bookmarks') || '[]');
+      setIsBookmarked(savedBookmarks.includes(selectedArticle.paragraphNumber));
+      
+      const savedNote = localStorage.getItem(`ccc_note_${selectedArticle.paragraphNumber}`) || '';
+      setUserNote(savedNote);
+    } catch {
+      // LocalStorage fallback
+    }
+  }, [selectedArticle]);
+
+  // URL sync handler
+  const handleSelectNumber = (num: number) => {
+    if (num < 1 || num > 2865) return;
+    const art = getCatechismByNumber(num);
+    if (art) {
+      setSelectedArticle(art);
+      setViewTab('catechism');
+      setQuickJumpNum('');
+      // Smooth URL push without full reload
+      if (typeof window !== 'undefined') {
+        const url = new URL(window.location.href);
+        url.searchParams.set('num', num.toString());
+        window.history.pushState(null, '', url.toString());
+      }
+    }
+  };
+
+  const handleQuickJumpSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const parsed = parseInt(quickJumpNum.trim(), 10);
+    if (!isNaN(parsed) && parsed >= 1 && parsed <= 2865) {
+      handleSelectNumber(parsed);
+    }
+  };
+
+  const handleCopyCitation = () => {
+    if (!selectedArticle) return;
+    const citation = `«${selectedArticle.content}»\n\n— Giáo Lý Hội Thánh Công Giáo, Điều #${selectedArticle.paragraphNumber}\n(${selectedArticle.pillarName} • ${selectedArticle.section})\nBản dịch chính thức của Ủy ban Giáo lý Đức tin trực thuộc Hội đồng Giám mục Việt Nam (HĐGMVN).`;
+    navigator.clipboard.writeText(citation).then(() => {
+      setCopySuccess(true);
+      setTimeout(() => setCopySuccess(false), 2000);
+    });
+  };
+
+  const handleShareLink = () => {
+    if (typeof window === 'undefined' || !selectedArticle) return;
+    const shareUrl = `${window.location.origin}/giao-ly?num=${selectedArticle.paragraphNumber}`;
+    navigator.clipboard.writeText(shareUrl).then(() => {
+      setShareSuccess(true);
+      setTimeout(() => setShareSuccess(false), 2000);
+    });
+  };
+
+  const handleToggleBookmark = () => {
+    if (!selectedArticle) return;
+    try {
+      const savedBookmarks: number[] = JSON.parse(localStorage.getItem('ccc_bookmarks') || '[]');
+      const num = selectedArticle.paragraphNumber;
+      let updated: number[];
+      if (savedBookmarks.includes(num)) {
+        updated = savedBookmarks.filter(n => n !== num);
+        setIsBookmarked(false);
+      } else {
+        updated = [...savedBookmarks, num];
+        setIsBookmarked(true);
+      }
+      localStorage.setItem('ccc_bookmarks', JSON.stringify(updated));
+    } catch {
+      // LocalStorage fallback
+    }
+  };
+
+  const handleSaveNote = () => {
+    if (!selectedArticle) return;
+    try {
+      localStorage.setItem(`ccc_note_${selectedArticle.paragraphNumber}`, userNote);
+      setShowNoteEditor(false);
+    } catch {
+      // LocalStorage fallback
+    }
+  };
+
   const filteredArticles = useMemo(() => {
-    return searchCatechism(searchQuery, selectedPillar === 0 ? undefined : selectedPillar);
-  }, [searchQuery, selectedPillar]);
+    return searchCatechism(
+      searchQuery,
+      selectedPillar === 0 ? undefined : selectedPillar,
+      selectedThemeId === 0 ? undefined : selectedThemeId
+    );
+  }, [searchQuery, selectedPillar, selectedThemeId]);
 
   const documentResults = useMemo(() => {
     if (viewTab !== 'documents') return [];
-    return searchCatechismAndDocuments(searchQuery, selectedPillar === 0 ? undefined : selectedPillar)
-      .filter(r => r.type === 'DOCUMENT');
-  }, [searchQuery, selectedPillar, viewTab]);
+    return searchCatechismAndDocuments(
+      searchQuery,
+      selectedPillar === 0 ? undefined : selectedPillar,
+      selectedThemeId === 0 ? undefined : selectedThemeId
+    ).filter(r => r.type === 'DOCUMENT');
+  }, [searchQuery, selectedPillar, selectedThemeId, viewTab]);
 
   const currentArtwork: SacredArtwork = useMemo(() => {
     const pillarId = selectedPillar !== 0 ? selectedPillar : (selectedArticle?.pillar || 1);
@@ -69,11 +183,11 @@ function CatechismContent() {
   }, [selectedPillar, selectedArticle]);
 
   const pillars = [
-    { id: 0, name: 'Tất Cả 4 Trụ Cột', icon: Layers, desc: 'Toàn bộ 2.865 điều khoản GLHTCG' },
-    { id: 1, name: 'Trụ Cột I: Tuyên Xưng Đức Tin', icon: Cross, desc: 'Kinh Tin Kính, Ba Ngôi & Nhập Thể (1-1065)' },
-    { id: 2, name: 'Trụ Cột II: Cử Hành Bí Tích', icon: Sun, desc: 'Phụng Vụ và Bảy Bí Tích (1066-1690)' },
-    { id: 3, name: 'Trụ Cột III: Đời Sống Luân Lý', icon: Heart, desc: 'Mười Điều Răn & Ơn Gọi (1691-2557)' },
-    { id: 4, name: 'Trụ Cột IV: Kinh Nguyện', icon: Sparkles, desc: 'Cầu Nguyện & Kinh Lạy Cha (2558-2865)' },
+    { id: 0, name: 'Tất Cả 4 Trụ Cột', icon: Layers, desc: 'Toàn bộ 2.865 điều khoản' },
+    { id: 1, name: 'Trụ Cột I: Tuyên Xưng Đức Tin', icon: Cross, desc: 'Kinh Tin Kính (1-1065)' },
+    { id: 2, name: 'Trụ Cột II: Cử Hành Bí Tích', icon: Sun, desc: 'Phụng Vụ & 7 Bí Tích (1066-1690)' },
+    { id: 3, name: 'Trụ Cột III: Đời Sống Luân Lý', icon: Heart, desc: 'Mười Điều Răn (1691-2557)' },
+    { id: 4, name: 'Trụ Cột IV: Kinh Nguyện', icon: Sparkles, desc: 'Kinh Lạy Cha (2558-2865)' },
   ];
 
   // Theme styles
@@ -109,14 +223,6 @@ function CatechismContent() {
 
   const ts = getThemeStyles();
 
-  const handleSelectNumber = (num: number) => {
-    const art = getCatechismByNumber(num);
-    if (art) {
-      setSelectedArticle(art);
-      setViewTab('catechism');
-    }
-  };
-
   return (
     <div className={`min-h-screen py-8 px-4 sm:px-6 lg:px-8 transition-colors duration-300 ${ts.wrapper}`}>
       <div className="max-w-7xl mx-auto space-y-8 animate-fade-in">
@@ -133,7 +239,7 @@ function CatechismContent() {
               Giáo Lý Hội Thánh Công Giáo (GLHTCG)
             </h1>
             <p className={`text-sm mt-1 max-w-3xl leading-relaxed ${ts.subText}`}>
-              Kho tàng đức tin tông truyền trọn bộ <strong>2.865 điều khoản</strong> theo Tông Hiến <em className="font-serif">Fidei Depositum</em> của Thánh Giáo Hoàng Gioan Phaolô II. Tự động liên kết nền tảng Kinh Thánh và Huấn Quyền Hội Thánh.
+              Kho tàng đức tin tông truyền trọn bộ <strong>2.865 điều khoản</strong> (Điều 1 &ndash; 2865) theo Tông Hiến <em className="font-serif">Fidei Depositum</em> của Thánh Giáo Hoàng Gioan Phaolô II. Nguồn dịch chính thức từ Ủy ban Giáo lý Đức tin trực thuộc Hội đồng Giám mục Việt Nam (HĐGMVN).
             </p>
           </div>
 
@@ -271,7 +377,64 @@ function CatechismContent() {
           })}
         </div>
 
-        {/* View Tabs & Search Input Bar */}
+        {/* 13 Thematic Study Modes Bar (Chế Độ Học Theo 13 Chủ Đề) */}
+        <div className={`p-4 rounded-3xl border shadow-sm space-y-3 ${ts.card}`}>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#855D14]">
+              <Compass className="w-4 h-4 text-[#C59B27]" />
+              <span>Chế Độ Học Hỏi Theo 13 Chủ Đề Thần Học Trọng Tâm</span>
+            </div>
+            {selectedThemeId !== 0 && (
+              <button
+                onClick={() => setSelectedThemeId(0)}
+                className="text-xs text-[#8B1E2D] dark:text-[#E5B54C] hover:underline font-semibold"
+              >
+                Xóa lọc chủ đề
+              </button>
+            )}
+          </div>
+
+          <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-thin">
+            <button
+              onClick={() => setSelectedThemeId(0)}
+              className={`shrink-0 px-3 py-1.5 rounded-full text-xs font-semibold transition ${
+                selectedThemeId === 0
+                  ? 'bg-[#8B1E2D] text-white shadow-xs'
+                  : 'bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200'
+              }`}
+            >
+              Tất Cả Chủ Đề
+            </button>
+            {CATECHISM_THEMES.map((th) => {
+              const isThSelected = selectedThemeId === th.id;
+              return (
+                <button
+                  key={th.id}
+                  onClick={() => {
+                    setSelectedThemeId(th.id);
+                    // Nhảy đến điều khoản trọng tâm đầu tiên của chủ đề
+                    if (th.keyParagraphs.length > 0) {
+                      handleSelectNumber(th.keyParagraphs[0]);
+                    }
+                  }}
+                  className={`shrink-0 px-3 py-1.5 rounded-full text-xs font-semibold transition flex items-center gap-1.5 ${
+                    isThSelected
+                      ? 'bg-[#8B1E2D] text-white shadow-xs'
+                      : 'bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:bg-[#8B1E2D]/10 hover:text-[#8B1E2D]'
+                  }`}
+                  title={`${th.name}: ${th.description}`}
+                >
+                  <span>{th.name}</span>
+                  <span className={`text-[10px] px-1.5 py-0.2 rounded-full ${isThSelected ? 'bg-white/20 text-white' : 'bg-black/5 dark:bg-white/10'}`}>
+                    {th.keyParagraphs.length}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* View Tabs, Quick Jump & Search Input Bar */}
         <div className={`rounded-3xl p-4 sm:p-5 border shadow-sm flex flex-col md:flex-row gap-4 items-center justify-between ${ts.card}`}>
           {/* Tab Selector */}
           <div className="flex items-center gap-2 self-start md:self-center shrink-0">
@@ -280,7 +443,7 @@ function CatechismContent() {
               className={`px-4 py-2 rounded-2xl text-xs font-bold transition flex items-center gap-1.5 ${
                 viewTab === 'catechism'
                   ? 'bg-[#8B1E2D] text-white shadow-xs'
-                  : 'bg-stone-100 text-stone-700 hover:bg-stone-200'
+                  : 'bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-200'
               }`}
             >
               <BookMarked className="w-4 h-4" />
@@ -291,35 +454,49 @@ function CatechismContent() {
               className={`px-4 py-2 rounded-2xl text-xs font-bold transition flex items-center gap-1.5 ${
                 viewTab === 'documents'
                   ? 'bg-[#8B1E2D] text-white shadow-xs'
-                  : 'bg-stone-100 text-stone-700 hover:bg-stone-200'
+                  : 'bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-200'
               }`}
             >
               <FileText className="w-4 h-4" />
-              <span>Văn Kiện Hội Thánh</span>
+              <span>Văn Kiện Huấn Quyền</span>
             </button>
           </div>
 
-          {/* Search Box */}
+          {/* Quick Number Jump Form */}
+          <form onSubmit={handleQuickJumpSubmit} className="flex items-center gap-1.5 shrink-0 w-full sm:w-auto">
+            <div className="relative flex-1 sm:w-44">
+              <input
+                type="number"
+                min="1"
+                max="2865"
+                value={quickJumpNum}
+                onChange={(e) => setQuickJumpNum(e.target.value)}
+                placeholder="Nhập số: 176, 846..."
+                className={`w-full px-3 py-2 text-xs rounded-xl border transition focus:outline-none focus:border-[#8B1E2D] ${
+                  theme === 'dark' ? 'bg-[#1F1715] border-[#3F312B] text-white' : 'bg-[#FAF7F2] border-[#E8DFC8] text-[#2D1E18]'
+                }`}
+              />
+            </div>
+            <button
+              type="submit"
+              className="px-3 py-2 bg-[#8B1E2D] hover:bg-[#6e1724] text-white text-xs font-bold rounded-xl transition shadow-xs whitespace-nowrap"
+            >
+              Đi tới số
+            </button>
+          </form>
+
+          {/* General Search Box */}
           <div className="relative flex-1 w-full">
-            <Search className="w-5 h-5 text-stone-400 absolute left-4 top-1/2 -translate-y-1/2" />
+            <Search className="w-4 h-4 text-stone-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Nhập số điều (VD: 27, 461, 1324, 2865) hoặc từ khóa (Bí tích, Thánh Thể, Phục Sinh, Luân lý)..."
-              className={`w-full pl-12 pr-4 py-3 rounded-2xl border text-sm transition focus:outline-none focus:border-[#8B1E2D] ${
+              placeholder="Tìm theo từ khóa (Đức tin, Bí tích, Thánh Thể, Luân lý, Kinh nguyện)..."
+              className={`w-full pl-10 pr-4 py-2.5 rounded-2xl border text-xs sm:text-sm transition focus:outline-none focus:border-[#8B1E2D] ${
                 theme === 'dark' ? 'bg-[#1F1715] border-[#3F312B] text-white' : 'bg-[#FAF7F2] border-[#E8DFC8] text-[#2D1E18]'
               }`}
             />
-          </div>
-
-          <div className="flex items-center gap-2 text-xs font-semibold shrink-0">
-            <BookMarked className="w-4 h-4 text-[#C59B27]" />
-            <span className={ts.accentText}>
-              {viewTab === 'catechism' 
-                ? `Tìm thấy ${filteredArticles.length} điều khoản`
-                : `Tìm thấy ${documentResults.length} văn kiện`}
-            </span>
           </div>
         </div>
 
@@ -331,21 +508,23 @@ function CatechismContent() {
             <div className="lg:col-span-5 space-y-3">
               <div className="flex items-center justify-between px-1">
                 <span className="text-xs font-bold uppercase tracking-wider text-[#855D14]">
-                  Danh Sách Điều Khoản Giáo Lý
+                  {selectedThemeId !== 0 
+                    ? `Chủ Đề: ${CATECHISM_THEMES.find(t => t.id === selectedThemeId)?.name}`
+                    : 'Danh Sách Điều Khoản'}
                 </span>
                 <span className={`text-[11px] ${ts.subText}`}>
-                  Nhấn điều khoản để xem chi tiết
+                  Tìm thấy {filteredArticles.length} điều
                 </span>
               </div>
 
-              <div className="space-y-2.5 max-h-[750px] overflow-y-auto pr-1">
+              <div className="space-y-2.5 max-h-[750px] overflow-y-auto pr-1 scrollbar-thin">
                 {filteredArticles.length > 0 ? (
                   filteredArticles.map((article: CatechismArticle) => {
                     const isSelected = selectedArticle?.paragraphNumber === article.paragraphNumber;
                     return (
                       <button
                         key={article.paragraphNumber}
-                        onClick={() => setSelectedArticle(article)}
+                        onClick={() => handleSelectNumber(article.paragraphNumber)}
                         className={`w-full text-left p-4 rounded-2xl border transition ${
                           isSelected
                             ? 'bg-[#FAF4E8] dark:bg-[#312622] border-[#8B1E2D] shadow-sm ring-1 ring-[#8B1E2D]'
@@ -369,10 +548,13 @@ function CatechismContent() {
                           {article.content}
                         </p>
 
-                        <div className="flex items-center gap-2 mt-2 pt-2 border-t border-black/5 text-[10px] opacity-75">
+                        <div className="flex items-center justify-between mt-2 pt-2 border-t border-black/5 text-[10px] opacity-75">
                           <span>{article.scripturalFoundations.length} đoạn Kinh Thánh</span>
-                          <span>&bull;</span>
-                          <span>{article.keyDoctrines.length} điểm tín lý</span>
+                          {article.isFullVerbatimText && (
+                            <span className="text-[#8B1E2D] dark:text-[#E5B54C] font-semibold">
+                              ● Nguyên văn chuẩn xác
+                            </span>
+                          )}
                         </div>
                       </button>
                     );
@@ -381,7 +563,7 @@ function CatechismContent() {
                   <div className={`rounded-2xl p-8 text-center border space-y-2 ${ts.card}`}>
                     <HelpCircle className="w-8 h-8 text-stone-300 mx-auto" />
                     <p className="text-sm font-semibold">Không tìm thấy điều khoản phù hợp</p>
-                    <p className={`text-xs ${ts.subText}`}>Thử tìm số điều từ 1 đến 2865 hoặc đổi từ khóa.</p>
+                    <p className={`text-xs ${ts.subText}`}>Thử nhập trực tiếp số điều từ 1 đến 2865 ở ô trên.</p>
                   </div>
                 )}
               </div>
@@ -392,12 +574,127 @@ function CatechismContent() {
               {selectedArticle ? (
                 <div className={`rounded-3xl p-6 sm:p-8 border shadow-sm space-y-6 ${ts.card}`}>
                   
+                  {/* Article Top Navigation Toolbar (Prev / Next & Actions) */}
+                  <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-black/10">
+                    {/* Prev / Next Buttons */}
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => handleSelectNumber(selectedArticle.paragraphNumber - 1)}
+                        disabled={selectedArticle.paragraphNumber <= 1}
+                        className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl border text-xs font-semibold bg-stone-100 dark:bg-stone-800 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#8B1E2D] hover:text-white transition"
+                      >
+                        <ChevronLeft className="w-3.5 h-3.5" />
+                        <span>Điều #{selectedArticle.paragraphNumber - 1}</span>
+                      </button>
+
+                      <button
+                        onClick={() => handleSelectNumber(selectedArticle.paragraphNumber + 1)}
+                        disabled={selectedArticle.paragraphNumber >= 2865}
+                        className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl border text-xs font-semibold bg-stone-100 dark:bg-stone-800 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#8B1E2D] hover:text-white transition"
+                      >
+                        <span>Điều #{selectedArticle.paragraphNumber + 1}</span>
+                        <ChevronRight className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+
+                    {/* Action Tools: Copy citation, Share link, Bookmark, Note */}
+                    <div className="flex items-center gap-1.5">
+                      <button
+                        onClick={handleCopyCitation}
+                        className={`inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl text-xs font-semibold border transition ${
+                          copySuccess ? 'bg-green-600 text-white border-green-600' : 'bg-stone-100 dark:bg-stone-800 hover:bg-stone-200'
+                        }`}
+                        title="Sao chép trích dẫn chuẩn Công giáo kèm nguồn"
+                      >
+                        {copySuccess ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+                        <span>{copySuccess ? 'Đã chép' : 'Sao chép'}</span>
+                      </button>
+
+                      <button
+                        onClick={handleShareLink}
+                        className={`inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl text-xs font-semibold border transition ${
+                          shareSuccess ? 'bg-green-600 text-white border-green-600' : 'bg-stone-100 dark:bg-stone-800 hover:bg-stone-200'
+                        }`}
+                        title="Chia sẻ liên kết số điều này"
+                      >
+                        {shareSuccess ? <Check className="w-3.5 h-3.5" /> : <Share2 className="w-3.5 h-3.5" />}
+                        <span>{shareSuccess ? 'Đã lấy link' : 'Chia sẻ'}</span>
+                      </button>
+
+                      <button
+                        onClick={handleToggleBookmark}
+                        className={`p-1.5 rounded-xl border text-xs font-semibold transition ${
+                          isBookmarked ? 'bg-[#8B1E2D] text-white border-[#8B1E2D]' : 'bg-stone-100 dark:bg-stone-800 hover:bg-stone-200'
+                        }`}
+                        title={isBookmarked ? 'Bỏ đánh dấu' : 'Đánh dấu điều khoản này'}
+                      >
+                        {isBookmarked ? <BookmarkCheck className="w-4 h-4" /> : <Bookmark className="w-4 h-4" />}
+                      </button>
+
+                      <button
+                        onClick={() => setShowNoteEditor(!showNoteEditor)}
+                        className={`p-1.5 rounded-xl border text-xs font-semibold transition ${
+                          userNote ? 'bg-[#C59B27] text-white border-[#C59B27]' : 'bg-stone-100 dark:bg-stone-800 hover:bg-stone-200'
+                        }`}
+                        title="Ghi chú cá nhân"
+                      >
+                        <Edit3 className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Personal Note Editor (if open) */}
+                  {showNoteEditor && (
+                    <div className={`p-4 rounded-2xl border space-y-2.5 ${ts.altCard}`}>
+                      <div className="flex items-center justify-between text-xs font-bold text-[#855D14]">
+                        <span>Ghi Chú Cá Nhân Cho Điều #{selectedArticle.paragraphNumber}</span>
+                        <span className="text-[10px] text-stone-400">Lưu tự động trên trình duyệt</span>
+                      </div>
+                      <textarea
+                        value={userNote}
+                        onChange={(e) => setUserNote(e.target.value)}
+                        placeholder="Nhập suy niệm hoặc ghi chú cá nhân của bạn..."
+                        rows={3}
+                        className={`w-full p-2.5 text-xs rounded-xl border focus:outline-none focus:border-[#8B1E2D] ${
+                          theme === 'dark' ? 'bg-[#1F1715] border-[#3F312B] text-white' : 'bg-white border-[#E8DFC8]'
+                        }`}
+                      />
+                      <div className="flex justify-end gap-2">
+                        <button
+                          onClick={() => setShowNoteEditor(false)}
+                          className="px-3 py-1 text-xs rounded-lg border text-stone-500 hover:bg-stone-100"
+                        >
+                          Đóng
+                        </button>
+                        <button
+                          onClick={handleSaveNote}
+                          className="px-3 py-1 bg-[#8B1E2D] text-white text-xs font-bold rounded-lg hover:bg-[#6e1724]"
+                        >
+                          Lưu Ghi Chú
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
                   {/* Article Header */}
-                  <div className="border-b border-black/10 pb-5 space-y-2">
+                  <div className="space-y-2">
                     <div className="flex flex-wrap items-center justify-between gap-2">
-                      <span className="px-3.5 py-1 rounded-full bg-[#8B1E2D] text-white font-bold text-xs shadow-sm">
-                        GLHTCG Điều #{selectedArticle.paragraphNumber}
-                      </span>
+                      <div className="flex items-center gap-2">
+                        <span className="px-3.5 py-1 rounded-full bg-[#8B1E2D] text-white font-bold text-xs shadow-sm">
+                          GLHTCG Điều #{selectedArticle.paragraphNumber}
+                        </span>
+                        {selectedArticle.isFullVerbatimText ? (
+                          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-green-100 dark:bg-green-900/40 text-green-800 dark:text-green-300 border border-green-200">
+                            <CheckCircle2 className="w-3 h-3" />
+                            Nguyên văn chuẩn xác
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300">
+                            Định danh quy điển
+                          </span>
+                        )}
+                      </div>
+
                       <span className="text-xs font-semibold text-[#855D14]">
                         {selectedArticle.pillarName}
                       </span>
@@ -407,7 +704,13 @@ function CatechismContent() {
                       {selectedArticle.title}
                     </h2>
 
-                    <div className={`text-xs flex flex-wrap gap-x-2 ${ts.subText}`}>
+                    {selectedArticle.latinHeading && (
+                      <div className="text-xs italic font-serif text-[#855D14]">
+                        {selectedArticle.latinHeading}
+                      </div>
+                    )}
+
+                    <div className={`text-xs flex flex-wrap gap-x-2 pt-1 ${ts.subText}`}>
                       <span>{selectedArticle.part}</span>
                       <span>&bull;</span>
                       <span>{selectedArticle.section}</span>
@@ -418,8 +721,9 @@ function CatechismContent() {
 
                   {/* Article Content / Text */}
                   <div className="space-y-3">
-                    <div className="text-xs font-bold text-[#855D14] uppercase tracking-wider">
-                      Văn Bản Chính Thức
+                    <div className="text-xs font-bold text-[#855D14] uppercase tracking-wider flex items-center gap-1.5">
+                      <BookOpen className="w-4 h-4 text-[#8B1E2D]" />
+                      <span>Văn Bản Chính Thức GLHTCG</span>
                     </div>
                     <div className={`p-5 sm:p-6 rounded-2xl border font-serif ${fontSize} leading-relaxed italic ${ts.altCard}`}>
                       &ldquo;{selectedArticle.content}&rdquo;
@@ -438,7 +742,7 @@ function CatechismContent() {
                           key={idx}
                           href={`/kinh-thanh?q=${encodeURIComponent(ref)}`}
                           className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white dark:bg-[#1A1412] hover:bg-[#FAF4E8] text-[#8B1E2D] dark:text-[#E5B54C] font-bold text-xs border border-[#8B1E2D]/20 shadow-xs transition group"
-                          title="Đọc đoạn Kinh Thánh này"
+                          title={`Tra cứu đoạn Kinh Thánh ${ref} trong 73 Sách`}
                         >
                           <span>{ref}</span>
                           <ExternalLink className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
@@ -468,6 +772,27 @@ function CatechismContent() {
                     </div>
                   </div>
 
+                  {/* Church Documents Reference */}
+                  {selectedArticle.churchDocuments && selectedArticle.churchDocuments.length > 0 && (
+                    <div className="space-y-2 pt-2">
+                      <div className="flex items-center gap-2 text-xs font-bold text-[#855D14] uppercase tracking-wider">
+                        <FileText className="w-4 h-4 text-[#8B1E2D]" />
+                        <span>Văn Kiện Hội Thánh & Huấn Quyền Liên Quan</span>
+                      </div>
+                      <div className="flex flex-wrap gap-2">
+                        {selectedArticle.churchDocuments.map((doc, idx) => (
+                          <span
+                            key={idx}
+                            className="inline-flex items-center gap-1 px-3 py-1 rounded-xl bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 text-xs font-medium border border-black/5"
+                          >
+                            <Bookmark className="w-3 h-3 text-[#C59B27]" />
+                            {doc}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
                   {/* Related Paragraphs */}
                   {selectedArticle.relatedParagraphs && selectedArticle.relatedParagraphs.length > 0 && (
                     <div className="pt-4 border-t border-black/10 space-y-2">
@@ -488,6 +813,14 @@ function CatechismContent() {
                       </div>
                     </div>
                   )}
+
+                  {/* Legal & Copyright Attribution */}
+                  <div className="pt-4 border-t border-black/10 text-[11px] text-stone-400 leading-relaxed flex items-start gap-2">
+                    <Info className="w-4 h-4 text-stone-400 shrink-0 mt-0.5" />
+                    <div>
+                      Bản dịch tiếng Việt chính thức của <strong>Ủy ban Giáo lý Đức tin trực thuộc Hội đồng Giám mục Việt Nam (HĐGMVN)</strong>. Bản quyền nguyên tác tiếng Latin thuộc <strong>Libreria Editrice Vaticana</strong>. Website phục vụ mục đích học hỏi đức tin và nghiên cứu mục vụ phi thương mại.
+                    </div>
+                  </div>
 
                 </div>
               ) : (

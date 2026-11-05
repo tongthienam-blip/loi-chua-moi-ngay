@@ -535,7 +535,7 @@ export const CATHOLIC_BIBLE_BOOKS: BibleBook[] = [
     testament: 'OLD',
     category: 'HISTORICAL',
     categoryName: 'Lịch Sử',
-    chaptersCount: 10,
+    chaptersCount: 16,
     order: 19,
     overview: 'Hoàng hậu Étte liều mạng cứu dân Do Thái thoát khỏi âm mưu diệt chủng của Haman, cội rễ Lễ Purim.',
     authorTradition: 'Tác giả Do Thái tại hải ngoại Ba Tư.',

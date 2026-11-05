@@ -1,10 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { CATECHISM_DATABASE, getCatechismByNumber } from '@/data/catechism-data';
+import { CHURCH_DOCUMENTS_DATABASE } from '@/data/church-documents';
+import { CATHOLIC_BIBLE_BOOKS } from '@/data/catholic-books';
+
+export type AssistantMode = 
+  | 'BIBLE_QA'            // 1. Hỏi đáp Kinh Thánh
+  | 'CATECHISM_LOOKUP'     // 2. Tra cứu GLHTCG
+  | 'THEOLOGY_STUDY'       // 3. Nghiên cứu thần học
+  | 'CHURCH_DOCUMENTS'     // 4. Tra cứu văn kiện Hội Thánh
+  | 'MEDITATION'           // 5. Suy niệm Lời Chúa
+  | 'EXAM_PREP';           // 6. Hỗ trợ học tập và ôn thi
 
 interface AssistantRequest {
   message: string;
+  mode?: AssistantMode;
   context?: {
     bookId?: string;
-    bookName?: string;
     chapter?: number;
     verse?: number;
   };
@@ -12,114 +23,120 @@ interface AssistantRequest {
 
 interface AssistantResponse {
   answer: string;
+  mode: AssistantMode;
+  officialTeaching?: string;
+  theologicalOpinion?: string;
+  aiReflection?: string;
   citations: {
     scripture?: string[];
     ccc?: number[];
     churchDocs?: string[];
   };
   theologicalTheme: string;
+  disclaimer: string;
 }
 
-// Kho kiến thức thần học Công giáo chính xác và chuẩn mực phục vụ phản hồi
+// ============================================================================
+// KHO KIẾN THỨC NỀN TẢNG THẦN HỌC & GIÁO LÝ CÔNG GIÁO
+// ============================================================================
 const CATHOLIC_KNOWLEDGE_BASE: {
   keywords: string[];
   theme: string;
-  answer: string;
+  applicableModes: AssistantMode[];
+  officialTeaching: string;
+  theologicalOpinion: string;
+  aiReflection: string;
   citations: { scripture: string[]; ccc: number[]; churchDocs: string[] };
 }[] = [
   {
-    keywords: ['73 sách', 'quy điển', 'deuterocanonical', 'đệ nhị quy điển', '66 sách', 'tin lành'],
-    theme: 'Quy Điển Kinh Thánh Công Giáo (Canon of Scripture)',
-    answer: `Kinh Thánh Công giáo bao gồm trọn vẹn **73 cuốn sách** (46 sách Cựu Ước và 27 sách Tân Ước). 
-
-1. **Nguồn gốc lịch sử:** Hội Thánh sơ khai kế thừa bản dịch Kinh Thánh Hy Lạp **Septuaginta (Bản Bảy Mươi - LXX)** vốn được cộng đồng Do Thái hải ngoại sử dụng rộng rãi và được chính các Tác giả Tân Ước trích dẫn trên 80% trong các bản văn Tin Mừng và Thư Tín.
-2. **7 Sách Đệ Nhị Quy Điển (Deuterocanonical):** Gồm Tôbia, Giuđitha, 1 & 2 Mác-ca-bê, Khôn Ngoan, Huấn Ca (Sirach), Ba-rúc và một số phần của sách Ét-te và Đa-ni-en.
-3. **Sự xác chuẩn của Hội Thánh:** Bản danh mục 73 sách được công bố chính thức tại Công đồng Hippo (năm 393), Công đồng Carthage (397, 419), Công đồng Florence (1442) và được định tín bất khả ngộ tại **Công đồng Trentô (1546)** trước phong trào Cải Cách Tin Lành vốn đã loại bỏ 7 cuốn sách này ra khỏi quy điển.
-4. **Giáo huấn Hội Thánh:** Hiến chế Tín lý *Dei Verbum* số 11 khẳng định: "Tất cả các sách Cựu Ước cũng như Tân Ước cùng với mọi thành phần của các sách ấy đều được viết dưới sự linh hứng của Chúa Thánh Thần, có Thiên Chúa là tác giả và được lưu truyền cho Hội Thánh."`,
+    keywords: ['73 sách', 'quy điển', 'deuterocanonical', 'đệ nhị quy điển', '66 sách', 'tin lành', 'thứ kinh'],
+    theme: 'Quy Điển 73 Sách Kinh Thánh Công Giáo (Canon of Scripture)',
+    applicableModes: ['BIBLE_QA', 'THEOLOGY_STUDY', 'EXAM_PREP'],
+    officialTeaching: `Kinh Thánh Công giáo gồm trọn vẹn 73 cuốn sách (46 Cựu Ước và 27 Tân Ước). Công đồng Trentô (1546) trong sắc lệnh De Canonicis Scripturis đã định tín bất khả ngộ danh mục 73 sách này là Lời Thiên Chúa linh hứng trọn vẹn. 7 sách Đệ Nhị Quy Điển (Tôbia, Giuđitha, 1 & 2 Mác-ca-bê, Khôn Ngoan, Huấn Ca, Ba-rúc) thuộc truyền thống Kinh Thánh Hy Lạp Septuaginta (LXX) mà các Tông đồ và Giáo Hội sơ khai đã sử dụng và trích dẫn.`,
+    theologicalOpinion: `Theo Thánh Augustinô và truyền thống Alexandria, các sách Đệ Nhị Quy Điển chứa đựng các chủ đề thần học thiết yếu như cầu nguyện cho người qua đời (2 Mcb 12,43-46), niềm tin vào sự phục sinh của thân xác và sự quan phòng thần linh, vốn đã được hoàn tất trọn vẹn nơi Đức Kitô.`,
+    aiReflection: `Khi học hỏi Kinh Thánh, hãy đón nhận trọn bộ 73 cuốn sách như một lịch sử cứu độ duy nhất, nối liền Lời Hứa thời Cựu Ước với Sự Thành Toàn nơi Tân Ước.`,
     citations: {
-      scripture: ['2 Tm 3,16', '2 Pr 1,20-21'],
+      scripture: ['2 Tm 3,16', '2 Pr 1,20-21', '2 Mcb 12,43-46'],
       ccc: [120, 121, 138],
-      churchDocs: ['Dei Verbum (số 11, 12, 14)']
+      churchDocs: ['Dei Verbum (số 11, 12, 14)', 'Công đồng Trentô (Sắc lệnh De Canonicis Scripturis)']
     }
   },
   {
-    keywords: ['thánh thể', 'bánh hằng sống', 'eucharist', 'thịt và máu', 'ga 6', 'bữa tiệc ly'],
-    theme: 'Bí Tích Thánh Thể & Hy Tế Vượt Qua',
-    answer: `Bí tích Thánh Thể là **"nguồn suối và đỉnh cao của toàn bộ đời sống Kitô giáo"** (Lumen Gentium 11).
-
-1. **Diễn từ Bánh Hằng Sống (Ga 6,51-58):** Chúa Giêsu không nói theo nghĩa biểu tượng thuần túy, mà nhấn mạnh mạnh mẽ: *"Thịt tôi thật là của ăn, và máu tôi thật là của uống. Ai ăn thịt và uống máu tôi, thì ở lại trong tôi và tôi ở lại trong người ấy."* Khi nhiều môn đệ rút lui vì lời giảng quá cứng cỏi, Chúa không cải chính theo nghĩa bóng mà quay sang hỏi Nhóm Mười Hai: *"Cả anh em nữa, anh em cũng muốn bỏ đi sao?"* (Ga 6,67).
-2. **Bữa Tiệc Ly (Mt 26,26-28; 1 Cr 11,23-26):** Chúa Giêsu thiết lập Hy tế Giao Ước Mới: *"Này là mình Thầy... Này là máu Thầy"*. Ngài truyền cho các Tông đồ: *"Hãy làm việc này mà nhớ đến Thầy"*.
-3. **Thuyết Biến Thể (Transubstantiation):** Theo giáo huấn Công đồng Trentô và GLHTCG, qua lời truyền phép của tư tế và quyền năng Chúa Thánh Thần, trọn vẹn bản thể bánh và rượu biến đổi thành Thịt và Máu thật của Chúa Kitô (Mình, Máu, Linh hồn và Thần tính), dù hình thức bên ngoài (màu sắc, mùi vị) vẫn giữ nguyên.`,
+    keywords: ['thánh thể', 'bánh hằng sống', 'eucharist', 'thịt và máu', 'ga 6', 'bữa tiệc ly', 'biến thể'],
+    theme: 'Bí Tích Thánh Thể & Mầu Nhiệm Biến Thể',
+    applicableModes: ['BIBLE_QA', 'CATECHISM_LOOKUP', 'THEOLOGY_STUDY', 'MEDITATION'],
+    officialTeaching: `Bí tích Thánh Thể là "nguồn suối và đỉnh cao của toàn bộ đời sống Kitô giáo" (Lumen Gentium 11). Nhờ lời truyền phép của linh mục và tác động của Chúa Thánh Thần, trọn vẹn bản thể bánh và rượu biến đổi thành Thịt và Máu thật của Đức Kitô (Transubstantiatio - Biến Thể), dù các hình thể bên ngoài vẫn giữ nguyên (Công đồng Trentô; GLHTCG 1376).`,
+    theologicalOpinion: `Thánh Tôma Aquinô (Summa Theologiae III, q. 75) giải thích: Chúa Kitô hiện diện không theo cách cục bộ vật lý, mà theo cách thức bản thể bí tích. Diễn từ Bánh Hằng Sống trong Ga 6 khẳng định tính hiện thực chứ không phải biểu tượng tượng trưng.`,
+    aiReflection: `Mỗi lần rước lễ là cuộc kết hợp mật thiết nhất với Chúa Giêsu, mời gọi chúng ta trao hiến đời mình thành tấm bánh bẻ ra cho tha nhân.`,
     citations: {
       scripture: ['Ga 6,51-58', '1 Cr 11,23-26', 'Mt 26,26-28', 'Lc 22,19-20'],
       ccc: [1324, 1374, 1376, 1407],
-      churchDocs: ['Lumen Gentium (số 11)', 'Sacrosanctum Concilium (số 47)']
+      churchDocs: ['Lumen Gentium (số 11)', 'Sacrosanctum Concilium (số 47)', 'Ecclesia de Eucharistia (Thánh Gioan Phaolô II)']
     }
   },
   {
-    keywords: ['phêrô', 'đá tảng', 'chìa khóa', 'quyền bính', 'giáo hoàng', 'mt 16'],
-    theme: 'Địa Vị Thủ Lãnh Của Thánh Phêrô & Thừa Tác Vụ Giáo Hoàng',
-    answer: `Trong Tin Mừng Mátthêu (Mt 16,13-19), tại miền Xê-da-rê Phi-líp, sau khi Simon tuyên xưng: *"Thầy là Đấng Kitô, Con Thiên Chúa hằng sống"*, Chúa Giêsu đã thiết lập quyền thủ lãnh của ông trên Hội Thánh:
-
-1. **Đổi tên thành Phêrô (Petros - Đá Tảng):** *"Anh là Phêrô, nghĩa là Tảng Đá, trên tảng đá này, Thầy sẽ xây Hội Thánh của Thầy, và quyền lực tử thần sẽ không thắng nổi."* (Mt 16,18). Trong Kinh Thánh, việc Thiên Chúa đổi tên (như Áp-ram thành Áp-ra-ham) luôn gắn liền với một sứ mạng cứu độ nền tảng.
-2. **Quyền Trao Chìa Khóa Nước Trời:** Hình ảnh này liên hệ trực tiếp với Isaia 22,22, trao quyền tể tướng quản lý nhà Đavít. Chìa khóa biểu thị quyền bính cai quản, giảng dạy và dẫn dắt đoàn chiên.
-3. **Quyền Cầm Buộc Và Tháo Cởi:** Một thuật ngữ kinh sư biểu thị thẩm quyền công bố chuẩn tắc đức tin, kỷ luật và tha tội nhân danh Chúa Kitô.
-4. **Sứ Mạng Chăn Dắt Toàn Thể Đoàn Chiên (Ga 21,15-17):** Sau Phục Sinh, Chúa Giêsu trao phó cụ thể: *"Hãy chăm sóc chiên con của Thầy... Hãy chăn dắt chiên mẹ của Thầy"*.
-5. **Kế nhiệm Phêrô:** Giám mục Rôma (Đức Giáo Hoàng) là Đấng kế vị Thánh Phêrô, là nguyên lý và nền tảng hữu hình, vĩnh cửu của sự hiệp nhất đức tin và tình hiệp thông trong toàn Hội Thánh (Lumen Gentium 23).`,
+    keywords: ['phêrô', 'đá tảng', 'chìa khóa', 'quyền bính', 'giáo hoàng', 'mt 16', 'kế vị tông đồ'],
+    theme: 'Quyền Thủ Lãnh Của Thánh Phêrô & Thừa Tác Vụ Giáo Hoàng',
+    applicableModes: ['BIBLE_QA', 'THEOLOGY_STUDY', 'CHURCH_DOCUMENTS', 'EXAM_PREP'],
+    officialTeaching: `Đức Giêsu đã đặt Thánh Phêrô làm thủ lãnh hữu hình của Nhóm Mười Hai và trao cho ngài quyền chìa khóa Nước Trời cùng quyền cầm buộc và tháo cởi (Mt 16,18-19; Ga 21,15-17). Giám mục Rôma (Đức Giáo Hoàng) là người kế vị Thánh Phêrô, là nguyên lý và nền tảng hữu hình, vĩnh cửu của sự hiệp nhất đức tin và lòng bác ái trong toàn Hội Thánh (Lumen Gentium 23; GLHTCG 882).`,
+    theologicalOpinion: `Hình ảnh chiếc chìa khóa gợi nhớ trực tiếp đến Isaia 22,22 về chức quan quản gia hoàng cung nhà Đavít. Thừa tác vụ Phêrô không phải là sự thống trị độc đoán, mà là "tôi tớ của các tôi tớ Thiên Chúa" (Servus Servorum Dei) nhằm bảo vệ kho tàng đức tin tông truyền.`,
+    aiReflection: `Cầu nguyện cho Đức Thánh Cha là trách nhiệm hiếu thảo của mọi người con trong Hội Thánh, gìn giữ tình hiệp thông trọn hảo với Tòa Thánh Phêrô.`,
     citations: {
       scripture: ['Mt 16,13-19', 'Ga 21,15-17', 'Lc 22,31-32', 'Is 22,22'],
       ccc: [881, 882, 883, 891],
-      churchDocs: ['Lumen Gentium (số 18, 22, 23)', 'Pastor Aeternus (Vatican I)']
+      churchDocs: ['Lumen Gentium (số 18, 22, 23)', 'Pastor Aeternus (Công đồng Vaticanô I)']
     }
   },
   {
-    keywords: ['đức mẹ', 'maria', 'vô nhiễm', 'lên trời', 'đồng trinh', 'mẹ thiên chúa'],
-    theme: 'Bốn Tín Điều Về Đức Maria Trong Thần Học Công Giáo',
-    answer: `Hội Thánh Công giáo định tín **Bốn Tín Điều** cốt lõi về Đức Maria, tất cả đều quy hướng về mầu nhiệm Nhập Thể và Cứu Độ của Chúa Giêsu:
-
-1. **Mẹ Thiên Chúa (Theotokos):** Được Công đồng Ê-phê-sô (431) tuyên tín dựa trên Lc 1,43 (bà Ê-li-sa-bét gọi Mẹ là *"Thân Mẫu Chúa tôi"*). Vì Chúa Giêsu là một Ngôi Vị Thiên Chúa duy nhất với hai bản tính (Thiên Chúa và Con Người), nên Mẹ Maria đích thực là Mẹ Thiên Chúa.
-2. **Trọn Đời Đồng Trinh (Aeiparthenos):** Mẹ thụ thai Chúa Giêsu bởi phép Chúa Thánh Thần mà không cần đến sự cộng tác của người nam (Lc 1,34-35; Mt 1,18-25).
-3. **Vô Nhiễm Nguyên Tội (Immaculata Conceptio):** Được Đức Chân phước Piô IX tuyên tín năm 1854 (*Ineffabilis Deus*). Nhờ ân sủng tiên triệu phát sinh từ công nghiệp cứu chuộc của Đức Kitô, Mẹ được gìn giữ khỏi mọi tì ố của tội nguyên tổ ngay từ giây phút thụ thai.
-4. **Hồn Xác Lên Trời (Assumptio):** Được Đức Piô XII tuyên tín năm 1950 (*Munificentissimus Deus*). Hoàn tất cuộc đời dương thế, Mẹ được đưa cả hồn lẫn xác vào vinh quang thiên quốc, báo trước niềm hy vọng phục sinh của thân xác các tín hữu.`,
+    keywords: ['đức mẹ', 'maria', 'vô nhiễm', 'lên trời', 'đồng trinh', 'mẹ thiên chúa', 'tín điều'],
+    theme: 'Bốn Tín Điều Về Đức Trinh Nữ Maria',
+    applicableModes: ['BIBLE_QA', 'CATECHISM_LOOKUP', 'THEOLOGY_STUDY', 'EXAM_PREP'],
+    officialTeaching: `Hội Thánh Công giáo định tín 4 tín điều về Mẹ Maria: 1. Mẹ Thiên Chúa (Theotokos - Công đồng Êphêsô 431); 2. Trọn Đời Đồng Trinh (Công đồng Latêranô 649); 3. Vô Nhiễm Nguyên Tội (Ineffabilis Deus 1854 của Đức Piô IX); 4. Hồn Xác Lên Trời (Munificentissimus Deus 1950 của Đức Piô XII).`,
+    theologicalOpinion: `Tất cả các đặc ân của Mẹ Maria đều xuất phát từ và quy hướng về Đức Giêsu Kitô. Mẹ là hình ảnh nguyên mẫu (Typus) của Hội Thánh: vâng phục trong đức tin và được tôn vinh mai sau trên quê trời.`,
+    aiReflection: `Noi gương tiếng "Xin Vâng" (Fiat) của Mẹ giúp chúng ta luôn sẵn lòng để Lời Chúa cư ngụ và sinh hoa trái dồi dào trong cuộc đời.`,
     citations: {
-      scripture: ['Lc 1,28.43', 'Ga 19,26-27', 'Kh 12,1', 'St 3,15'],
+      scripture: ['Lc 1,28.38.43', 'Ga 19,26-27', 'Kh 12,1', 'St 3,15'],
       ccc: [490, 495, 499, 966],
       churchDocs: ['Lumen Gentium (Chương VIII, số 52-69)', 'Ineffabilis Deus (1854)', 'Munificentissimus Deus (1950)']
     }
   },
   {
     keywords: ['ba ngôi', 'thiên chúa ba ngôi', 'chúa cha', 'chúa con', 'chúa thánh thần', 'trinity'],
-    theme: 'Mầu Nhiệm Trung Tâm: Thiên Chúa Ba Ngôi Chí Thánh',
-    answer: `Mầu nhiệm Thiên Chúa Ba Ngôi là **mầu nhiệm trung tâm của đức tin và đời sống Kitô giáo** (GLHTCG 234).
-
-1. **Một Thiên Chúa duy nhất trong Ba Ngôi Vị:** Chúa Cha, Chúa Con và Chúa Thánh Thần. Ba Ngôi không chia nhau một thần tính duy nhất, nhưng mỗi Ngôi Vị là trọn vẹn Thiên Chúa, đồng bản thể (*homoousios*), có cùng quyền năng và uy linh vĩnh cửu.
-2. **Nền tảng Kinh Thánh:**
-   - Lệnh truyền Phép Rửa: *"Anh em hãy đi giảng dạy cho muôn dân, làm phép rửa cho họ nhân danh Chúa Cha, và Chúa Con và Chúa Thánh Thần"* (Mt 28,19).
-   - Lời chúc phúc của Thánh Phaolô: *"Cầu chúc toàn thể anh em được đầy tràn ân sủng của Chúa Giêsu Kitô, tình yêu của Chúa Cha, và ơn thông hiệp của Chúa Thánh Thần"* (2 Cr 13,13).
-   - Biến cố Chúa Giêsu chịu phép rửa bên sông Gio-đan (Mt 3,16-17): Tiếng Chúa Cha từ trời, Chúa Con chịu phép rửa, và Chúa Thánh Thần ngự xuống như chim bồ câu.
-3. **Mối hiệp thông tình yêu:** Thiên Chúa tự bản chất không phải là sự cô đơn cô độc, mà là một gia đình thần linh của tình yêu tự hiến vĩnh cửu.`,
+    theme: 'Mầu Nhiệm Thiên Chúa Ba Ngôi Chí Thánh',
+    applicableModes: ['BIBLE_QA', 'THEOLOGY_STUDY', 'EXAM_PREP'],
+    officialTeaching: `Mầu nhiệm Thiên Chúa Ba Ngôi là mầu nhiệm trung tâm của đức tin và đời sống Kitô giáo (GLHTCG 234). Một Thiên Chúa duy nhất trong Ba Ngôi Vị: Chúa Cha, Chúa Con và Chúa Thánh Thần. Ba Ngôi Vị đồng bản thể (homoousios), có cùng một thần tính duy nhất và phân biệt nhau theo tương quan nguồn gốc.`,
+    theologicalOpinion: `Thánh Augustinô (De Trinitate) dùng hình ảnh tâm trí con người (Ký ức, Tri hiểu, Yêu mến) để giải thích sự hiệp nhất; Thánh Tôma Aquinô diễn giải mầu nhiệm qua hai hành vi nội tại của Thiên Chúa: Tự tri hiểu (sinh ra Ngôi Lời) và Tự yêu mến (nhiệm xuất Chúa Thánh Thần).`,
+    aiReflection: `Thiên Chúa chúng ta tôn thờ là Gia Đình Tình Yêu. Đời sống Kitô hữu là lời mời gọi bước vào mối hiệp thông thần linh ấy mỗi khi làm Dấu Thánh Giá.`,
     citations: {
-      scripture: ['Mt 28,19', '2 Cr 13,13', 'Ga 1,1.14', 'Ga 14,16-17', 'Mt 3,16-17'],
-      ccc: [232, 234, 253, 254, 255],
-      churchDocs: ['Kinh Tin Kính Nicêa-Constantinôpôli (381)', 'Công đồng Latêranô IV (1215)']
+      scripture: ['Mt 28,19', '2 Cr 13,13', 'Mt 3,16-17', 'Ga 14,26'],
+      ccc: [234, 253, 254, 255],
+      churchDocs: ['Kinh Tin Kính Nicea-Constantinopoli', 'Dei Verbum (số 2)']
     }
   },
   {
-    keywords: ['giải tội', 'hòa giải', 'xưng tội', 'tha tội', 'bí tích hòa giải'],
-    theme: 'Bí Tích Hoà Giải & Lòng Thương Xót Chúa',
-    answer: `Bí tích Hoà Giải (Giải Tội) là dòng suối chữa lành tâm hồn mà Chúa Kitô đã ủy thác cho các Tông đồ và những người kế vị.
-
-1. **Ủy quyền tha tội tối thượng (Ga 20,21-23):** Vào chiều ngày Phục Sinh, Chúa Giêsu hiện đến, thổi hơi và ban Thần Khí: *"Các con hãy nhận lấy Thánh Thần. Các con tha tội cho ai, thì tội người ấy được tha; các con cầm giữ ai, thì tội người ấy bị cầm giữ."*
-2. **Bốn yếu tố cấu thành việc sám hối đích thực:**
-   - **Xét mình:** Soi chiếu lương tâm trước Lời Chúa và Mười Điều Răn.
-   - **Ăn năn tội:** Đau buồn vì đã làm mất lòng Thiên Chúa chí thiện.
-   - **Xưng tội:** Khiêm nhường xưng thú các tội trọng và tội nhẹ với linh mục đại diện Chúa Kitô và Hội Thánh.
-   - **Đền tội (Việc đền tạ):** Thực thi việc hy sinh, cầu nguyện hoặc sửa chữa điều bất công để hàn gắn vết thương do tội gây ra.
-3. **Lời tha tội của Hội Thánh:** Linh mục không tha tội bằng quyền năng riêng, mà bằng quyền bính của Chúa Giêsu Kitô và Hội Thánh: *"Thiên Chúa là Cha hay thương xót... ban Thánh Thần để tha tội. Xin Người ban ơn tha thứ và bình an cho con..."*`,
+    keywords: ['xưng tội', 'hòa giải', 'sám hối', 'tha tội', 'linh mục', 'bí tích hòa giải'],
+    theme: 'Bí Tích Hoà Giải & Lòng Thương Xót Tha Tội',
+    applicableModes: ['BIBLE_QA', 'CATECHISM_LOOKUP', 'MEDITATION', 'EXAM_PREP'],
+    officialTeaching: `Chúa Phục Sinh ban quyền tha tội cho các Tông đồ: "Anh em tha tội cho ai thì người ấy được tha; anh em cầm giữ ai thì người ấy bị cầm giữ" (Ga 20,22-23). Bí tích Hòa Giải tha thứ mọi tội lỗi phạm sau phép Rửa khi tín hữu thật lòng ăn ăn sám hối, xưng thú tội lỗi với linh mục có năng quyền và thực thi việc đền tội (GLHTCG 1440-1449).`,
+    theologicalOpinion: `Bí tích không chỉ là phiên tòa tư pháp tha hình phạt, mà trước hết là việc chữa lành tâm linh của vị Lương Y Thần Linh và phục hồi tình cha con như trong Dụ ngôn Người Cha Nhân Hậu (Lc 15).`,
+    aiReflection: `Đừng bao giờ sợ hãi khi đến tòa cáo giải, bởi vì lòng thương xót của Thiên Chúa luôn lớn hơn mọi lỗi lầm của nhân loại.`,
     citations: {
-      scripture: ['Ga 20,21-23', 'Mt 18,18', '2 Cr 5,18-20', 'Lc 15,11-32'],
-      ccc: [1440, 1446, 1451, 1456, 1484],
-      churchDocs: ['Reconciliatio et Paenitentia (Thánh Gioan Phaolô II, 1984)']
+      scripture: ['Ga 20,21-23', 'Mt 18,18', 'Gc 5,16', 'Lc 15,11-32'],
+      ccc: [1440, 1441, 1446, 1456, 1484],
+      churchDocs: ['Reconciliatio et Paenitentia (Thánh Gioan Phaolô II)', 'Misericordiae Vultus (Đức Phanxicô)']
+    }
+  },
+  {
+    keywords: ['học thuyết xã hội', 'công bằng', 'lao động', 'người nghèo', 'phẩm giá', 'rerum novarum'],
+    theme: 'Học Thuyết Xã Hội Công Giáo & Phẩm Giá Con Người',
+    applicableModes: ['THEOLOGY_STUDY', 'CHURCH_DOCUMENTS', 'EXAM_PREP'],
+    officialTeaching: `Con người được tạo dựng theo hình ảnh Thiên Chúa (St 1,26), có phẩm giá bất khả xâm phạm từ lúc thụ thai cho đến khi chết tự nhiên. Bốn nguyên tắc nền tảng của Học thuyết Xã hội Công giáo gồm: 1. Phẩm giá con người; 2. Lợi ích chung; 3. Nguyên tắc bổ trợ; 4. Nguyên tắc liên đới (Compendium of the Social Doctrine of the Church; GLHTCG 1928-1942).`,
+    theologicalOpinion: `Bắt đầu từ Thông điệp Rerum Novarum (1891) của Đức Lêô XIII, Hội Thánh đã bênh vực quyền lợi người lao động trước chủ nghĩa tư bản hoang dã và cảnh báo nguy cơ chủ nghĩa duy vật, luôn đặt con người làm trung tâm của mọi hoạt động kinh tế.`,
+    aiReflection: `Đức tin chân chính không tách rời khỏi bổn phận xã hội, mời gọi chúng ta phục vụ Đức Kitô đang hiện diện nơi những người nghèo khổ nhất.`,
+    citations: {
+      scripture: ['St 1,26-27', 'Mt 25,31-46', 'Am 5,24', 'Gc 2,14-17'],
+      ccc: [1928, 1929, 1939, 2419, 2425],
+      churchDocs: ['Rerum Novarum (1891)', 'Gaudium et Spes (số 26, 63-72)', 'Caritas in Veritate (2009)']
     }
   }
 ];
@@ -127,114 +144,114 @@ const CATHOLIC_KNOWLEDGE_BASE: {
 export async function POST(req: NextRequest) {
   try {
     const body: AssistantRequest = await req.json();
-    const query = (body.message || '').trim().toLowerCase();
+    const { message, mode = 'BIBLE_QA' } = body;
 
-    if (!query) {
-      return NextResponse.json(
-        { error: 'Vui lòng nhập câu hỏi cần học hỏi.' },
-        { status: 400 }
-      );
+    if (!message || typeof message !== 'string') {
+      return NextResponse.json({ error: 'Nội dung tin nhắn không hợp lệ' }, { status: 400 });
     }
 
-    // 1. Kiểm tra đối sánh với kho tri thức thần học nền tảng Công giáo
-    for (const kb of CATHOLIC_KNOWLEDGE_BASE) {
-      const isMatch = kb.keywords.some(k => query.includes(k));
-      if (isMatch) {
-        return NextResponse.json({
-          answer: kb.answer,
-          citations: kb.citations,
-          theologicalTheme: kb.theme
-        });
-      }
-    }
+    const q = message.toLowerCase().trim();
 
-    // 2. Nếu có GEMINI_API_KEY trong môi trường, gọi mô hình AI với Catholic theological system prompt
-    const apiKey = process.env.GEMINI_API_KEY;
-    if (apiKey) {
-      try {
-        const systemInstruction = `Bạn là Trợ Lý Thần Học & Kinh Thánh Công Giáo cho nền tảng "Lời Chúa Mỗi Ngày".
-Nhiệm vụ: Giải thích Kinh Thánh, thần học, giáo lý và phụng vụ hoàn toàn trung thành với Huấn quyền Hội Thánh Công giáo (Magisterium).
-Ngôn ngữ: Tiếng Việt trang trọng, chuẩn mực, giàu tính mục vụ.
-Quy tắc bất khả xâm phạm:
-1. Luôn trích dẫn chính xác sách Kinh Thánh, chương, câu (vd: Ga 3,16; Mt 16,18). Tuyệt đối không bịa đặt trích dẫn.
-2. Trích dẫn số Sách Giáo Lý Hội Thánh Công Giáo (GLHTCG) từ 1 đến 2865 khi liên quan.
-3. Nêu rõ các văn kiện Công đồng Vatican II (Dei Verbum, Lumen Gentium, Sacrosanctum Concilium, Gaudium et Spes) hoặc Thông điệp Giáo hoàng khi thích hợp.
-4. Phân định rõ ràng: (a) Lời Chúa nguyên văn; (b) Nhận định học giả; (c) Giáo huấn chính thức; (d) Gợi ý suy niệm mục vụ.
-5. Nếu câu hỏi chưa có định tín rõ ràng hoặc thuộc về ý kiến thần học đa dạng, phải nêu rõ để người đọc tham khảo thêm linh hướng.`;
-
-        const userPrompt = `Câu hỏi của tín hữu: "${body.message}"
-${body.context ? `Bối cảnh liên quan: Sách ${body.context.bookName || body.context.bookId}, Chương ${body.context.chapter || ''}, Câu ${body.context.verse || ''}` : ''}
-Hãy phân tích và trả lời theo cấu trúc thần học Công giáo chuẩn xác.`;
-
-        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            contents: [
-              {
-                role: 'user',
-                parts: [{ text: `${systemInstruction}\n\n${userPrompt}` }]
-              }
-            ],
-            generationConfig: {
-              temperature: 0.2,
-              maxOutputTokens: 1200
-            }
-          })
-        });
-
-        if (res.ok) {
-          const data = await res.json();
-          const generatedText = data.candidates?.[0]?.content?.parts?.[0]?.text;
-          if (generatedText) {
-            return NextResponse.json({
-              answer: generatedText,
-              citations: {
-                scripture: ['Kinh Thánh Công Giáo (Bản dịch chuẩn Phụng Vụ / Các Giờ Kinh Phụng Vụ)'],
-                ccc: [1, 101, 131],
-                churchDocs: ['Hiến chế Dei Verbum']
-              },
-              theologicalTheme: 'Nghiên cứu & Học hỏi Kinh Thánh Công giáo'
-            });
-          }
+    // 1. Kiểm tra tra cứu số GLHTCG trực tiếp (ví dụ: "GLHTCG 1324" hoặc "số 490")
+    const cccNumMatch = q.match(/(?:glhtcg|giáo lý|số)\s*#?\s*(\d{1,4})/i);
+    if (cccNumMatch || mode === 'CATECHISM_LOOKUP') {
+      const num = cccNumMatch ? parseInt(cccNumMatch[1], 10) : null;
+      if (num && num >= 1 && num <= 2865) {
+        const article = getCatechismByNumber(num);
+        if (article) {
+          const resp: AssistantResponse = {
+            theologicalTheme: `Giáo Lý Hội Thánh Công Giáo • Điều #${article.paragraphNumber}`,
+            mode: 'CATECHISM_LOOKUP',
+            officialTeaching: article.content,
+            theologicalOpinion: `Điều ${article.paragraphNumber} thuộc ${article.pillarName}, chủ đề "${article.theme || article.title}". Đoạn văn trình bày chân lý đức tin được Hội Thánh gìn giữ và giảng dạy dựa trên Thánh Kinh và Thánh Truyền.`,
+            aiReflection: `Hãy suy ngẫm số Giáo lý này để đào sâu hiểu biết về đức tin và sống gắn kết hơn với Chúa Kitô.`,
+            citations: {
+              ccc: [article.paragraphNumber],
+              scripture: article.scripturalFoundations || [],
+              churchDocs: article.relatedParagraphs?.map((r: number) => `GLHTCG #${r}`) || []
+            },
+            disclaimer: 'Trợ lý AI là công cụ hỗ trợ học hỏi, không phải là Huấn quyền Hội Thánh và không thay thế sự hướng dẫn mục vụ.',
+            answer: `### Giáo Lý Hội Thánh Công Giáo • Điều #${article.paragraphNumber}\n\n**1. [Giáo huấn chính thức của Hội Thánh]:**\n${article.content}\n\n**2. [Chú giải & Bối cảnh Thần học]:**\nThuộc phần: **${article.pillarName}** &bull; **${article.theme || article.title}**\n\n**3. [Trích dẫn nguồn]:**\n- GLHTCG: Số ${article.paragraphNumber}\n- Kinh Thánh liên hệ: ${article.scripturalFoundations?.join(', ') || 'Không có'}`
+          };
+          return NextResponse.json(resp);
         }
-      } catch (geminiErr) {
-        console.warn('Lỗi gọi Gemini API, chuyển sang chế độ phân tích thần học mặc định:', geminiErr);
       }
     }
 
-    // 3. Phản hồi thần học tổng quát có cấu trúc chuẩn mực khi không khớp từ khoá và chưa cấu hình API bên ngoài
-    const fallbackAnswer = `Cảm ơn bạn đã đặt câu hỏi học hỏi về: **"${body.message}"**.
+    // 2. Tìm kiếm trong cơ sở kiến thức phù hợp theo từ khóa và chế độ
+    const matched = CATHOLIC_KNOWLEDGE_BASE.find((item) =>
+      item.keywords.some((k) => q.includes(k.toLowerCase()))
+    );
 
-1. **Nguyên tắc nền tảng trong Truyền thống Công giáo:**
-   Theo Hiến chế Tín lý *Dei Verbum* số 12 của Công đồng Vaticanô II, để hiểu đúng ý định của các tác giả thánh và điều Thiên Chúa muốn truyền dạy qua Kinh Thánh, chúng ta cần:
-   - Đọc và chú giải Kinh Thánh trong cùng một Thần Khí đã linh hứng để viết ra Kinh Thánh.
-   - Chú ý đến nội dung và sự hiệp nhất của toàn bộ Kinh Thánh (Cựu Ước chuẩn bị cho Tân Ước, Tân Ước hoàn tất Cựu Ước).
-   - Đặt bản văn trong Truyền thống sống động của toàn thể Hội Thánh và sự tương hợp của đức tin (*analogia fidei*).
+    if (matched) {
+      let formattedAnswer = `### ${matched.theme}\n\n`;
+      formattedAnswer += `**1. [Giáo huấn chính thức của Hội Thánh]:**\n${matched.officialTeaching}\n\n`;
+      formattedAnswer += `**2. [Nhận định Thần học & Chú giải học thuật]:**\n${matched.theologicalOpinion}\n\n`;
+      formattedAnswer += `**3. [Gợi ý Suy niệm & Ứng dụng đời sống]:**\n${matched.aiReflection}\n\n`;
+      formattedAnswer += `**4. [Nguồn trích dẫn cụ thể]:**\n`;
+      if (matched.citations.scripture?.length) {
+        formattedAnswer += `- **Kinh Thánh:** ${matched.citations.scripture.join(', ')}\n`;
+      }
+      if (matched.citations.ccc?.length) {
+        formattedAnswer += `- **Sách Giáo Lý (GLHTCG):** Số ${matched.citations.ccc.join(', ')}\n`;
+      }
+      if (matched.citations.churchDocs?.length) {
+        formattedAnswer += `- **Văn kiện Huấn Quyền:** ${matched.citations.churchDocs.join('; ')}\n`;
+      }
 
-2. **Ánh sáng từ Lời Chúa & Giáo Lý:**
-   - Mọi thắc mắc và thao thức của người Kitô hữu đều tìm thấy câu trả lời trọn vẹn nơi Đức Giêsu Kitô - Ngôi Lời Nhập Thể, Đấng là *"Con Đường, Sự Thật và Sự Sống"* (Ga 14,6).
-   - Sách Giáo Lý Hội Thánh Công Giáo (GLHTCG số 101-141) nhắc nhở chúng ta rằng Thiên Chúa không ngừng hạ mình đối thoại với con người bằng ngôn ngữ loài người, như một người Cha yêu thương nói với con cái mình.
+      const resp: AssistantResponse = {
+        answer: formattedAnswer,
+        mode,
+        theologicalTheme: matched.theme,
+        officialTeaching: matched.officialTeaching,
+        theologicalOpinion: matched.theologicalOpinion,
+        aiReflection: matched.aiReflection,
+        citations: matched.citations,
+        disclaimer: 'Trợ lý AI là công cụ hỗ trợ học hỏi Kinh Thánh & Thần học, không phải là Huấn quyền Hội Thánh và không thay thế sự hướng dẫn mục vụ của các Chủ Chăn.'
+      };
 
-3. **Gợi ý thực hành & cầu nguyện:**
-   - Hãy mang thao thức này vào giờ cầu nguyện Lectio Divina (Đọc - Suy niệm - Cầu nguyện - Chiêm niệm).
-   - Tra cứu thêm các mục liên quan trong chuyên mục **Nghiên Cứu & Đối Chiếu** và **Thư Viện Văn Kiện** trên ứng dụng Lời Chúa Mỗi Ngày.`;
+      return NextResponse.json(resp);
+    }
+
+    // 3. Phản hồi chung có kiểm soát và phân định nguồn minh bạch
+    let generalTheme = 'Học Hỏi Giáo Huấn & Kinh Thánh Công Giáo';
+    let generalAnswer = `Về thắc mắc: **"${message.trim()}"**\n\n`;
+
+    if (mode === 'EXAM_PREP') {
+      generalAnswer += `**[Hỗ trợ Ôn Tập Giáo Lý & Kinh Thánh]:**\n`;
+      generalAnswer += `1. **Khái niệm trọng tâm:** Hãy đối chiếu câu hỏi của bạn với 4 Trụ Cột của GLHTCG (Tuyên Xưng Đức Tin, Cử Hành Bí Tích, Đời Sống Luân Lý, Kinh Nguyện).\n`;
+      generalAnswer += `2. **Gợi ý tra cứu:** Sử dụng thanh tìm kiếm toàn trang để tra các số Giáo lý liên quan hoặc câu Kinh Thánh chủ chốt.\n`;
+      generalAnswer += `3. **Lưu ý khảo thí:** Trong các kỳ thi giáo lý, luôn trích dẫn kèm sách/chương/câu Kinh Thánh hoặc số Giáo lý cụ thể để đạt điểm trọn vẹn.\n\n`;
+    } else if (mode === 'MEDITATION') {
+      generalAnswer += `**[Gợi ý Suy Niệm Lời Chúa (Lectio Divina)]:**\n`;
+      generalAnswer += `1. **Lectio (Đọc):** Lắng nghe Lời Chúa với tâm hồn thanh tịnh và cởi mở.\n`;
+      generalAnswer += `2. **Meditatio (Suy niệm):** Chúa muốn nói gì với tôi qua thắc mắc này?\n`;
+      generalAnswer += `3. **Oratio (Cầu nguyện):** Thưa chuyện cùng Chúa tâm tình chân thành nhất.\n`;
+      generalAnswer += `4. **Actio (Hành động):** Đưa Lời Chúa vào thực tế đời sống bác ái hôm nay.\n\n`;
+    } else {
+      generalAnswer += `**1. [Giáo huấn Hội Thánh liên quan]:**\n`;
+      generalAnswer += `Mọi vấn đề đức tin và luân lý trong Hội Thánh Công giáo đều được soi chiếu qua hai nguồn mạch duy nhất là Thánh Kinh và Thánh Truyền, dưới sự giải thích có thẩm quyền của Huấn Quyền (Dei Verbum 10).\n\n`;
+      generalAnswer += `**2. [Gợi ý tra cứu chính xác]:**\n`;
+      generalAnswer += `- Để tìm hiểu chi tiết, bạn có thể tra cứu trực tiếp trong mục **Giáo Lý (GLHTCG)** với 2.865 điều khoản hoặc chuyên mục **Nghiên Cứu Thần Học**.\n`;
+      generalAnswer += `- Bạn có thể gõ rõ hơn từ khóa (ví dụ: *"73 sách Kinh Thánh"*, *"Bí tích Thánh Thể"*, *"Thánh Phêrô"*, *"Đức Mẹ Maria"*, *"Số Giáo lý 1324"*).\n\n`;
+    }
+
+    generalAnswer += `*Lưu ý: Nếu nội dung này chưa xác minh được trích dẫn Huấn quyền cụ thể, vui lòng tham khảo trực tiếp ý kiến của Linh mục quản xứ hoặc người đồng hành thiêng liêng.*`;
 
     return NextResponse.json({
-      answer: fallbackAnswer,
+      answer: generalAnswer,
+      mode,
+      theologicalTheme: generalTheme,
       citations: {
-        scripture: ['Ga 14,6', '2 Tm 3,16-17', 'Dt 4,12'],
-        ccc: [101, 112, 113, 114],
-        churchDocs: ['Dei Verbum (Hiến chế về Mạc khải của Thiên Chúa, số 12)']
+        scripture: ['Dt 4,12', '2 Tm 3,16'],
+        ccc: [84, 85, 100],
+        churchDocs: ['Dei Verbum (số 9, 10)']
       },
-      theologicalTheme: 'Thần Học Kinh Thánh & Đức Tin Công Giáo'
+      disclaimer: 'Trợ lý AI là công cụ hỗ trợ học hỏi Kinh Thánh & Thần học, không phải là Huấn quyền Hội Thánh và không thay thế sự hướng dẫn mục vụ của các Chủ Chăn.'
     });
 
   } catch (error: any) {
-    console.error('Lỗi API Assistant:', error);
-    return NextResponse.json(
-      { error: 'Đã xảy ra lỗi trong quá trình xử lý câu hỏi thần học.' },
-      { status: 500 }
-    );
+    console.error('[Assistant API Error]:', error);
+    return NextResponse.json({ error: 'Đã xảy ra sự cố xử lý câu hỏi.' }, { status: 500 });
   }
 }

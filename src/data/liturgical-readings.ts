@@ -4,11 +4,78 @@ import { normalizeObject } from '@/lib/utils/vietnamese';
 // ============================================================================
 // HỆ THỐNG BÀI ĐỌC PHỤNG VỤ THÁNH CÔNG GIÁO CHUẨN MỰC
 // Bản dịch phụng vụ chính thức - Nguồn Ủy Ban Phụng Tự / HĐGMVN
+// Đối chiếu: Sách Bài Đọc Thánh Lễ & Sách Lễ Rôma (Missale Romanum)
 // ============================================================================
 
 export const LITURGICAL_READINGS_ARCHIVE: DailyLiturgicalReading[] = [
+  // --------------------------------------------------------------------------
+  // HÔM NAY: 2026-11-05 (Thứ Năm Tuần XXXI Mùa Thường Niên)
+  // --------------------------------------------------------------------------
   {
-    id: 'reading-today',
+    id: 'reading-2026-11-05',
+    date: '2026-11-05',
+    title: 'Thứ Năm Tuần XXXI Mùa Thường Niên',
+    season: 'ORDINARY_TIME',
+    seasonName: 'Mùa Thường Niên',
+    color: 'GREEN',
+    colorName: 'Màu Xanh',
+    rank: 'WEEKDAY',
+    rankName: 'Ngày Trong Tuần',
+    cycle: 'Năm A - Năm II',
+    liturgicalWeek: 'Tuần XXXI Thường Niên',
+    saintOfTheDay: 'Thánh Phêrô Nguyễn Văn Lựu, Linh mục tử đạo (Kính nhớ theo Lịch Giáo Hội Việt Nam).',
+    firstReading: {
+      reference: 'Pl 3,3-8a',
+      passage: 'Thư của Thánh Phaolô Tông đồ gửi tín hữu Philípphê',
+      theme: 'Tôi coi mọi sự là thiệt thòi so với mối lợi tuyệt vời là được biết Đức Kitô Giêsu.',
+      text: `Thưa anh em, chính chúng ta mới là những người thực sự chịu phép cắt bì, những người phụng thờ Thiên Chúa nhờ Thần Khí của Người, những người tự hào trong Đức Kitô Giêsu chứ không cậy dựa vào xác phàm. Dầu rằng về phần tôi, tôi có lý do để cậy dựa vào xác phàm. Nếu ai khác tưởng mình có thể cậy dựa vào xác thịt, thì tôi lại càng có lý do hơn: chịu phép cắt bì ngày thứ tám, thuộc dòng giống Israel, chi tộc Bêngiamin, là người Hípri con của người Hípri; về Lề Luật, tôi là người Pharisêu; về lòng nhiệt thành, tôi đã bắt bớ Hội Thánh; còn về sự công chính theo Lề Luật, tôi là người bất khả khiển trách.
+
+Nhưng những gì xưa kia là mối lợi cho tôi, thì vì Đức Kitô, tôi đã coi là thiệt thòi. Hơn nữa, tôi coi tất cả mọi sự là thiệt thòi, so với mối lợi tuyệt vời là được biết Đức Kitô Giêsu, Chúa của tôi!`
+    },
+    responsorialPsalm: {
+      reference: 'Tv 104 (105),2-3.4-5.6-7 (Đ. c.3b)',
+      refrain: 'Hãy vui lên, hỡi những tâm hồn tìm kiếm Chúa!',
+      verses: [
+        'Hãy hát xướng chúc tụng Người, đàn ca tôn vinh Chúa! Hãy loan báo mọi kỳ công của Người! Hãy tự hào vì Thánh Danh Người!',
+        'Hãy tìm kiếm Chúa và sức mạnh của Người, luôn luôn tìm kiếm tôn nhan Người! Hãy nhớ lại những kỳ công Người đã thực hiện, những dấu lạ và phán quyết của miệng Người!',
+        'Hỡi dòng dõi Abraham, tôi tớ Người, hỡi con cái Giacóp, những kẻ Người tuyển chọn! Chính Người là Đức Chúa, Thiên Chúa chúng ta; các phán quyết của Người bao trùm toàn cõi đất.'
+      ]
+    },
+    gospelAcclamation: {
+      verse: 'Mt 11,28',
+      text: 'Al-lê-lui-a. Al-lê-lui-a. Tất cả những ai đang vất vả mang gánh nặng nề, hãy đến cùng Tôi, Tôi sẽ cho nghỉ ngơi bồi dưỡng. Al-lê-lui-a.'
+    },
+    gospel: {
+      reference: 'Lc 15,1-10',
+      passage: 'Tin Mừng Đức Giêsu Kitô theo Thánh Lu-ca',
+      theme: 'Trên trời sẽ vui mừng vì một người tội lỗi ăn năn sám hối hơn là vì chín mươi chín người công chính.',
+      text: `Khi ấy, các người thu thuế và các tội nhân đều lui tới với Đức Giêsu để nghe Người giảng. Thấy vậy, những người Pharisêu và các kinh sư liền xầm xì phàn nàn: "Ông này đón tiếp quân tội lỗi và ăn uống với chúng!".
+
+Đức Giêsu bèn kể cho họ dụ ngôn này: "Người nào trong các ông có một trăm con chiên mà bị mất một con, lại không để chín mươi chín con kia ngoài đồng vắng mà đi tìm con chiên lạc cho kỳ được? Khi tìm được rồi, người ấy mừng rỡ vác lên vai. Về đến nhà, ông mời bạn bè và hàng xóm lại và bảo: 'Xin chia vui với tôi, vì tôi đã tìm thấy con chiên bị lạc của tôi!'.
+
+Tôi bảo cho các ông hay: Cũng thế, trên trời sẽ vui mừng vì một người tội lỗi ăn năn sám hối, hơn là vì chín mươi chín người công chính không cần phải sám hối.
+
+Hoặc người phụ nữ nào có mười đồng quan mà đánh mất một đồng, lại không thắp đèn, quét nhà và tìm kiếm cẩn thận cho kỳ được? Khi tìm được rồi, bà mời bạn bè và hàng xóm lại và bảo: 'Xin chia vui với tôi, vì tôi đã tìm thấy đồng quan tôi đã đánh mất!'.
+
+Cũng vậy, Tôi nói cho các ông biết: Giữa các thiên sứ của Thiên Chúa sẽ có niềm vui vì một người tội lỗi ăn năn sám hối."`
+    },
+    openingPrayer: 'Lạy Thiên Chúa toàn năng nhân hậu, xin xua đuổi mọi nguy hại khỏi chúng con, để hồn an xác mạnh, chúng con được tự do thanh thản thực thi thánh ý Chúa. Chúng con cầu xin nhờ Đức Giêsu Kitô, Con Chúa, là Thiên Chúa và là Chúa chúng con, Đấng hằng sống và hiển trị cùng Chúa, hiệp nhất với Chúa Thánh Thần đến muôn thuở muôn đời.',
+    communionPrayer: 'Lạy Chúa, chúng con vừa dự tiệc Thánh Thể để tạ ơn Chúa; xin Chúa ban sức mạnh giúp chúng con luôn trung kiên phụng sự Chúa và dấn thân yêu thương tha nhân. Chúng con cầu xin nhờ Đức Kitô, Chúa chúng con.',
+    prayerOfFaithful: [
+      'Cầu cho Hội Thánh: Xin Chúa soi sáng và ban ơn hiệp nhất cho cộng đoàn Dân Chúa khắp nơi trên thế giới.',
+      'Cầu cho các mục tử: Xin cho các linh mục luôn có trái tim nhân hậu của Người Mục Tử Nhân Lành đi tìm kiếm chiên lạc.',
+      'Cầu cho những người đang lầm đường lạc lối: Xin cho họ nhận biết tình thương tha thứ của Chúa để can đảm trở về.',
+      'Cầu cho cộng đoàn chúng con: Xin cho mỗi người chúng con biết mở rộng vòng tay đón nhận và nâng đỡ anh chị em yếu đuối.'
+    ],
+    closingPrayer: 'Lạy Chúa, chúng con tạ ơn Chúa vì Bàn Tiệc Lời Chúa và Mình Thánh Chúa mà chúng con vừa cử hành; xin ban Thánh Thần nâng đỡ chúng con luôn trung tín bước theo Chúa.',
+    sourceNote: 'Trích Sách Bài Đọc Thánh Lễ & Sách Lễ Rôma - Ủy Ban Phụng Tự / HĐGMVN.'
+  },
+
+  // --------------------------------------------------------------------------
+  // HÔM QUA: 2026-11-04 (Thánh Carôlô Bôrômêô, Giám mục)
+  // --------------------------------------------------------------------------
+  {
+    id: 'reading-2026-11-04',
     date: '2026-11-04',
     title: 'Thứ Tư Tuần XXXI Mùa Thường Niên - Thánh Carôlô Bôrômêô, Giám mục (Lễ Nhớ)',
     season: 'ORDINARY_TIME',
@@ -17,7 +84,7 @@ export const LITURGICAL_READINGS_ARCHIVE: DailyLiturgicalReading[] = [
     colorName: 'Màu Trắng',
     rank: 'MEMORIAL',
     rankName: 'Lễ Nhớ Bắt Buộc',
-    cycle: 'Năm B - Năm II',
+    cycle: 'Năm A - Năm II',
     liturgicalWeek: 'Tuần XXXI Thường Niên',
     saintOfTheDay: 'Thánh Carôlô Bôrômêô, Giám mục (1538 - 1584), nhà cải cách vĩ đại thời Công đồng Trentô.',
     firstReading: {
@@ -57,17 +124,16 @@ Hoặc có vua nào đi giao chiến với một vua khác mà trước tiên l�
 
 Cũng thế, ai trong anh em không từ bỏ tất cả của cải mình có, thì không thể làm môn đệ Tôi được."`
     },
-    openingPrayer: 'Lạy Chúa, xin giữ gìn lòng dân Chúa nơi tinh thần sốt mến mà Thánh Giám mục Carôlô Bôrômêô đã nêu gương, để Hội Thánh không ngừng đổi mới theo khuôn mẫu Đức Kitô và chiếu tỏa ánh sáng ơn cứu độ cho toàn thế giới.',
-    prayerOfFaithful: [
-      'Cầu cho Hội Thánh: Xin cho các mục tử trong Hội Thánh luôn noi gương Thánh Carôlô, dâng hiến trọn cuộc đời vì phần rỗi tha nhân.',
-      'Cầu cho các nhà lãnh đạo: Xin cho các nhà lãnh đạo quốc gia biết dùng quyền bính phục vụ công lý và bảo vệ những người nghèo khổ.',
-      'Cầu cho các tín hữu: Xin cho mỗi người chúng con biết can đảm vác thập giá mỗi ngày và từ bỏ những bám víu trần gian để bước theo Chúa Giêsu.'
-    ],
-    closingPrayer: 'Lạy Chúa, chúng con vừa lãnh nhận Mình và Máu Thánh Đức Kitô; xin ân sủng thánh này củng cố lòng chúng con kiên vững trong đức mến và can trường làm chứng cho sự thật.',
-    sourceNote: 'Trích Sách Bài Đọc Phụng Vụ Thánh Lễ - Ủy Ban Phụng Tự trực thuộc Hội Đồng Giám Mục Việt Nam.'
+    openingPrayer: 'Lạy Chúa, xin giữ gìn lòng dân Chúa nơi tinh thần sốt mến mà Thánh Giám mục Carôlô Bôrômêô đã nêu gương, để Hội Thánh không ngừng đổi mới theo khuôn mẫu Đức Kitô và chiếu tỏa ánh sáng ơn cứu độ cho toàn thế giới. Chúng con cầu xin nhờ Đức Kitô, Chúa chúng con.',
+    communionPrayer: 'Lạy Chúa, chúng con vừa lãnh nhận Mình và Máu Thánh Đức Kitô; xin ân sủng thánh này củng cố lòng chúng con kiên vững trong đức mến và can trường làm chứng cho sự thật.',
+    sourceNote: 'Trích Sách Bài Đọc Thánh Lễ & Sách Lễ Rôma - Ủy Ban Phụng Tự / HĐGMVN.'
   },
+
+  // --------------------------------------------------------------------------
+  // HÔM KIA: 2026-11-03 (Thánh Máctinô Porres, Tu sĩ)
+  // --------------------------------------------------------------------------
   {
-    id: 'reading-yesterday',
+    id: 'reading-2026-11-03',
     date: '2026-11-03',
     title: 'Thứ Ba Tuần XXXI Mùa Thường Niên - Thánh Máctinô Porres (Lễ Nhớ)',
     season: 'ORDINARY_TIME',
@@ -76,7 +142,7 @@ Cũng thế, ai trong anh em không từ bỏ tất cả của cải mình có, 
     colorName: 'Màu Trắng',
     rank: 'OPTIONAL_MEMORIAL',
     rankName: 'Lễ Nhớ Tùy Chọn',
-    cycle: 'Năm B - Năm II',
+    cycle: 'Năm A - Năm II',
     liturgicalWeek: 'Tuần XXXI Thường Niên',
     saintOfTheDay: 'Thánh Máctinô Porres, Tu sĩ Dòng Đa Minh (1579 - 1639), gương sáng về lòng bác ái khiêm nhường đối với người nghèo và người bệnh tật.',
     firstReading: {
@@ -113,62 +179,79 @@ Người đầy tớ trở về kể lại cho chủ những điều ấy. Chủ
 
 Người đầy tớ thưa: 'Thưa ông, lệnh ông đã được thi hành mà vẫn còn chỗ'. Chủ bảo: 'Hãy ra các đường lộ và bụi bờ rào, ép người ta vào cho đầy nhà của ta. Vì ta bảo cho các ngươi biết: Không ai trong những kẻ đã được mời trước kia sẽ được nếm dự tiệc của ta!'."`
     },
-    sourceNote: 'Trích Sách Bài Đọc Phụng Vụ Thánh Lễ - HĐGMVN.'
+    openingPrayer: 'Lạy Chúa là Đấng đã đưa Thánh Máctinô lên đỉnh trọn lành qua con đường khiêm hạ, xin cho chúng con noi gương sáng của thánh nhân để mai sau được cùng người hưởng vinh phúc trên trời. Chúng con cầu xin nhờ Đức Kitô, Chúa chúng con.',
+    communionPrayer: 'Lạy Chúa, chúng con tạ ơn Chúa vì Bí tích Thánh Thể này; xin cho chúng con luôn nhiệt thành phụng sự tha nhân như Thánh Máctinô xưa.',
+    sourceNote: 'Trích Sách Bài Đọc Thánh Lễ & Sách Lễ Rôma - HĐGMVN.'
   },
+
+  // --------------------------------------------------------------------------
+  // ĐẠI LỄ RIÊNG VIỆT NAM: 2026-11-24 (CÁC THÁNH TỬ ĐẠO VIỆT NAM - LỄ TRỌNG)
+  // --------------------------------------------------------------------------
   {
-    id: 'reading-tomorrow',
-    date: '2026-11-05',
-    title: 'Thứ Năm Tuần XXXI Mùa Thường Niên',
+    id: 'reading-2026-11-24',
+    date: '2026-11-24',
+    title: 'Đại Lễ Các Thánh Tử Đạo Việt Nam (Anrê Dũng Lạc và các bạn) - Lễ Trọng',
     season: 'ORDINARY_TIME',
     seasonName: 'Mùa Thường Niên',
-    color: 'GREEN',
-    colorName: 'Màu Xanh',
-    rank: 'WEEKDAY',
-    rankName: 'Ngày Trong Tuần',
-    cycle: 'Năm B - Năm II',
-    liturgicalWeek: 'Tuần XXXI Thường Niên',
+    color: 'RED',
+    colorName: 'Màu Đỏ',
+    rank: 'SOLEMNITY',
+    rankName: 'Đại Lễ Trọng (Lịch VN)',
+    cycle: 'Năm A - Năm II',
+    liturgicalWeek: 'Tuần XXXIV Thường Niên',
+    saintOfTheDay: 'Kính 117 Thánh Tử Đạo Việt Nam (Anrê Dũng-Lạc và các bạn) - Bổn mạng Giáo Hội Việt Nam.',
     firstReading: {
-      reference: 'Pl 3,3-8a',
-      passage: 'Thư của Thánh Phaolô Tông đồ gửi tín hữu Philípphê',
-      theme: 'Tôi coi mọi sự là thiệt thòi so với mối lợi tuyệt vời là được biết Đức Kitô Giêsu.',
-      text: `Thưa anh em, chính chúng ta mới là những người thực sự chịu phép cắt bì, những người phụng thờ Thiên Chúa nhờ Thần Khí của Người, những người tự hào trong Đức Kitô Giêsu chứ không cậy dựa vào xác phàm. Dầu rằng về phần tôi, tôi có lý do để cậy dựa vào xác phàm. Nếu ai khác tưởng mình có thể cậy dựa vào xác thịt, thì tôi lại càng có lý do hơn: chịu phép cắt bì ngày thứ tám, thuộc dòng giống Israel, chi tộc Bêngiamin, là người Hípri con của người Hípri; về Lề Luật, tôi là người Pharisêu; về lòng nhiệt thành, tôi đã bắt bớ Hội Thánh; còn về sự công chính theo Lề Luật, tôi là người bất khả khiển trách.
-
-Nhưng những gì xưa kia là mối lợi cho tôi, thì vì Đức Kitô, tôi đã coi là thiệt thòi. Hơn nữa, tôi coi tất cả mọi sự là thiệt thòi, so với mối lợi tuyệt vời là được biết Đức Kitô Giêsu, Chúa của tôi!`
+      reference: '2Mcb 7,1.20-31',
+      passage: 'Trích sách Macabê quyển thứ hai',
+      theme: 'Vua vũ trụ sẽ cho chúng tôi sống lại trong cuộc sống vĩnh cửu.',
+      text: `Trong những ngày ấy, có bảy anh em bị bắt cùng với người mẹ. Vua Antiochus bắt họ phải ăn thịt heo bị luật cấm. Nhưng người mẹ can đảm phi thường, khuyên nhủ từng đứa con dâng mạng sống vì luật pháp Chúa: "Mẹ không rõ các con đã thành hình trong lòng mẹ thế nào; không phải mẹ ban cho các con thần khí và sự sống... Nhưng chính Đấng Tạo Thành vũ trụ sẽ trả lại cho các con thần khí và sự sống trong lòng thương xót của Người, vì bây giờ các con coi thường bản thân vì lề luật của Người!".`
     },
     responsorialPsalm: {
-      reference: 'Tv 104 (105),2-3.4-5.6-7 (Đ. c.3b)',
-      refrain: 'Hãy vui lên, hỡi những tâm hồn tìm kiếm Chúa!',
+      reference: 'Tv 125,1-2ab.2cd-3.4-5.6 (Đ. c.5)',
+      refrain: 'Ai gieo trong lệ sầu, sẽ gặt trong vui sướng!',
       verses: [
-        'Hãy hát xướng chúc tụng Người, đàn ca tôn vinh Chúa! Hãy loan báo mọi kỳ công của Người! Hãy tự hào vì Thánh Danh Người!',
-        'Hãy tìm kiếm Chúa và sức mạnh của Người, luôn luôn tìm kiếm tôn nhan Người! Hãy nhớ lại những kỳ công Người đã thực hiện, những dấu lạ và phán quyết của miệng Người!',
-        'Hỡi dòng dõi Abraham, tôi tớ Người, hỡi con cái Giacóp, những kẻ Người tuyển chọn! Chính Người là Đức Chúa, Thiên Chúa chúng ta; các phán quyết của Người bao trùm toàn cõi đất.'
+        'Khi Chúa dẫn tù nhân Sion trở về, chúng tôi tưởng mình như trong giấc mơ. Bấy giờ miệng chúng tôi chan hòa nụ cười, lưỡi chúng tôi vang lời ca hát.',
+        'Bấy giờ trong các dân tộc người ta nói: Chúa đã làm cho họ những điều kỳ diệu! Phải, Chúa đã làm cho chúng tôi những điều kỳ diệu, nên chúng tôi hân hoan vui mừng.',
+        'Lạy Chúa, xin dẫn tù nhân chúng con trở về, như những dòng suối miền Nam! Ai gieo trong lệ sầu, sẽ gặt trong vui sướng.',
+        'Họ ra đi, ra đi mà gieo hạt giống trong nước mắt; họ trở về, trở về trong hân hoan mang theo những bó lúa trĩu bông.'
       ]
     },
+    secondReading: {
+      reference: 'Rm 8,31b-39',
+      passage: 'Thư của Thánh Phaolô Tông đồ gửi tín hữu Rôma',
+      theme: 'Ai có thể tách chúng ta ra khỏi tình yêu của Đức Kitô?',
+      text: `Thưa anh em, có Thiên Chúa bênh đỡ chúng ta, ai còn chống lại được chúng ta? Đấng đã không tiếc chính Con Một, nhưng đã trao nộp Người vì hết thảy chúng ta, lẽ nào Người lại chẳng rộng ban tất cả cho chúng ta cùng với Con của Người sao?
+
+Ai sẽ tố cáo những người được Thiên Chúa tuyển chọn? Chẳng lẽ Thiên Chúa, Đấng làm cho nên công chính? Ai sẽ kết án họ? Chẳng lẽ Đức Giêsu Kitô, Đấng đã chết, hơn nữa đã sống lại và đang ngự bên hữu Thiên Chúa mà chuyển cầu cho chúng ta?
+
+Ai có thể tách chúng ta ra khỏi tình yêu của Đức Kitô? Phải chăng là gian truân, khốn khổ, đói rách, hiểm nguy, bắt bớ hay gươm giáo?... Nhưng trong tất cả những điều ấy, chúng ta toàn thắng nhờ Đấng đã yêu mến chúng ta!`
+    },
     gospelAcclamation: {
-      verse: 'Mt 11,28',
-      text: 'Al-lê-lui-a. Al-lê-lui-a. Tất cả những ai đang vất vả mang gánh nặng nề, hãy đến cùng Tôi, Tôi sẽ cho nghỉ ngơi bồi dưỡng. Al-lê-lui-a.'
+      verse: 'Lc 9,23',
+      text: 'Al-lê-lui-a. Al-lê-lui-a. Ai muốn theo Tôi, phải từ bỏ chính mình, vác thập giá mình hằng ngày mà theo Tôi. Al-lê-lui-a.'
     },
     gospel: {
-      reference: 'Lc 15,1-10',
+      reference: 'Lc 9,23-26',
       passage: 'Tin Mừng Đức Giêsu Kitô theo Thánh Lu-ca',
-      theme: 'Trên trời sẽ vui mừng vì một người tội lỗi ăn năn sám hối hơn là vì chín mươi chín người công chính.',
-      text: `Khi ấy, các người thu thuế và các tội nhân đều lui tới với Đức Giêsu để nghe Người giảng. Thấy vậy, những người Pharisêu và các kinh sư liền xầm xì phàn nàn: "Ông này đón tiếp quân tội lỗi và ăn uống với chúng!".
+      theme: 'Ai liều mất mạng sống mình vì Thầy, thì sẽ cứu được mạng sống ấy.',
+      text: `Khi ấy, Đức Giêsu nói với mọi người rằng: "Ai muốn theo Tôi, phải từ bỏ chính mình, vác thập giá mình hằng ngày mà theo. Quả vậy, ai muốn cứu mạng sống mình thì sẽ mất; còn ai liều mất mạng sống mình vì Tôi, thì sẽ cứu được mạng sống ấy. Vì được cả thế giới mà phải đánh mất chính mình hay phải thiệt thân, thì nào có ích gì?
 
-Đức Giêsu bèn kể cho họ dụ ngôn này: "Người nào trong các ông có một trăm con chiên mà bị mất một con, lại không để chín mươi chín con kia ngoài đồng vắng mà đi tìm con chiên lạc cho kỳ được? Khi tìm được rồi, người ấy mừng rỡ vác lên vai. Về đến nhà, ông mời bạn bè và hàng xóm lại và bảo: 'Xin chia vui với tôi, vì tôi đã tìm thấy con chiên bị lạc của tôi!'.
-
-Tôi bảo cho các ông hay: Cũng thế, trên trời sẽ vui mừng vì một người tội lỗi ăn năn sám hối, hơn là vì chín mươi chín người công chính không cần phải sám hối.
-
-Hoặc người phụ nữ nào có mười đồng quan mà đánh mất một đồng, lại không thắp đèn, quét nhà và tìm kiếm cẩn thận cho kỳ được? Khi tìm được rồi, bà mời bạn bè và hàng xóm lại và bảo: 'Xin chia vui với tôi, vì tôi đã tìm thấy đồng quan tôi đã đánh mất!'.
-
-Cũng vậy, Tôi nói cho các ông biết: Giữa các thiên sứ của Thiên Chúa sẽ có niềm vui vì một người tội lỗi ăn năn sám hối."`
+Ai xấu hổ vì Tôi và những lời của Tôi, thì Con Người cũng sẽ xấu hổ vì kẻ ấy, khi Người ngự đến trong vinh quang của Người, của Chúa Cha và của các thánh thiên sứ."`
     },
-    sourceNote: 'Trích Sách Bài Đọc Phụng Vụ Thánh Lễ - HĐGMVN.'
+    openingPrayer: 'Lạy Thiên Chúa là Cha và là nguồn gốc mọi quyền bính làm cha trên trời dưới đất, Chúa đã ban cho các Thánh Tử Đạo Việt Nam lòng can đảm trung thành với Thánh Giá Con Chúa cho đến chết. Nhờ lời các ngài chuyển cầu, xin cho chúng con luôn biết sống xứng đáng với ơn gọi Kitô hữu và loan báo Tin Mừng cứu độ cho mọi người. Chúng con cầu xin nhờ Đức Giêsu Kitô, Con Chúa, Chúa chúng con.',
+    communionPrayer: 'Lạy Chúa, chúng con vừa được bồi dưỡng bằng Bánh Ban Sự Sống trong ngày lễ kính các Thánh Tử Đạo Việt Nam. Xin cho chúng con luôn kiên vững trong đức tin và chan chứa niềm hy vọng, để mai sau cùng các ngài hưởng vinh quang muôn đời. Chúng con cầu xin nhờ Đức Kitô, Chúa chúng con.',
+    prayerOfFaithful: [
+      'Cầu cho Hội Thánh tại Việt Nam: Xin Chúa ban cho các mục tử và giáo dân lòng can đảm trung kiên giữ vững hạt giống đức tin mà cha ông đã lấy máu đào vun tưới.',
+      'Cầu cho quê hương đất nước: Xin Chúa chúc lành cho dân tộc Việt Nam được thái bình thịnh vượng, công bằng và bác ái.',
+      'Cầu cho giới trẻ: Xin cho người trẻ luôn tự hào về gia sản đức tin của các Thánh Tử Đạo, biết dấn thân sống thánh thiện và phục vụ giữa lòng xã hội hôm nay.'
+    ],
+    closingPrayer: 'Lạy Chúa, chúng con tạ ơn Chúa vì gương sáng đức tin của các Thánh Tử Đạo Việt Nam. Xin cho lời cầu bầu của các ngài luôn nâng đỡ gia đình và quê hương chúng con.',
+    sourceNote: 'Trích Sách Bài Đọc Thánh Lễ & Sách Lễ Rôma - Lễ Riêng Giáo Hội Việt Nam (HĐGMVN).'
   }
 ];
 
+import { getLiturgicalReadingForDate } from '@/lib/liturgy/reading-resolver';
+
 export function getLiturgicalReadingByDate(dateStr: string): DailyLiturgicalReading {
-  const found = LITURGICAL_READINGS_ARCHIVE.find(r => r.date === dateStr);
-  if (found) return normalizeObject(found);
-  // Fallback to today's verified reading
-  return normalizeObject(LITURGICAL_READINGS_ARCHIVE[0]);
+  return getLiturgicalReadingForDate(dateStr);
 }

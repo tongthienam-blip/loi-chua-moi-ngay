@@ -758,85 +758,270 @@ function CatechismTab() {
 }
 
 // ============================================================================
-// COMPONENT: VĂN KIỆN HỘI THÁNH
+// COMPONENT: THƯ VIỆN VĂN KIỆN HỘI THÁNH (9 PHÂN LOẠI CHUẨN MỰC)
 // ============================================================================
 function ChurchDocumentsTab() {
+  const [selectedCategory, setSelectedCategory] = useState<string>('ALL');
+  const [docQuery, setDocQuery] = useState('');
   const [selectedDoc, setSelectedDoc] = useState<ChurchDocumentItem>(CHURCH_DOCUMENTS_DATABASE[0]);
+
+  const categories = [
+    { id: 'ALL', label: 'Tất Cả 9 Nhóm' },
+    { id: 'VATICAN_II', label: 'Công đồng Vaticanô II' },
+    { id: 'POPE_TEACHINGS', label: 'Giáo huấn Giáo hoàng' },
+    { id: 'SOCIAL_DOCTRINE', label: 'Học thuyết Xã hội' },
+    { id: 'LITURGY', label: 'Phụng vụ' },
+    { id: 'DOCTRINE_FAITH', label: 'Giáo lý & Đức tin' },
+    { id: 'FAMILY_HUMAN_DIGNITY', label: 'Gia đình & Sự sống' },
+    { id: 'VOCATION_CONSECRATED', label: 'Ơn gọi & Đời tu' },
+    { id: 'MISSION_EVANGELIZATION', label: 'Truyền giáo' },
+    { id: 'ECOLOGY_ENVIRONMENT', label: 'Môi sinh toàn diện' },
+  ];
+
+  const filteredDocs = CHURCH_DOCUMENTS_DATABASE.filter(d => {
+    const matchCat = selectedCategory === 'ALL' || d.category === selectedCategory;
+    const q = docQuery.toLowerCase().trim();
+    const matchQ = !q ||
+      d.latinTitle.toLowerCase().includes(q) ||
+      d.vietnameseTitle.toLowerCase().includes(q) ||
+      d.promulgator.toLowerCase().includes(q) ||
+      d.mainThemes.some(t => t.toLowerCase().includes(q)) ||
+      d.summary.toLowerCase().includes(q);
+    return matchCat && matchQ;
+  });
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-      <div className="lg:col-span-3 space-y-2">
-        {CHURCH_DOCUMENTS_DATABASE.map(doc => (
-          <button key={doc.id} onClick={() => setSelectedDoc(doc)}
-            className={`w-full text-left p-3.5 rounded-xl border transition ${selectedDoc.id === doc.id ? 'bg-white border-[#8B1E2D] shadow-sm' : 'bg-white/60 border-[#E8DFC8] hover:bg-white'}`}>
-            <div className="font-bold text-xs text-[#8B1E2D] leading-snug">{doc.title}</div>
-            <div className="text-[10px] text-[#8D6E63] mt-0.5">{doc.year} • {doc.author}</div>
-            <div className="text-[10px] text-[#6D5D55] mt-1 line-clamp-2">{doc.mainTheme}</div>
-          </button>
-        ))}
+      {/* Cột trái: Bộ lọc danh mục, tìm kiếm và danh sách văn kiện */}
+      <div className="lg:col-span-4 space-y-3">
+        {/* Ô tìm kiếm văn kiện */}
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#8D6E63]" />
+          <input
+            type="text"
+            value={docQuery}
+            onChange={e => setDocQuery(e.target.value)}
+            placeholder="Tìm tên Latin, tiếng Việt, tác giả, chủ đề..."
+            className="w-full pl-9 pr-4 py-2.5 bg-white border border-[#E8DFC8] rounded-xl text-sm text-[#2D1E18] placeholder-[#8D6E63] focus:outline-none focus:ring-2 focus:ring-[#762F3A]"
+          />
+        </div>
+
+        {/* Bộ lọc 9 nhóm phân loại */}
+        <div className="flex flex-wrap gap-1.5">
+          {categories.map(c => (
+            <button
+              key={c.id}
+              onClick={() => setSelectedCategory(c.id)}
+              className={`px-2.5 py-1 rounded-lg text-[11px] font-semibold transition ${
+                selectedCategory === c.id
+                  ? 'bg-[#762F3A] text-white shadow-xs'
+                  : 'bg-white text-[#5D4037] border border-[#E8DFC8] hover:bg-[#FAF7F2]'
+              }`}
+            >
+              {c.label}
+            </button>
+          ))}
+        </div>
+
+        {/* Danh sách các văn kiện phù hợp */}
+        <div className="space-y-2 max-h-[60vh] overflow-y-auto pr-1">
+          {filteredDocs.length === 0 ? (
+            <div className="p-8 text-center text-xs text-[#8D6E63] bg-white rounded-2xl border border-dashed border-[#E8DFC8]">
+              Không tìm thấy văn kiện nào phù hợp với từ khóa &ldquo;{docQuery}&rdquo;.
+            </div>
+          ) : (
+            filteredDocs.map(doc => (
+              <button
+                key={doc.id}
+                onClick={() => setSelectedDoc(doc)}
+                className={`w-full text-left p-3.5 rounded-xl border transition ${
+                  selectedDoc.id === doc.id
+                    ? 'bg-white border-[#762F3A] shadow-sm ring-1 ring-[#762F3A]/20'
+                    : 'bg-white/70 border-[#E8DFC8] hover:bg-white hover:shadow-xs'
+                }`}
+              >
+                <div className="flex items-center justify-between gap-1 mb-1">
+                  <span className="font-serif font-bold text-sm text-[#762F3A] leading-snug">
+                    {doc.latinTitle}
+                  </span>
+                  <span className="text-[10px] font-semibold bg-[#B39A70]/15 text-[#855D14] px-1.5 py-0.5 rounded shrink-0">
+                    {doc.year || doc.promulgationDate.slice(-4)}
+                  </span>
+                </div>
+                <div className="font-medium text-xs text-[#2D1E18] line-clamp-1">
+                  {doc.vietnameseTitle}
+                </div>
+                <div className="text-[11px] text-[#8D6E63] mt-0.5">
+                  {doc.promulgator} &bull; {doc.categoryName}
+                </div>
+                <div className="text-[11px] text-[#6D5D55] mt-1 line-clamp-1 italic">
+                  {doc.mainTheme || doc.mainThemes[0]}
+                </div>
+              </button>
+            ))
+          )}
+        </div>
       </div>
 
-      <div className="lg:col-span-9 space-y-5">
-        <div className="bg-gradient-to-br from-[#FAF4E8] to-[#FAF7F2] rounded-3xl p-6 border border-[#E8DFC8]">
-          <div className="flex items-start justify-between gap-4">
-            <div>
-              <span className="text-[11px] font-bold uppercase tracking-wider text-[#855D14]">{selectedDoc.documentType}</span>
-              <h2 className="font-serif text-xl font-bold text-[#2D1E18] mt-1">{selectedDoc.title}</h2>
-              <div className="flex items-center gap-3 mt-1 text-xs text-[#6D5D55]">
-                <span>{selectedDoc.author}</span>
-                <span>•</span>
-                <span>{selectedDoc.year}</span>
+      {/* Cột phải: Chi tiết văn kiện học thuật đầy đủ */}
+      <div className="lg:col-span-8 space-y-5">
+        {/* Banner Văn Kiện */}
+        <div className="bg-gradient-to-br from-[#FAF4E8] to-[#FAF7F2] rounded-3xl p-6 border border-[#E8DFC8] shadow-xs">
+          <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+            <div className="space-y-1">
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="text-[11px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-[#762F3A] text-white">
+                  {selectedDoc.categoryName}
+                </span>
+                <span className="text-xs text-[#855D14] font-semibold">
+                  {selectedDoc.documentType || 'Văn Kiện Huấn Quyền'}
+                </span>
+              </div>
+              <h2 className="font-serif text-2xl font-bold text-[#2D1E18]">
+                {selectedDoc.latinTitle}
+              </h2>
+              <h3 className="font-serif text-base font-semibold text-[#762F3A]">
+                {selectedDoc.vietnameseTitle}
+              </h3>
+              <div className="flex flex-wrap items-center gap-3 pt-1 text-xs text-[#6D5D55]">
+                <span><strong>Ban hành bởi:</strong> {selectedDoc.promulgator}</span>
+                <span>&bull;</span>
+                <span><strong>Ngày:</strong> {selectedDoc.promulgationDate}</span>
               </div>
             </div>
+
+            {selectedDoc.officialSource && (
+              <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-[#855D14] bg-white px-3 py-1.5 rounded-xl border border-[#E8DFC8] shrink-0">
+                <ExternalLink className="w-3.5 h-3.5" />
+                {selectedDoc.officialSource}
+              </span>
+            )}
           </div>
         </div>
 
-        <div className="bg-white rounded-3xl p-5 border border-[#E8DFC8] shadow-sm space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-            <div>
-              <span className="font-bold text-[#2D1E18] uppercase">Chủ Đề Chính</span>
-              <p className="text-[#5D4037] mt-1">{selectedDoc.mainTheme}</p>
+        {/* Nội dung chi tiết văn kiện */}
+        <div className="bg-white rounded-3xl p-6 border border-[#E8DFC8] shadow-sm space-y-5">
+          {/* Bối cảnh & Mục đích */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="p-4 rounded-2xl bg-[#FAF7F2] border border-[#E8DFC8]/70">
+              <span className="text-xs font-bold text-[#762F3A] uppercase tracking-wider block mb-1.5">
+                Bối Cảnh Lịch Sử Ra Đời
+              </span>
+              <p className="text-xs sm:text-sm text-[#5D4037] leading-relaxed">
+                {selectedDoc.historicalContext}
+              </p>
             </div>
-            <div>
-              <span className="font-bold text-[#2D1E18] uppercase">Mục Đích</span>
-              <p className="text-[#5D4037] mt-1">{selectedDoc.purpose}</p>
+            <div className="p-4 rounded-2xl bg-[#FAF7F2] border border-[#E8DFC8]/70">
+              <span className="text-xs font-bold text-[#855D14] uppercase tracking-wider block mb-1.5">
+                Mục Đích Ban Hành
+              </span>
+              <p className="text-xs sm:text-sm text-[#5D4037] leading-relaxed">
+                {selectedDoc.purpose}
+              </p>
             </div>
           </div>
 
-          <div>
-            <h3 className="text-xs font-bold text-[#2D1E18] uppercase mb-2">Tóm Tắt Nội Dung</h3>
-            <p className="text-sm text-[#5D4037] leading-relaxed">{selectedDoc.summary}</p>
-          </div>
+          {/* Cấu trúc tổng quát */}
+          {selectedDoc.structure && (
+            <div className="p-4 rounded-2xl bg-white border border-[#E8DFC8] shadow-xs">
+              <span className="text-xs font-bold text-[#2D1E18] uppercase tracking-wider block mb-1">
+                Cấu Trúc Tổng Quát Của Văn Kiện
+              </span>
+              <p className="text-xs sm:text-sm text-[#5D4037] leading-relaxed">
+                {selectedDoc.structure}
+              </p>
+            </div>
+          )}
 
-          {selectedDoc.keyQuotes && selectedDoc.keyQuotes.length > 0 && (
-            <div className="space-y-3">
-              <h3 className="text-xs font-bold text-[#8B1E2D] uppercase">Các Trích Dẫn Tiêu Biểu</h3>
-              {selectedDoc.keyQuotes.map((q, i) => (
-                <div key={i} className="p-4 rounded-2xl bg-[#FAF7F2] border border-[#E8DFC8]">
-                  <div className="text-[11px] font-bold text-[#855D14] mb-1.5">Số {q.number}{q.note ? ` — ${q.note}` : ''}</div>
-                  <blockquote className="font-serif text-sm text-[#2D1E18] italic leading-relaxed border-l-4 border-[#C59B27] pl-3">
-                    &ldquo;{q.text}&rdquo;
-                  </blockquote>
+          {/* Các Chủ Đề Chính */}
+          <div className="space-y-2">
+            <h4 className="text-xs font-bold text-[#2D1E18] uppercase tracking-wider">
+              Các Chủ Đề Thần Học & Mục Vụ Chính
+            </h4>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              {selectedDoc.mainThemes.map((theme, idx) => (
+                <div key={idx} className="flex items-start gap-2 p-2.5 rounded-xl bg-[#FAF7F2] text-xs text-[#403A34] border border-[#E8DFC8]/50">
+                  <span className="text-[#762F3A] font-bold mt-0.5">☩</span>
+                  <span className="leading-relaxed">{theme}</span>
                 </div>
               ))}
             </div>
-          )}
+          </div>
 
-          {selectedDoc.scriptureReferences && selectedDoc.scriptureReferences.length > 0 && (
-            <div>
-              <h3 className="text-xs font-bold text-[#2D1E18] uppercase mb-2">Kinh Thánh Nền Tảng</h3>
-              <div className="flex flex-wrap gap-1.5">
-                {selectedDoc.scriptureReferences.map((r, i) => {
-                  const refText = typeof r === 'string' ? r : r.reference;
-                  return (
-                    <span key={i} className="px-2.5 py-1 rounded-lg bg-[#8B1E2D]/10 text-[#8B1E2D] text-[11px] font-bold border border-[#8B1E2D]/20">
-                      {refText}
-                    </span>
-                  );
-                })}
+          {/* Tóm tắt nội dung */}
+          <div>
+            <h4 className="text-xs font-bold text-[#2D1E18] uppercase tracking-wider mb-2">
+              Tóm Tắt Toàn Văn
+            </h4>
+            <p className="text-sm text-[#5D4037] leading-relaxed font-serif bg-[#FAF7F2] p-4 rounded-2xl border border-[#E8DFC8]">
+              {selectedDoc.summary}
+            </p>
+          </div>
+
+          {/* Tóm tắt từng phần trọng yếu (Key Sections) */}
+          {selectedDoc.keySections && selectedDoc.keySections.length > 0 && (
+            <div className="space-y-3">
+              <h4 className="text-xs font-bold text-[#762F3A] uppercase tracking-wider">
+                Tóm Tắt Từng Phần & Số Đoạn Tiêu Biểu
+              </h4>
+              <div className="space-y-3">
+                {selectedDoc.keySections.map((sec, idx) => (
+                  <div key={idx} className="p-4 rounded-2xl bg-white border-l-4 border-[#762F3A] border-t border-r border-b border-[#E8DFC8] shadow-xs space-y-1.5">
+                    <div className="flex items-center justify-between">
+                      <span className="font-bold text-xs text-[#762F3A]">{sec.number} &bull; {sec.heading}</span>
+                      {sec.biblicalRoot && sec.biblicalRoot.length > 0 && (
+                        <span className="text-[10px] text-[#855D14] bg-[#FAF7F2] px-2 py-0.5 rounded border border-[#E8DFC8]">
+                          {sec.biblicalRoot.join(', ')}
+                        </span>
+                      )}
+                    </div>
+                    <blockquote className="font-serif text-xs sm:text-sm text-[#2D1E18] italic leading-relaxed">
+                      &ldquo;{sec.excerpt}&rdquo;
+                    </blockquote>
+                    <p className="text-[11px] text-[#8D6E63] pt-1">
+                      <strong>Ý nghĩa thần học:</strong> {sec.theologicalKey}
+                    </p>
+                  </div>
+                ))}
               </div>
             </div>
           )}
+
+          {/* Trích dẫn tiêu biểu */}
+          {selectedDoc.keyQuotes && selectedDoc.keyQuotes.length > 0 && (
+            <div className="space-y-2">
+              <h4 className="text-xs font-bold text-[#855D14] uppercase tracking-wider">
+                Các Trích Dẫn Thời Danh
+              </h4>
+              <div className="space-y-2">
+                {selectedDoc.keyQuotes.map((q, i) => (
+                  <blockquote key={i} className="p-3.5 rounded-xl bg-[#FAF7F2] border-l-4 border-[#B39A70] border border-[#E8DFC8] font-serif text-xs sm:text-sm italic text-[#2D1E18]">
+                    &ldquo;{q.text}&rdquo;
+                    <span className="block mt-1 font-sans text-[11px] font-bold text-[#855D14] not-italic">
+                      — {selectedDoc.latinTitle}, {q.number}
+                    </span>
+                  </blockquote>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Kinh Thánh liên hệ */}
+          {selectedDoc.scriptureConnections && selectedDoc.scriptureConnections.length > 0 && (
+            <div>
+              <h4 className="text-xs font-bold text-[#2D1E18] uppercase tracking-wider mb-2">
+                Nền Tảng Kinh Thánh Liên Hệ
+              </h4>
+              <div className="flex flex-wrap gap-1.5">
+                {selectedDoc.scriptureConnections.map((ref, idx) => (
+                  <span key={idx} className="px-2.5 py-1 rounded-lg bg-[#762F3A]/10 text-[#762F3A] text-[11px] font-bold border border-[#762F3A]/20">
+                    {ref}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+
         </div>
       </div>
     </div>

@@ -76,14 +76,27 @@ export interface BibleChapter {
   chapterNumber: number;
   title?: string;
   summary: string;
-  historicalContext?: string;
-  culturalContext?: string;
+  // 12 Mục nghiên cứu chuyên sâu chuẩn học thuật Công giáo
+  historicalContext?: string;          // 1. Bối cảnh lịch sử
   geography?: string;
-  characters?: string[];
-  literaryStructure?: string;
-  theologicalMeaning?: string;
+  culturalContext?: string;
+  geographyAndCulture?: string;        // 2. Địa lý và văn hóa
+  authorAndAudience?: string;          // 3. Tác giả và độc giả
+  literaryStructure?: string;          // 4. Cấu trúc văn chương
+  characters?: string[];               // 5. Các nhân vật
+  keyKeywords?: Array<{ term: string; meaning: string; originalLanguage?: string }>; // 6. Từ ngữ quan trọng
+  theologicalMeaning?: string;         // 7. Ý nghĩa thần học
+  christologicalMeaning?: string;      // 8. Ý nghĩa Kitô học
   christianMessage?: string;
+  otNtConnections?: string[];          // 9. Liên hệ Cựu Ước – Tân Ước
   relatedPassages?: string[];
+  cccConnections?: number[];           // 10. Liên hệ GLHTCG
+  churchDocConnections?: string[];     // 11. Liên hệ văn kiện Hội Thánh
+  meditationAndApplication?: string;   // 12. Gợi ý suy niệm và áp dụng đời sống
+  academicSources?: string[];          // Nguồn tài liệu tham khảo học thuật
+  canonicalVerseCount?: number;
+  isPendingFullText?: boolean;
+  keyVerses?: KeyVerse[];
   verses: BibleVerse[];
 }
 
@@ -142,6 +155,7 @@ export interface DailyLiturgicalReading {
   openingPrayer?: string;
   prayerOfFaithful?: string[];
   closingPrayer?: string;
+  communionPrayer?: string;
   sourceNote: string;
 }
 
@@ -206,6 +220,11 @@ export interface CatechismArticle {
   scripturalFoundations: string[];
   keyDoctrines: string[];
   relatedParagraphs: number[];
+  theme?: string;
+  themeId?: number;
+  latinHeading?: string;
+  churchDocuments?: string[];
+  isFullVerbatimText?: boolean;
 }
 
 // ----------------------------------------------------------------------------
@@ -213,10 +232,17 @@ export interface CatechismArticle {
 // ----------------------------------------------------------------------------
 
 export type DocumentCategory = 
-  | 'VATICAN_II'
-  | 'ENCYCLICAL'
-  | 'APOSTOLIC_EXHORTATION'
-  | 'SOCIAL_DOCTRINE';
+  | 'VATICAN_II'               // 1. Công đồng Vaticanô II
+  | 'POPE_TEACHINGS'           // 2. Giáo huấn của các Đức Giáo hoàng
+  | 'SOCIAL_DOCTRINE'          // 3. Học thuyết Xã hội Công giáo
+  | 'LITURGY'                  // 4. Phụng vụ
+  | 'DOCTRINE_FAITH'           // 5. Giáo lý và đức tin
+  | 'FAMILY_HUMAN_DIGNITY'     // 6. Gia đình và phẩm giá con người
+  | 'VOCATION_CONSECRATED'     // 7. Ơn gọi và đời sống thánh hiến
+  | 'MISSION_EVANGELIZATION'   // 8. Truyền giáo và loan báo Tin Mừng
+  | 'ECOLOGY_ENVIRONMENT'      // 9. Môi trường và sinh thái toàn diện
+  | 'ENCYCLICAL'               // Hậu phương tương thích ngược
+  | 'APOSTOLIC_EXHORTATION';   // Hậu phương tương thích ngược
 
 export interface DocumentKeySection {
   number: string;
@@ -248,6 +274,8 @@ export interface ChurchDocumentItem {
   /** Singular alias for mainThemes[0] — research page uses this */
   mainTheme?: string;
   summary: string;
+  /** Cấu trúc tổng thể của văn kiện */
+  structure?: string;
   keySections: DocumentKeySection[];
   /** Key memorable quotes from the document */
   keyQuotes?: Array<{ number: string; text: string; note?: string }>;
@@ -255,6 +283,8 @@ export interface ChurchDocumentItem {
   /** Alias for scriptureConnections with richer shape */
   scriptureReferences?: Array<{ reference: string; note?: string }>;
   topics: string[];
+  /** Nguồn văn bản chính thức (Vatican.va / HĐGMVN) */
+  officialSource?: string;
 }
 
 // ----------------------------------------------------------------------------
@@ -312,6 +342,8 @@ export interface ReadingPlanDay {
   title: string;
   passages: ReadingPlanDayPassage[];
   focusVerse?: string;
+  objective?: string;                 // Mục tiêu bài học của ngày
+  suggestion?: string;                // Nội dung gợi ý suy niệm & thực hành
 }
 
 export interface ReadingPlanItem {
@@ -321,7 +353,7 @@ export interface ReadingPlanItem {
   subtitle: string;
   description: string;
   durationDays: number;
-  category: 'ALL_BIBLE' | 'NEW_TESTAMENT' | 'GOSPELS' | 'PSALMS' | 'THEMATIC';
+  category: 'ALL_BIBLE' | 'NEW_TESTAMENT' | 'GOSPELS' | 'PSALMS' | 'THEMATIC_TOPIC' | 'LITURGICAL_SEASON' | 'THEMATIC';
   categoryLabel: string;
   badge: string;
   days: ReadingPlanDay[];

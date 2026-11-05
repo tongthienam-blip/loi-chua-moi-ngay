@@ -479,6 +479,15 @@ export default function PersonalSpacePage() {
         {/* Tab 3: Spiritual Journal View */}
         {activeTab === 'journal' && (
           <div className="space-y-4">
+            {/* Cam kết Bảo mật & Quyền riêng tư */}
+            <div className="p-4 rounded-2xl bg-[#FAF7F2] border border-[#E8DFC8] flex items-start gap-3 text-xs text-[#5D4037]">
+              <ShieldCheck className="w-5 h-5 text-[#855D14] shrink-0 mt-0.5" />
+              <div className="leading-relaxed">
+                <strong className="text-[#8B1E2D] block font-bold mb-0.5">Bảo Mật Quyền Riêng Tư Tuyệt Đối:</strong>
+                Toàn bộ nội dung Nhật ký thiêng liêng, lời cầu nguyện và tâm tình cá nhân của bạn được lưu trữ an toàn ngay trên trình duyệt thiết bị của bạn (Local Storage). Nền tảng <strong>không công khai, không chia sẻ lên máy chủ</strong> và <strong>không sử dụng dữ liệu của bạn để huấn luyện bất kỳ mô hình AI nào</strong>.
+              </div>
+            </div>
+
             <div className="flex items-center justify-between pb-2">
               <span className="text-xs font-bold text-[#855D14] uppercase tracking-wider">
                 Nhật Ký Tâm Linh & Sống Lời Chúa
@@ -778,9 +787,9 @@ export default function PersonalSpacePage() {
                 </div>
                 <div className="text-center sm:text-left space-y-1.5 flex-1">
                   <h3 className="font-serif text-2xl font-bold text-[#2D1E18]">Lucas Nguyen</h3>
-                  <p className="text-xs text-[#855D14] font-bold uppercase tracking-wider">Tác Giả & Nhà Phát Triển Dự Án</p>
-                  <p className="text-xs text-[#5D4037] leading-relaxed pt-1">
-                    Dự án Lời Chúa Mỗi Ngày được xây dựng với tâm nguyện phụng sự cộng đoàn Dân Chúa, cung cấp một nền tảng đọc, nghiên cứu Kinh Thánh và Giáo lý Công giáo chuyên nghiệp, hiện đại và trung tín với Hội Thánh.
+                  <p className="text-xs text-[#855D14] font-bold uppercase tracking-wider">Người sáng lập & Phát triển dự án</p>
+                  <p className="text-xs text-[#5D4037] leading-relaxed pt-1 text-justify sm:text-left">
+                    Là người sáng lập và phát triển dự án Lời Chúa Mỗi Ngày, tôi mong muốn xây dựng một không gian học hỏi và khám phá kho tàng đức tin Công giáo, nơi mọi người có thể đến gần hơn với Lời Chúa qua việc đọc, suy niệm và nghiên cứu. Với thao thức phục vụ cộng đoàn Dân Chúa, dự án hướng đến việc kết nối Kinh Thánh, Giáo lý và giáo huấn của Hội Thánh trong một nền tảng thống nhất, dễ tiếp cận, có chiều sâu và trung thành với truyền thống đức tin Công giáo.
                   </p>
 
                   <div className="pt-2 flex flex-wrap items-center justify-center sm:justify-start gap-2">

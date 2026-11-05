@@ -11,53 +11,54 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        parchment: {
-          50: "#fdfcf9",
-          100: "#fbf8f0",
-          200: "#f5edd8",
-          300: "#ebdcb9",
-          400: "#dec695",
-          500: "#cdaf70",
+        // Bảng màu Premium Catholic Editorial Design
+        catholic: {
+          wine: "#762F3A",       // Đỏ rượu vang
+          wineDark: "#5E252E",   // Đỏ rượu đậm
+          wineLight: "#8F3A47",  // Đỏ rượu sáng
+          gold: "#B39A70",       // Vàng đồng cổ
+          goldLight: "#C9B592",  // Vàng đồng sáng
+          goldDark: "#947C54",   // Vàng đồng trầm
+          ivory: "#F7F4EE",      // Kem ngà
+          charcoal: "#403A34",   // Nâu than
+          stoneWarm: "#E7E0D5",  // Đá ấm
         },
-        mahogany: {
-          900: "#22130b",
-          800: "#361f12",
-          700: "#4b2d1c",
-          600: "#653f28",
-          500: "#805236",
-          400: "#a27253",
-          300: "#c79e83",
+        parchment: {
+          50: "#FAF8F5",
+          100: "#F7F4EE",
+          200: "#EFEAE0",
+          300: "#E7E0D5",
+          400: "#D3C8B7",
+          500: "#B39A70",
         },
         burgundy: {
-          900: "#480916",
-          800: "#701124",
-          700: "#8f172e",
-          600: "#aa1b37",
-          500: "#c42442",
-          400: "#db4864",
-          100: "#fbebee",
-          50: "#fdf5f6",
+          900: "#451B22",
+          800: "#5E252E",
+          700: "#762F3A",
+          600: "#8F3A47",
+          500: "#A94454",
+          100: "#F5E9EB",
+          50: "#FAF3F4",
         },
         gold: {
-          900: "#4a350a",
-          800: "#6f5010",
-          700: "#946a16",
-          600: "#b5841d",
-          500: "#c59b27",
-          400: "#d9b343",
-          300: "#e7cb74",
-          200: "#f2e1a9",
-          100: "#faf4dd",
-          50: "#fdfbf3",
+          900: "#4D3F28",
+          800: "#6E5B3B",
+          700: "#947C54",
+          600: "#B39A70",
+          500: "#C9B592",
+          400: "#D8C7A9",
+          300: "#E6D9C3",
+          200: "#F0E8D9",
+          100: "#F8F5EE",
         },
       },
       fontFamily: {
-        sans: ["var(--font-be-vietnam-pro)", "Be Vietnam Pro", "Inter", "Roboto", "-apple-system", "sans-serif"],
-        serif: ["var(--font-lora)", "Lora", "Merriweather", "serif"],
+        sans: ["var(--font-be-vietnam-pro)", "Be Vietnam Pro", "Inter", "system-ui", "-apple-system", "sans-serif"],
+        serif: ["var(--font-lora)", "Lora", "Cormorant Garamond", "Merriweather", "serif"],
       },
       boxShadow: {
-        'sacred': '0 4px 20px -2px rgba(75, 45, 28, 0.08), 0 2px 6px -1px rgba(75, 45, 28, 0.04)',
-        'sacred-lg': '0 10px 30px -4px rgba(75, 45, 28, 0.12), 0 4px 10px -2px rgba(75, 45, 28, 0.06)',
+        'sacred': '0 4px 20px -2px rgba(64, 58, 52, 0.08), 0 2px 6px -1px rgba(64, 58, 52, 0.04)',
+        'sacred-lg': '0 10px 30px -4px rgba(64, 58, 52, 0.12), 0 4px 10px -2px rgba(64, 58, 52, 0.06)',
       }
     },
   },

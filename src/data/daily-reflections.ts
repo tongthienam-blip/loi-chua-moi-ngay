@@ -64,7 +64,8 @@ export const DAILY_REFLECTIONS_DATABASE: DailyReflectionItem[] = [
   }
 ];
 
+import { getReflectionForDate } from '@/lib/liturgy/reading-resolver';
+
 export function getReflectionByDate(dateStr: string): DailyReflectionItem {
-  const found = DAILY_REFLECTIONS_DATABASE.find(r => r.date === dateStr);
-  return normalizeObject(found || DAILY_REFLECTIONS_DATABASE[0]);
+  return getReflectionForDate(dateStr);
 }

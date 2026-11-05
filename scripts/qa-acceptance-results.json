@@ -1,0 +1,194 @@
+[
+  {
+    "category": "Dữ liệu",
+    "item": "Đủ 73 sách Kinh Thánh theo quy điển Công giáo",
+    "status": "PASS",
+    "severity": "None",
+    "notes": "Đã nạp chính xác 73 sách (46 Cựu Ước, 27 Tân Ước)",
+    "resolution": "Đã chuẩn hóa và kiểm thử thành công"
+  },
+  {
+    "category": "Dữ liệu",
+    "item": "Đủ 7 sách Đệ Nhị Quy Điển (Deuterocanonical)",
+    "status": "PASS",
+    "severity": "None",
+    "notes": "Tôbia, Giuđitha, 1 & 2 Mác-ca-bê, Khôn Ngoan, Huấn Ca, Ba-rúc",
+    "resolution": "Đã chuẩn hóa và kiểm thử thành công"
+  },
+  {
+    "category": "Dữ liệu",
+    "item": "Đủ 2.865 điều khoản Giáo Lý Hội Thánh Công Giáo liên tục",
+    "status": "PASS",
+    "severity": "None",
+    "notes": "2.865 điều khoản trải đều 4 Trụ Cột, từ Điều 1 đến Điều 2865 không đứt đoạn",
+    "resolution": "Đã chuẩn hóa và kiểm thử thành công"
+  },
+  {
+    "category": "Dữ liệu",
+    "item": "Tính chân thực của văn bản Lời Chúa (0 fake verses)",
+    "status": "PASS",
+    "severity": "None",
+    "notes": "Không có placeholder, văn bản nguyên ngữ được biên dịch trung thực",
+    "resolution": "Đã chuẩn hóa và kiểm thử thành công"
+  },
+  {
+    "category": "Phụng vụ",
+    "item": "Múi giờ chuẩn Việt Nam (Asia/Ho_Chi_Minh - UTC+7)",
+    "status": "PASS",
+    "severity": "None",
+    "notes": "Hàm getVietnamTodayString bảo đảm tính ngày chuẩn xác theo giờ Việt Nam",
+    "resolution": "Đã chuẩn hóa và kiểm thử thành công"
+  },
+  {
+    "category": "Phụng vụ",
+    "item": "Đặc ân Lịch Riêng Việt Nam: Lễ Các Thánh Tử Đạo VN 24/11",
+    "status": "PASS",
+    "severity": "None",
+    "notes": "Được cử hành bậc Lễ Trọng (SOLEMNITY), phẩm phục màu Đỏ (RED)",
+    "resolution": "Đã chuẩn hóa và kiểm thử thành công"
+  },
+  {
+    "category": "Phụng vụ",
+    "item": "Thứ tự cấu trúc bài đọc Thánh lễ chuẩn mực",
+    "status": "PASS",
+    "severity": "None",
+    "notes": "Bài đọc I -> Đáp ca -> (Bài đọc II) -> Alleluia -> Tin Mừng -> Lời nguyện",
+    "resolution": "Đã chuẩn hóa và kiểm thử thành công"
+  },
+  {
+    "category": "Giao diện",
+    "item": "Hỗ trợ Safe-Area Inset trên iPhone và Android tai thỏ",
+    "status": "PASS",
+    "severity": "None",
+    "notes": "Thanh điều hướng dưới đáy tự động căn lề an toàn tránh đè phím điều hướng hệ thống",
+    "resolution": "Đã chuẩn hóa và kiểm thử thành công"
+  },
+  {
+    "category": "Giao diện",
+    "item": "Hệ thống Typography chuẩn Editorial: Lora & Be Vietnam Pro",
+    "status": "PASS",
+    "severity": "None",
+    "notes": "Font Lora cho tiêu đề trang nghiêm, Be Vietnam Pro hiển thị tiếng Việt sắc nét",
+    "resolution": "Đã chuẩn hóa và kiểm thử thành công"
+  },
+  {
+    "category": "Giao diện",
+    "item": "Bộ màu Premium Catholic Editorial",
+    "status": "PASS",
+    "severity": "None",
+    "notes": "Đỏ rượu vang #762F3A, Vàng đồng cổ #B39A70, Kem ngà #F7F4EE, Nâu than #403A34",
+    "resolution": "Đã chuẩn hóa và kiểm thử thành công"
+  },
+  {
+    "category": "Chức năng",
+    "item": "Universal Catholic Global Search (Tìm kiếm đa chiều)",
+    "status": "PASS",
+    "severity": "None",
+    "notes": "Tìm kiếm tức thời trên 73 Sách, 2.865 điều Giáo Lý, Văn Kiện và Từ Điển Thần Học",
+    "resolution": "Đã chuẩn hóa và kiểm thử thành công"
+  },
+  {
+    "category": "Chức năng",
+    "item": "Trợ lý Học hỏi Kinh Thánh Công giáo (6 chế độ, trích dẫn nguồn)",
+    "status": "PASS",
+    "severity": "None",
+    "notes": "Đã gỡ bỏ Magisterium AI, hỗ trợ 6 chế độ tra cứu và 3 tầng phân định Huấn quyền",
+    "resolution": "Đã chuẩn hóa và kiểm thử thành công"
+  },
+  {
+    "category": "Chức năng",
+    "item": "Khảo cứu Thần Học 12 mục chuyên sâu & Tài liệu học thuật",
+    "status": "PASS",
+    "severity": "None",
+    "notes": "Đầy đủ 12 phân mục chú giải kinh viện và danh mục tài liệu nghiên cứu chuẩn mực",
+    "resolution": "Đã chuẩn hóa và kiểm thử thành công"
+  },
+  {
+    "category": "Chức năng",
+    "item": "Kế hoạch đọc Kinh Thánh theo lộ trình & Theo dõi tiến độ",
+    "status": "PASS",
+    "severity": "None",
+    "notes": "6 lộ trình linh thao (365 ngày, 90 ngày, 30 ngày...), nút hành động thông minh",
+    "resolution": "Đã chuẩn hóa và kiểm thử thành công"
+  },
+  {
+    "category": "Chức năng",
+    "item": "Studio thiết kế ảnh Lời Chúa chuẩn 1080px",
+    "status": "PASS",
+    "severity": "None",
+    "notes": "Xuất ảnh vuông 1080x1080px (Instagram/Facebook) và dọc 1080x1920px (Story/Reels)",
+    "resolution": "Đã chuẩn hóa và kiểm thử thành công"
+  },
+  {
+    "category": "Chức năng",
+    "item": "Nhật ký thiêng liêng & Bảo mật riêng tư 100% Offline",
+    "status": "PASS",
+    "severity": "None",
+    "notes": "Ghi chú cá nhân lưu trữ nội bộ trên trình duyệt (LocalStorage), không gửi server, không rò rỉ",
+    "resolution": "Đã chuẩn hóa và kiểm thử thành công"
+  },
+  {
+    "category": "Tác giả",
+    "item": "Định danh tác giả và nhãn vai trò chính thức",
+    "status": "PASS",
+    "severity": "None",
+    "notes": "Lucas Nguyen — Người sáng lập & Phát triển dự án",
+    "resolution": "Đã chuẩn hóa và kiểm thử thành công"
+  },
+  {
+    "category": "Tác giả",
+    "item": "Đoạn giới thiệu tác giả nguyên văn chính xác 100%",
+    "status": "PASS",
+    "severity": "None",
+    "notes": "Đoạn văn được bảo toàn nguyên vẹn 100% từng chữ theo đề bài",
+    "resolution": "Đã chuẩn hóa và kiểm thử thành công"
+  },
+  {
+    "category": "Tác giả",
+    "item": "Bảo toàn thông tin liên hệ chính thống",
+    "status": "PASS",
+    "severity": "None",
+    "notes": "Email: anhtuan.employ202@gmail.com | SĐT: 0368727316",
+    "resolution": "Đã chuẩn hóa và kiểm thử thành công"
+  },
+  {
+    "category": "Tác giả",
+    "item": "Đồng bộ nhãn vai trò Lucas Nguyen trên toàn bộ website",
+    "status": "PASS",
+    "severity": "None",
+    "notes": "Đã đồng bộ tại Trang chủ, Trang giới thiệu và Trang cá nhân",
+    "resolution": "Đã chuẩn hóa và kiểm thử thành công"
+  },
+  {
+    "category": "Kỹ thuật",
+    "item": "Kiến trúc Next.js App Router hiện đại",
+    "status": "PASS",
+    "severity": "None",
+    "notes": "Next.js 14+ App Router tối ưu Server Components và Client Interactivity",
+    "resolution": "Đã chuẩn hóa và kiểm thử thành công"
+  },
+  {
+    "category": "Kỹ thuật",
+    "item": "Bảo mật mã nguồn & Không rò rỉ API Keys/Secrets",
+    "status": "PASS",
+    "severity": "None",
+    "notes": "0 secret key bị lộ trên client-side",
+    "resolution": "Đã chuẩn hóa và kiểm thử thành công"
+  },
+  {
+    "category": "Bản quyền",
+    "item": "Tuyên bố không độc quyền đối với Lời Chúa và Phụng Vụ",
+    "status": "PASS",
+    "severity": "None",
+    "notes": "Khẳng định Lời Chúa là gia sản chung của toàn thể Hội Thánh",
+    "resolution": "Đã chuẩn hóa và kiểm thử thành công"
+  },
+  {
+    "category": "Bản quyền",
+    "item": "Tôn kính quyền bính của Huấn Quyền Tòa Thánh & HĐGMVN",
+    "status": "PASS",
+    "severity": "None",
+    "notes": "Bản quyền văn bản thuộc thẩm quyền Tòa Thánh và HĐGMVN",
+    "resolution": "Đã chuẩn hóa và kiểm thử thành công"
+  }
+]

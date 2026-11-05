@@ -51,8 +51,6 @@ export function Navbar() {
     { href: '/admin', label: 'Quản Trị Hệ Thống', icon: Shield, desc: 'Kiểm duyệt nguồn & phân quyền' },
   ];
 
-  const allNavLinks = [...primaryNavLinks, ...moreNavLinks];
-
   // Đóng dropdown khi click ra ngoài
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -85,30 +83,26 @@ export function Navbar() {
 
   return (
     <>
-      <header className="sticky top-0 z-40 bg-[#FAF7F2]/95 backdrop-blur-md border-b border-[#E8DFC8] transition-colors">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-2">
+      <header className="sticky top-0 z-40 bg-[#F7F4EE]/95 dark:bg-[#1A1412]/95 backdrop-blur-md border-b border-[#E7E0D5] dark:border-[#3E302A] transition-colors">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-15 sm:h-16 flex items-center justify-between gap-2">
           
-          {/* Logo & App Title with Sacred Cross Glowing Halo */}
-          <Link href="/" className="flex items-center gap-2.5 sm:gap-3 group shrink-0">
-            <div className="relative">
-              {/* Glowing Pulsing Radial Halo */}
-              <div className="absolute -inset-1 rounded-2xl bg-gradient-to-r from-[#C59B27]/40 via-[#8B1E2D]/30 to-[#C59B27]/40 blur-sm animate-sacred-radiance pointer-events-none" />
-              <div className="relative w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-gradient-to-br from-[#8B1E2D] to-[#701124] text-white flex items-center justify-center shadow-md group-hover:scale-105 group-hover:shadow-[0_0_18px_rgba(197,155,39,0.5)] transition-all">
-                <span className="font-serif text-lg sm:text-xl font-bold">☩</span>
-              </div>
+          {/* Logo & App Title: Giữ gọn, không bị cắt hay mất chữ */}
+          <Link href="/" className="flex items-center gap-2 sm:gap-2.5 group shrink-0 min-w-0">
+            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-gradient-to-br from-[#762F3A] to-[#5E252E] text-white flex items-center justify-center shadow-xs group-hover:scale-105 transition-transform shrink-0">
+              <span className="font-serif text-base sm:text-lg font-bold">☩</span>
             </div>
-            <div className="hidden min-[380px]:block">
-              <div className="font-serif text-base sm:text-lg font-bold tracking-tight text-[#2D1E18] group-hover:text-[#8B1E2D] transition leading-none whitespace-nowrap">
+            <div className="min-w-0">
+              <div className="font-serif text-sm sm:text-base font-bold tracking-tight text-[#403A34] dark:text-[#F7F4EE] group-hover:text-[#762F3A] transition truncate">
                 LỜI CHÚA MỖI NGÀY
               </div>
-              <div className="text-[9px] sm:text-[10px] font-semibold tracking-wider uppercase text-[#855D14] mt-0.5 whitespace-nowrap">
+              <div className="hidden min-[480px]:block text-[9px] font-semibold tracking-wider uppercase text-[#B39A70] leading-none mt-0.5 truncate">
                 Nền Tảng Kinh Thánh Công Giáo
               </div>
             </div>
           </Link>
 
           {/* Desktop Navigation Links (5 Mục Chính + Dropdown Khám Phá) */}
-          <nav className="hidden md:flex items-center gap-1 lg:gap-1.5">
+          <nav className="hidden md:flex items-center gap-1">
             {primaryNavLinks.map((link) => {
               const Icon = link.icon;
               const isActive = pathname === link.href || (link.href !== '/' && pathname.startsWith(link.href));
@@ -116,13 +110,13 @@ export function Navbar() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition ${
+                  className={`inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition ${
                     isActive
-                      ? 'bg-[#8B1E2D] text-white shadow-sm'
-                      : 'text-[#5D4037] hover:text-[#2D1E18] hover:bg-[#F4EFE6]'
+                      ? 'bg-[#762F3A] text-white shadow-xs'
+                      : 'text-[#655E57] dark:text-[#D7CCC8] hover:text-[#403A34] hover:bg-[#EFEAE0] dark:hover:bg-[#251D1A]'
                   }`}
                 >
-                  <Icon className="w-4 h-4 shrink-0" />
+                  <Icon className="w-3.5 h-3.5 shrink-0" />
                   <span>{link.label}</span>
                 </Link>
               );
@@ -132,22 +126,22 @@ export function Navbar() {
             <div className="relative" ref={dropdownRef}>
               <button
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                className={`inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition ${
+                className={`inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition ${
                   isMoreActive || isDropdownOpen
-                    ? 'bg-[#FAF4E8] text-[#8B1E2D] border border-[#8B1E2D]/30 shadow-sm'
-                    : 'text-[#5D4037] hover:text-[#2D1E18] hover:bg-[#F4EFE6]'
+                    ? 'bg-[#FAF4E8] dark:bg-[#251D1A] text-[#762F3A] dark:text-[#E5BE53] border border-[#762F3A]/20 shadow-xs'
+                    : 'text-[#655E57] dark:text-[#D7CCC8] hover:text-[#403A34] hover:bg-[#EFEAE0] dark:hover:bg-[#251D1A]'
                 }`}
                 title="Khám phá các tính năng nghiên cứu và tiện ích"
               >
-                <Layers className="w-4 h-4 shrink-0" />
+                <Layers className="w-3.5 h-3.5 shrink-0" />
                 <span>Khám Phá</span>
                 <ChevronDown className={`w-3.5 h-3.5 shrink-0 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
               </button>
 
               {/* Dropdown Popover */}
               {isDropdownOpen && (
-                <div className="absolute right-0 mt-2 w-72 bg-white rounded-2xl shadow-sacred-lg border border-[#E8DFC8] p-2 space-y-1 animate-fade-in z-50">
-                  <div className="px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-[#855D14] border-b border-stone-100 mb-1">
+                <div className="absolute right-0 mt-2 w-72 bg-white dark:bg-[#271E1B] rounded-2xl shadow-sacred-lg border border-[#E7E0D5] dark:border-[#3E302A] p-2 space-y-1 animate-fade-in z-50">
+                  <div className="px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-[#B39A70] border-b border-stone-100 dark:border-stone-800 mb-1">
                     Tiện Ích & Nghiên Cứu
                   </div>
                   {moreNavLinks.map((link) => {
@@ -160,18 +154,18 @@ export function Navbar() {
                         onClick={() => setIsDropdownOpen(false)}
                         className={`flex items-start gap-3 p-2.5 rounded-xl transition ${
                           isActive
-                            ? 'bg-[#FAF4E8] text-[#8B1E2D]'
-                            : 'hover:bg-[#FAF7F2] text-[#2D1E18]'
+                            ? 'bg-[#FAF4E8] dark:bg-[#312622] text-[#762F3A] dark:text-[#E5BE53]'
+                            : 'hover:bg-[#F7F4EE] dark:hover:bg-[#312622] text-[#403A34] dark:text-[#F7F4EE]'
                         }`}
                       >
-                        <div className={`p-1.5 rounded-lg shrink-0 mt-0.5 ${isActive ? 'bg-[#8B1E2D] text-white' : 'bg-stone-100 text-[#5D4037]'}`}>
+                        <div className={`p-1.5 rounded-lg shrink-0 mt-0.5 ${isActive ? 'bg-[#762F3A] text-white' : 'bg-stone-100 dark:bg-stone-800 text-[#655E57]'}`}>
                           <Icon className="w-4 h-4" />
                         </div>
                         <div>
-                          <div className="text-xs font-bold leading-tight flex items-center gap-1">
+                          <div className="text-xs font-bold leading-tight">
                             {link.label}
                           </div>
-                          <div className="text-[11px] text-[#8D6E63] mt-0.5 leading-tight">
+                          <div className="text-[11px] text-[#8F877F] mt-0.5 leading-tight">
                             {link.desc}
                           </div>
                         </div>
@@ -188,12 +182,12 @@ export function Navbar() {
             {/* Search Trigger */}
             <button
               onClick={() => setIsSearchOpen(true)}
-              className="inline-flex items-center justify-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl bg-white/80 hover:bg-white text-xs text-[#5D4037] border border-[#E8DFC8] shadow-sm transition whitespace-nowrap"
-              title="Tìm kiếm toàn bộ Kinh Thánh và Giáo lý"
+              className="inline-flex items-center justify-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl bg-white dark:bg-[#271E1B] hover:bg-stone-50 text-xs text-[#655E57] dark:text-[#D7CCC8] border border-[#E7E0D5] dark:border-[#3E302A] shadow-xs transition whitespace-nowrap"
+              title="Tìm kiếm Kinh Thánh và Giáo lý"
             >
-              <Search className="w-4 h-4 text-[#8B1E2D] shrink-0" />
+              <Search className="w-3.5 h-3.5 text-[#762F3A] dark:text-[#E5BE53] shrink-0" />
               <span className="hidden sm:inline">Tìm kiếm</span>
-              <kbd className="hidden lg:inline-block px-1.5 py-0.5 text-[10px] font-mono bg-stone-100 text-stone-500 rounded border border-stone-200">
+              <kbd className="hidden lg:inline-block px-1.5 py-0.2 text-[10px] font-mono bg-stone-100 dark:bg-stone-800 text-stone-500 rounded border border-stone-200 dark:border-stone-700">
                 ⌘K
               </kbd>
             </button>
@@ -201,20 +195,20 @@ export function Navbar() {
             {/* Theme Toggle */}
             <button
               onClick={cycleTheme}
-              className="p-2 rounded-xl bg-white/80 hover:bg-white text-[#5D4037] border border-[#E8DFC8] shadow-sm transition shrink-0"
+              className="p-1.5 sm:p-2 rounded-xl bg-white dark:bg-[#271E1B] hover:bg-stone-50 text-[#655E57] dark:text-[#D7CCC8] border border-[#E7E0D5] dark:border-[#3E302A] shadow-xs transition shrink-0"
               title={`Đổi giao diện (Hiện tại: ${currentTheme})`}
             >
               {currentTheme === 'dark' ? (
-                <Moon className="w-4 h-4 text-[#C59B27]" />
+                <Moon className="w-4 h-4 text-[#B39A70]" />
               ) : (
-                <Sun className="w-4 h-4 text-[#C59B27]" />
+                <Sun className="w-4 h-4 text-[#B39A70]" />
               )}
             </button>
 
             {/* Mobile Menu Hamburger */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden p-2 rounded-xl bg-white/80 text-[#2D1E18] border border-[#E8DFC8] shrink-0"
+              className="md:hidden p-1.5 rounded-xl bg-white dark:bg-[#271E1B] text-[#403A34] dark:text-[#F7F4EE] border border-[#E7E0D5] dark:border-[#3E302A] shrink-0"
               title="Mở menu"
             >
               {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -222,12 +216,11 @@ export function Navbar() {
           </div>
         </div>
 
-        {/* Mobile Dropdown Menu (Hiển thị đầy đủ cả 2 nhóm mục) */}
+        {/* Mobile Dropdown Menu */}
         {isMobileMenuOpen && (
-          <div className="md:hidden bg-[#FAF7F2] border-b border-[#E8DFC8] px-4 pt-2 pb-5 space-y-3 animate-fade-in max-h-[85vh] overflow-y-auto">
-            {/* Nhóm mục chính */}
+          <div className="md:hidden bg-[#F7F4EE] dark:bg-[#1A1412] border-b border-[#E7E0D5] dark:border-[#3E302A] px-4 pt-2 pb-5 space-y-3 animate-fade-in max-h-[85vh] overflow-y-auto">
             <div className="space-y-1">
-              <div className="px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-[#855D14]">
+              <div className="px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-[#B39A70]">
                 Mục Chính
               </div>
               {primaryNavLinks.map((link) => {
@@ -238,10 +231,10 @@ export function Navbar() {
                     key={link.href}
                     href={link.href}
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition ${
+                    className={`flex items-center gap-3 px-3.5 py-2 rounded-xl text-xs font-semibold transition ${
                       isActive
-                        ? 'bg-[#8B1E2D] text-white shadow-sm'
-                        : 'text-[#5D4037] hover:bg-[#F4EFE6]'
+                        ? 'bg-[#762F3A] text-white shadow-xs'
+                        : 'text-[#655E57] dark:text-[#D7CCC8] hover:bg-[#EFEAE0] dark:hover:bg-[#251D1A]'
                     }`}
                   >
                     <Icon className="w-4 h-4 shrink-0" />
@@ -251,9 +244,8 @@ export function Navbar() {
               })}
             </div>
 
-            {/* Nhóm tiện ích mở rộng */}
-            <div className="space-y-1 pt-2 border-t border-[#E8DFC8]">
-              <div className="px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-[#855D14]">
+            <div className="space-y-1 pt-2 border-t border-[#E7E0D5] dark:border-[#3E302A]">
+              <div className="px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-[#B39A70]">
                 Khám Phá & Tiện Ích
               </div>
               {moreNavLinks.map((link) => {
@@ -264,10 +256,10 @@ export function Navbar() {
                     key={link.href}
                     href={link.href}
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition ${
+                    className={`flex items-center gap-3 px-3.5 py-2 rounded-xl text-xs font-semibold transition ${
                       isActive
-                        ? 'bg-[#8B1E2D] text-white shadow-sm'
-                        : 'text-[#5D4037] hover:bg-[#F4EFE6]'
+                        ? 'bg-[#762F3A] text-white shadow-xs'
+                        : 'text-[#655E57] dark:text-[#D7CCC8] hover:bg-[#EFEAE0] dark:hover:bg-[#251D1A]'
                     }`}
                   >
                     <Icon className="w-4 h-4 shrink-0" />

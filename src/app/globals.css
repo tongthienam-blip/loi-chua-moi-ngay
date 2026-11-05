@@ -1,33 +1,28 @@
-@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap');
-
-*, *::before, *::after {
-  font-family: 'Be Vietnam Pro', system-ui, -apple-system, sans-serif !important;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --font-serif: var(--font-lora), 'Lora', 'Merriweather', var(--font-be-vietnam-pro), serif;
-  --font-sans: var(--font-be-vietnam-pro), 'Be Vietnam Pro', 'Inter', 'Roboto', sans-serif;
-  
-  /* Bảng màu Công giáo trang nghiêm */
-  --bg-parchment: #FAF7F2;
-  --bg-parchment-soft: #F4EFE6;
+  /* Bảng màu Premium Catholic Editorial Design */
+  --color-wine: #762F3A;         /* Đỏ rượu vang */
+  --color-wine-dark: #5E252E;
+  --color-wine-light: #8F3A47;
+  --color-gold: #B39A70;         /* Vàng đồng cổ */
+  --color-gold-light: #C9B592;
+  --color-gold-dark: #947C54;
+  --bg-ivory: #F7F4EE;           /* Kem ngà */
+  --color-charcoal: #403A34;     /* Nâu than */
+  --border-stone: #E7E0D5;       /* Đá ấm */
+
+  --bg-parchment: #F7F4EE;
+  --bg-parchment-soft: #EFEAE0;
   --bg-card: #FFFFFF;
-  --text-primary: #2D1E18;
-  --text-secondary: #5D4037;
-  --text-muted: #8D6E63;
-  --border-color: #E8DFC8;
-  
-  --color-burgundy: #8B1E2D;
-  --color-burgundy-hover: #701124;
-  --color-gold: #C59B27;
-  --color-gold-light: #FBF4E2;
+  --text-primary: #403A34;
+  --text-secondary: #655E57;
+  --text-muted: #8F877F;
+  --border-color: #E7E0D5;
 }
 
 .theme-sepia {
@@ -38,26 +33,25 @@
   --text-secondary: #5F432B;
   --text-muted: #82664E;
   --border-color: #DFCDB3;
+  --color-wine: #762F3A;
+  --color-gold: #B39A70;
 }
 
 .theme-dark {
   --bg-parchment: #1A1412;
   --bg-parchment-soft: #251D1A;
-  --bg-card: #2B211D;
-  --text-primary: #F5EBE6;
+  --bg-card: #271E1B;
+  --text-primary: #F7F4EE;
   --text-secondary: #D7CCC8;
   --text-muted: #A1887F;
   --border-color: #3E302A;
-  --color-burgundy: #D84A5B;
-  --color-burgundy-hover: #E26D7C;
+  --color-wine: #D84A5B;
+  --color-wine-dark: #E26D7C;
   --color-gold: #E5BE53;
   --color-gold-light: #3D321A;
 }
 
-html, body {
-  display: block;
-  visibility: visible !important;
-  opacity: 1 !important;
+html {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -65,32 +59,33 @@ html, body {
 }
 
 body {
-  display: flex !important;
-  flex-direction: column !important;
-  visibility: visible !important;
-  opacity: 1 !important;
   background-color: var(--bg-parchment);
   color: var(--text-primary);
-  font-family: var(--font-sans);
+  font-family: var(--font-be-vietnam-pro), 'Be Vietnam Pro', 'Inter', -apple-system, sans-serif;
   min-height: 100vh;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  display: flex;
+  flex-direction: column;
 }
 
-h1, h2, h3, h4, h5, h6, strong, b {
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* Kiểu chữ Tiêu đề & Kinh Thánh trang nghiêm */
+.font-serif, .font-heading, .font-scripture {
+  font-family: var(--font-lora), 'Lora', 'Cormorant Garamond', 'Merriweather', serif;
 }
 
-/* Kiểu chữ Kinh Thánh trang trọng */
 .font-scripture {
-  font-family: var(--font-serif);
   line-height: 1.85;
 }
 
-/* Thanh cuộn tinh tế */
+/* Safe area padding cho điện thoại có tai thỏ / home bar iOS */
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 1rem);
+}
+
+.pt-safe {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+/* Thanh cuộn trang nhã */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -109,26 +104,15 @@ h1, h2, h3, h4, h5, h6, strong, b {
   background: #A1887F;
 }
 
-/* Hiệu ứng hào quang phụng vụ */
-.sacred-glow {
-  box-shadow: 0 0 25px -5px rgba(197, 155, 39, 0.25);
-}
-
-.wine-glow {
-  box-shadow: 0 4px 20px -2px rgba(139, 30, 45, 0.15);
-}
-
-/* Hiệu ứng lấp lánh tỏa sáng sau Lời Chúa & Hào quang thiêng liêng */
+/* Hiệu ứng Hào quang nhẹ nhàng (Subtle Liturgical Halo) */
 @keyframes sacredRadiance {
   0%, 100% {
-    opacity: 0.45;
-    transform: scale(0.98);
-    filter: drop-shadow(0 0 12px rgba(197, 155, 39, 0.35));
+    opacity: 0.35;
+    transform: scale(0.99);
   }
   50% {
-    opacity: 0.85;
-    transform: scale(1.03);
-    filter: drop-shadow(0 0 24px rgba(197, 155, 39, 0.7));
+    opacity: 0.65;
+    transform: scale(1.02);
   }
 }
 
@@ -137,100 +121,22 @@ h1, h2, h3, h4, h5, h6, strong, b {
     transform: translateY(0px);
   }
   50% {
-    transform: translateY(-5px);
-  }
-}
-
-@keyframes divineShimmer {
-  0% {
-    background-position: -200% 0;
-  }
-  100% {
-    background-position: 200% 0;
+    transform: translateY(-4px);
   }
 }
 
 .animate-sacred-radiance {
-  animation: sacredRadiance 4s ease-in-out infinite;
+  animation: sacredRadiance 6s ease-in-out infinite;
 }
 
 .animate-sacred-float {
   animation: sacredFloat 5s ease-in-out infinite;
 }
 
-.animate-divine-shimmer {
-  background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(242,225,169,0.4) 50%, rgba(255,255,255,0) 100%);
-  background-size: 200% 100%;
-  animation: divineShimmer 3.5s infinite;
-}
-
-.sacred-card-hover {
+.sacred-gold-hover {
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.sacred-card-hover:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 12px 30px -8px rgba(139, 30, 45, 0.12), 0 0 20px -4px rgba(197, 155, 39, 0.2);
-}
-
-/* Hiệu ứng hạt ánh sáng lấp lánh (Floating Sparks / Shimmer) */
-@keyframes sparkTwinkle {
-  0%, 100% {
-    opacity: 0.15;
-    transform: scale(0.6) translateY(0);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.25) translateY(-4px);
-    filter: drop-shadow(0 0 6px rgba(197, 155, 39, 0.8));
-  }
-}
-
-.animate-spark-1 { animation: sparkTwinkle 2.8s ease-in-out infinite; }
-.animate-spark-2 { animation: sparkTwinkle 3.4s ease-in-out 0.8s infinite; }
-.animate-spark-3 { animation: sparkTwinkle 2.2s ease-in-out 1.5s infinite; }
-.animate-spark-4 { animation: sparkTwinkle 3.1s ease-in-out 0.4s infinite; }
-
-/* Hiệu ứng viền vàng kim phóng to (Golden Border Hover Pulse) */
-.sacred-gold-hover {
-  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-  position: relative;
-}
-
 .sacred-gold-hover:hover {
-  transform: translateY(-4px) scale(1.006);
-  border-color: #C59B27 !important;
-  box-shadow: 0 14px 35px -8px rgba(139, 30, 45, 0.15), 0 0 25px -2px rgba(197, 155, 39, 0.35) !important;
-}
-
-/* Stagger cascade animation cho các thẻ khi xuất hiện */
-@keyframes cascadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(14px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.cascade-1 { animation: cascadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.05s both; }
-.cascade-2 { animation: cascadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both; }
-.cascade-3 { animation: cascadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.25s both; }
-.cascade-4 { animation: cascadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.35s both; }
-
-/* Animations */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(4px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.animate-fade-in {
-  animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}/* Ép tất cả các thẻ dùng font serif hiển thị chuẩn tiếng Việt */
-@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&display=swap');
-
-.font-serif, h1, h2, h3, h4, .serif {
-  font-family: 'Lora', Georgia, Cambria, 'Times New Roman', Times, serif !important;
+  border-color: rgba(179, 154, 112, 0.55);
 }

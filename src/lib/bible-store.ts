@@ -8,6 +8,7 @@ import { LITURGICAL_READINGS_ARCHIVE } from '@/data/liturgical-readings';
 import { DAILY_REFLECTIONS_DATABASE } from '@/data/daily-reflections';
 import { AuditLogEntry, UserRole } from './auth/rbac';
 import { normalizeVietnamese, normalizeObject } from './utils/vietnamese';
+import { getVietnamTodayString } from './liturgy/timezone';
 
 const DEFAULT_USER_DATA: UserPersonalData = {
   fontSize: 'base',
@@ -44,7 +45,7 @@ const DEFAULT_USER_DATA: UserPersonalData = {
   activePlanId: 'plan-365',
   completedPlanDays: { 'plan-365': [1, 2, 3] },
   streakDays: 4,
-  lastReadDate: '2026-11-04',
+  lastReadDate: getVietnamTodayString(),
   lastReadLocation: {
     bookId: 'matt',
     chapterNumber: 5,

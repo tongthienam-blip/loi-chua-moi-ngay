@@ -5,6 +5,7 @@ import { HeartHandshake, Plus, Save, CheckCircle2, AlertCircle, Edit3, BookOpen 
 import { DailyReflectionItem } from '@/types';
 import { BibleStore } from '@/lib/bible-store';
 import { validateEightPartReflection } from '@/lib/auth/security';
+import { getVietnamTodayString } from '@/lib/liturgy/timezone';
 
 export default function AdminReflectionsPage() {
   const [reflectionsList, setReflectionsList] = useState<DailyReflectionItem[]>([]);
@@ -15,7 +16,7 @@ export default function AdminReflectionsPage() {
   // Form State
   const [formData, setFormData] = useState<DailyReflectionItem>({
     id: '',
-    date: '2026-11-06',
+    date: getVietnamTodayString(),
     title: '',
     scriptureReference: '',
     scriptureText: '',

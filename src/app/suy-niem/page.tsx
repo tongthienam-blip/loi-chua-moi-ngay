@@ -1,15 +1,53 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { HeartHandshake, Volume2, Bookmark, CheckCircle2, BookOpen, Calendar, HelpCircle, Target, Sparkles, Plus, Save } from 'lucide-react';
 import { getReflectionByDate } from '@/data/daily-reflections';
 import { DailyReflectionItem, SpiritualJournalRecord } from '@/types';
 import { AudioPlayerBar } from '@/components/AudioPlayerBar';
 import { BibleStore } from '@/lib/bible-store';
+import { getVietnamTodayString, addDaysToDate, formatVietnamDateFull } from '@/lib/liturgy/timezone';
 
 export default function DailyReflectionAndJournalPage() {
-  const [reflection] = useState<DailyReflectionItem>(() => getReflectionByDate('2026-11-04'));
+  const [selectedDate, setSelectedDate] = useState(() => getVietnamTodayString());
+  const [reflection, setReflection] = useState<DailyReflectionItem>(() => 
+    getReflectionByDate(getVietnamTodayString())
+  );
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
+
+  const todayStr = useMemo(() => getVietnamTodayString(), []);
+  const yesterdayStr = useMemo(() => addDaysToDate(todayStr, -1), [todayStr]);
+  const tomorrowStr = useMemo(() => addDaysToDate(todayStr, 1), [todayStr]);
+
+  // Midnight listener
+  useEffect(() => {
+    const checkMidnight = () => {
+      const currentToday = getVietnamTodayString();
+      if (selectedDate === todayStr && currentToday !== todayStr) {
+        setSelectedDate(currentToday);
+        setReflection(getReflectionByDate(currentToday));
+      }
+    };
+
+    const interval = setInterval(checkMidnight, 60000);
+    const handleVisibility = () => {
+      if (document.visibilityState === 'visible') {
+        checkMidnight();
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibility);
+
+    return () => {
+      clearInterval(interval);
+      document.removeEventListener('visibilitychange', handleVisibility);
+    };
+  }, [selectedDate, todayStr]);
+
+  const handleDateChange = (newDateStr: string) => {
+    if (!newDateStr) return;
+    setSelectedDate(newDateStr);
+    setReflection(getReflectionByDate(newDateStr));
+  };
 
   // Journal form state
   const [journalEntries, setJournalEntries] = useState<SpiritualJournalRecord[]>([]);
@@ -62,6 +100,55 @@ export default function DailyReflectionAndJournalPage() {
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8 animate-fade-in">
+      {/* 0. Date Navigation Toolbar */}
+      <div className="flex flex-wrap items-center justify-between gap-3 p-4 rounded-3xl bg-white border border-[#E8DFC8] shadow-sm">
+        <div className="flex items-center gap-2">
+          <Calendar className="w-5 h-5 text-[#8B1E2D]" />
+          <span className="font-serif text-sm font-bold text-[#2D1E18]">
+            Suy Niệm Theo Ngày Phụng Vụ
+          </span>
+        </div>
+
+        <div className="flex items-center flex-wrap gap-2">
+          <button
+            onClick={() => handleDateChange(yesterdayStr)}
+            className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition border ${
+              selectedDate === yesterdayStr
+                ? 'bg-[#8B1E2D] text-white border-[#8B1E2D]'
+                : 'bg-black/5 border-transparent hover:bg-black/10'
+            }`}
+          >
+            Hôm Qua
+          </button>
+          <button
+            onClick={() => handleDateChange(todayStr)}
+            className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition border ${
+              selectedDate === todayStr
+                ? 'bg-[#8B1E2D] text-white border-[#8B1E2D]'
+                : 'bg-black/5 border-transparent hover:bg-black/10'
+            }`}
+          >
+            Hôm Nay
+          </button>
+          <button
+            onClick={() => handleDateChange(tomorrowStr)}
+            className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition border ${
+              selectedDate === tomorrowStr
+                ? 'bg-[#8B1E2D] text-white border-[#8B1E2D]'
+                : 'bg-black/5 border-transparent hover:bg-black/10'
+            }`}
+          >
+            Ngày Mai
+          </button>
+          <input
+            type="date"
+            value={selectedDate}
+            onChange={(e) => handleDateChange(e.target.value)}
+            className="px-2.5 py-1.5 rounded-xl bg-black/5 text-xs font-semibold border border-black/10 focus:outline-none"
+          />
+        </div>
+      </div>
+
       {/* 1. Header Banner */}
       <div className="p-6 md:p-8 rounded-3xl bg-gradient-to-br from-[#FAF4E8] to-[#F4EFE6] border border-[#E8DFC8] shadow-sacred space-y-3">
         <div className="flex flex-wrap items-center justify-between gap-3">
@@ -81,7 +168,7 @@ export default function DailyReflectionAndJournalPage() {
           {reflection.title}
         </h1>
         <div className="text-xs text-[#855D14] font-semibold">
-          Chuyên mục: {reflection.category} • Tác giả: {reflection.author}
+          Chuyên mục: {reflection.category} • Ngày: {formatVietnamDateFull(selectedDate)}
         </div>
       </div>
 
