@@ -229,7 +229,7 @@ export default function HomePage() {
         {/* Hình nền họa tiết kính màu & thánh đường chìm nhẹ */}
         <div 
           className="absolute inset-0 bg-cover bg-center opacity-[0.07] dark:opacity-[0.04] pointer-events-none mix-blend-overlay"
-          style={{ backgroundImage: `url('https://images.unsplash.com/photo-1548625361-165b4c693a10?q=30&w=1200&auto=format&fit=crop')` }}
+          style={{ backgroundImage: `url('https://images.unsplash.com/photo-1543807535-eceef0bc6599?q=40&w=1200&auto=format&fit=crop')` }}
         />
 
         {/* Thập Giá chìm thánh thiêng */}
@@ -750,7 +750,7 @@ export default function HomePage() {
           {/* Họa tiết phục hưng nghệ thuật mờ chìm phía sau */}
           <div 
             className="absolute inset-0 bg-cover bg-center opacity-[0.06] dark:opacity-[0.03] pointer-events-none"
-            style={{ backgroundImage: `url('https://images.unsplash.com/photo-1579783902614-a3fb3927b675?q=30&w=1200&auto=format&fit=crop')` }}
+            style={{ backgroundImage: `url('https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?q=40&w=1200&auto=format&fit=crop')` }}
           />
           <SacredCornerOrnament position="top-left" className="absolute top-2 left-2 text-[#B39A70]/40 scale-110" />
           <SacredCornerOrnament position="top-right" className="absolute top-2 right-2 text-[#B39A70]/40 scale-110" />
