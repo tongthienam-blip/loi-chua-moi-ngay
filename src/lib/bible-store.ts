@@ -488,24 +488,76 @@ export class BibleStore {
 }
 
 // ----------------------------------------------------------------------------
-// THỰC THI ÂM THANH ĐỌC LỜI CHÚA BẰNG WEB SPEECH API THỰC TẾ
+// THỰC THI ÂM THANH ĐỌC LỜI CHÚA (WEB SPEECH API & VI-VN VOICE FILTER)
 // ----------------------------------------------------------------------------
 export class AudioSpeechService {
   private static synth: SpeechSynthesis | null = typeof window !== 'undefined' ? window.speechSynthesis : null;
   private static currentUtterance: SpeechSynthesisUtterance | null = null;
 
-  public static speak(text: string, rate: number = 1.0, onEnd?: () => void, onError?: () => void): void {
+  /**
+   * Làm sạch văn bản Lời Chúa/Phụng vụ trước khi phát âm
+   * Loại bỏ các thẻ HTML, số câu [1], [2], chú thích và ký tự đặc biệt
+   */
+  public static cleanText(text: string): string {
+    if (!text) return '';
+    return text
+      .replace(/<[^>]+>/g, ' ')
+      .replace(/\[\d+\]/g, ' ')
+      .replace(/\[.*?\]/g, ' ')
+      .replace(/\(.*?\)/g, ' ')
+      .replace(/[*#_~`>]/g, ' ')
+      .replace(/Đ\.\s*/g, 'Đáp: ')
+      .replace(/\s+/g, ' ')
+      .replace(/([.!?])\s*/g, '$1 ')
+      .trim();
+  }
+
+  /**
+   * Tìm giọng đọc Tiếng Việt chuẩn trong danh sách giọng của trình duyệt
+   */
+  public static getVietnameseVoice(): SpeechSynthesisVoice | null {
+    if (!this.synth) return null;
+    const voices = this.synth.getVoices();
+    if (!voices || voices.length === 0) return null;
+
+    // Ưu tiên các giọng Tiếng Việt chất lượng cao
+    const priorityNames = [
+      'google tiếng việt',
+      'microsoft hoaimy',
+      'microsoft namminh',
+      'linh',
+      'vietnamese'
+    ];
+
+    for (const name of priorityNames) {
+      const found = voices.find(v => 
+        (v.lang.toLowerCase().startsWith('vi') || v.name.toLowerCase().includes('vietnam') || v.name.toLowerCase().includes('tiếng việt')) &&
+        v.name.toLowerCase().includes(name)
+      );
+      if (found) return found;
+    }
+
+    // Bất kỳ giọng nào có lang vi-VN hoặc vi
+    const viVoice = voices.find(v => v.lang.toLowerCase() === 'vi-vn' || v.lang.toLowerCase().startsWith('vi'));
+    if (viVoice) return viVoice;
+
+    return null;
+  }
+
+  public static speak(text: string, rate: number = 0.9, onEnd?: () => void, onError?: () => void): void {
     if (!this.synth) return;
     this.stop();
 
-    const cleanText = normalizeVietnamese(text).replace(/[*#_]/g, '');
+    const cleanText = this.cleanText(text);
+    if (!cleanText) return;
+
     const utterance = new SpeechSynthesisUtterance(cleanText);
     utterance.lang = 'vi-VN';
-    utterance.rate = rate;
+    utterance.rate = rate || 0.9; // Tốc độ 0.9 thong thả, trang nghiêm chuẩn phụng vụ
+    utterance.pitch = 1.0;
 
-    // Tìm giọng đọc tiếng Việt nếu trình duyệt hỗ trợ
-    const voices = this.synth.getVoices();
-    const vietnameseVoice = voices.find(v => v.lang.includes('vi') || v.lang.includes('VN'));
+    // Thiết lập giọng đọc tiếng Việt
+    const vietnameseVoice = this.getVietnameseVoice();
     if (vietnameseVoice) {
       utterance.voice = vietnameseVoice;
     }
