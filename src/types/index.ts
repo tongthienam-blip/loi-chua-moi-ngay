@@ -406,3 +406,18 @@ export interface UserPersonalData {
     lastLoginAt: string;
   } | null;
 }
+
+// ----------------------------------------------------------------------------
+// TIN TỨC GIÁO HỘI & HUẤN QUYỀN HĐGMVN
+// ----------------------------------------------------------------------------
+
+export interface CatholicNewsItem {
+  id: string;
+  title: string;
+  summary: string;
+  link: string;
+  imageUrl: string;
+  source: 'HĐGMVN' | 'Vatican News' | 'Công Giáo Việt Nam';
+  category: string;
+  publishedAt: string;
+}

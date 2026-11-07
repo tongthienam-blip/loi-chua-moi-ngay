@@ -43,6 +43,7 @@ import { BibleStore } from '@/lib/bible-store';
 import { DailyLiturgicalReading, DailyReflectionItem, UserPersonalData } from '@/types';
 import { HeroCarousel } from '@/components/HeroCarousel';
 import { DailyPrayersWidget } from '@/components/DailyPrayersWidget';
+import { CatholicNewsWidget } from '@/components/CatholicNewsWidget';
 
 export default function HomePage() {
   const [currentDate, setCurrentDate] = useState<string>(() => getVietnamTodayString());
@@ -825,49 +826,11 @@ export default function HomePage() {
       <DailyPrayersWidget />
 
       {/* =========================================================================
-          13. FOOTER — LIÊN KẾT ĐIỀU HƯỚNG & MINH BẠCH BẢN QUYỀN
+          13. KHỐI THỜI SỰ GIÁO HỘI & HUẤN QUYỀN HĐGMVN THEO THỜI GIAN THỰC
           ========================================================================= */}
-      <footer 
-        aria-label="Chân trang và Bản quyền"
-        className="pt-6 pb-10 border-t border-[#B39A70]/30 space-y-4 text-center max-w-4xl mx-auto"
-      >
-        <div className="flex items-center justify-center gap-2 select-none">
-          <SacredCrossIcon size={18} className="text-[#762F3A] dark:text-[#E5BE53]" />
-          <span className="font-serif text-sm font-bold text-[#403A34] dark:text-[#F7F4EE]">
-            LỜI CHÚA MỖI NGÀY
-          </span>
-          <span className="text-xs text-[#B39A70] dark:text-[#E5BE53] font-semibold">
-            &bull; Nền Tảng Kinh Thánh Công Giáo Toàn Diện
-          </span>
-        </div>
+      <CatholicNewsWidget />
 
-        {/* Liên kết điều hướng chân trang */}
-        <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-6 text-xs font-semibold text-[#B39A70] dark:text-[#E5BE53]">
-          <Link href="/gioi-thieu" className="hover:underline">Giới Thiệu Tác Giả</Link>
-          <span>&bull;</span>
-          <Link href="/kinh-thanh" className="hover:underline">73 Sách Thánh</Link>
-          <span>&bull;</span>
-          <Link href="/phung-vu" className="hover:underline">Phụng Vụ</Link>
-          <span>&bull;</span>
-          <Link href="/giao-ly" className="hover:underline">Giáo Lý (GLHTCG)</Link>
-          <span>&bull;</span>
-          <Link href="/kinh-nguyen" className="hover:underline">Kho Kinh Nguyện</Link>
-          <span>&bull;</span>
-          <Link href="/nghien-cuu" className="hover:underline">Nghiên Cứu</Link>
-          <span>&bull;</span>
-          <Link href="/ca-nhan" className="hover:underline">Tài Khoản Cá Nhân</Link>
-        </div>
-
-        {/* Ghi chú bản quyền & Người sáng lập chính thức */}
-        <div className="text-[11px] text-[#8F877F] dark:text-[#A1887F] space-y-1 pt-2">
-          <p>
-            Người sáng lập & Phát triển dự án: Lucas Nguyen &bull; Email: anhtuan.employ202@gmail.com &bull; SĐT: 0368727316
-          </p>
-          <p className="max-w-2xl mx-auto text-[10px] leading-relaxed opacity-80">
-            Bản quyền mã nguồn thuộc về tác giả. Bản văn Lời Chúa, Các Bài đọc Phụng vụ và Giáo lý Hội Thánh Công giáo thuộc thẩm quyền Tòa Thánh Vatican và HĐGMVN, được tôn kính trích dẫn phục vụ cộng đồng đức tin, phi thương mại.
-          </p>
-        </div>
-      </footer>
+      {/* Thông tin bản quyền dự án: Người sáng lập & Phát triển dự án: Lucas Nguyen */}
 
       {/* Trình phát Audio Lời Chúa ghim dưới màn hình */}
       {activeAudioText && (
