@@ -1,3 +1,4 @@
 {
-  "/api/tts/route": "app/api/tts/route.js"
+  "/phung-vu/page": "app/phung-vu/page.js",
+  "/page": "app/page.js"
 }

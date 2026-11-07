@@ -83,20 +83,24 @@ export function getLiturgicalCycles(dateStr: string): {
   const { year } = parseDateString(dateStr);
   const advent1 = getFirstSundayOfAdvent(year);
 
-  // Nếu ngày hiện tại >= Chúa Nhật I Mùa Vọng thì bước vào năm phụng vụ mới (effectiveYear = year + 1)
+  // Năm phụng vụ mới bắt đầu từ Chúa Nhật I Mùa Vọng của năm trước:
+  // - Từ Chúa Nhật I Mùa Vọng 2025 đến trước Chúa Nhật I Mùa Vọng 2026: Năm Phụng Vụ 2026 (Năm A).
+  // - Từ Chúa Nhật I Mùa Vọng 2026 đến trước Chúa Nhật I Mùa Vọng 2027: Năm Phụng Vụ 2027 (Năm B).
+  // Do đó, nếu dateStr >= advent1 của năm hiện tại, đã bước vào năm phụng vụ mới (effectiveYear = year + 1)
   const isNewLiturgicalYear = dateStr >= advent1;
   const effectiveYear = isNewLiturgicalYear ? year + 1 : year;
 
-  // Chu kỳ Chúa Nhật:
-  // Năm A: 2017, 2020, 2023, 2026, 2029 (effectiveYear % 3 === 2)
-  // Năm B: 2018, 2021, 2024, 2027, 2030 (effectiveYear % 3 === 0)
-  // Năm C: 2019, 2022, 2025, 2028, 2031 (effectiveYear % 3 === 1)
-  const mod = effectiveYear % 3;
-  const sundayCycle: 'A' | 'B' | 'C' = mod === 2 ? 'A' : mod === 0 ? 'B' : 'C';
+  // Chu kỳ Chúa Nhật 3 năm A - B - C:
+  // Năm 2026 (effectiveYear % 3 === 1): Năm A (Mátthêu)
+  // Năm 2027 (effectiveYear % 3 === 2): Năm B (Máccô)
+  // Năm 2028 (effectiveYear % 3 === 0): Năm C (Luca)
+  // Năm 2029 (effectiveYear % 3 === 1): Năm A...
+  const mod = ((effectiveYear % 3) + 3) % 3;
+  const sundayCycle: 'A' | 'B' | 'C' = mod === 1 ? 'A' : mod === 2 ? 'B' : 'C';
 
   // Chu kỳ ngày thường:
-  // Năm chẵn (2024, 2026, 2028) là Năm II; Năm lẻ (2023, 2025, 2027) là Năm I
-  const weekdayCycle: 'I' | 'II' = year % 2 === 0 ? 'II' : 'I';
+  // Năm chẵn (2024, 2026, 2028): Năm II; Năm lẻ (2025, 2027, 2029): Năm I
+  const weekdayCycle: 'I' | 'II' = effectiveYear % 2 === 0 ? 'II' : 'I';
 
   return {
     sundayCycle,
@@ -415,20 +419,37 @@ export function getLiturgicalDayMeta(dateStr: string): LiturgicalDayMeta {
     defaultColor = 'GREEN';
     defaultColorName = 'Màu Xanh';
 
-    // Tính tuần Mùa Thường Niên dựa trên khoảng cách tới Chúa Nhật I Mùa Vọng
-    const diffWeeksToAdvent = Math.floor((new Date(adventStart).getTime() - new Date(dateStr).getTime()) / (7 * 86400000));
-    weekNumber = Math.max(1, Math.min(34, 34 - diffWeeksToAdvent));
+    // Mùa Thường Niên gồm 2 giai đoạn:
+    // Giai đoạn 1: Từ sau Lễ Chúa Giêsu Chịu Phép Rửa đến trước Thứ Tư Lễ Tro
+    // Giai đoạn 2: Từ sau Chúa Nhật Hiện Xuống đến trước Chúa Nhật I Mùa Vọng
+    if (dateStr < ashWednesday) {
+      // Giai đoạn 1: Tính xuôi từ Lễ Chúa Giêsu Chịu Phép Rửa
+      const currentWeekSunday = addDaysToDate(dateStr, -dayInfo.dayIndex);
+      if (currentWeekSunday <= baptismOfLord) {
+        weekNumber = 1;
+      } else {
+        const diffDays = Math.floor((new Date(currentWeekSunday).getTime() - new Date(baptismOfLord).getTime()) / 86400000);
+        weekNumber = Math.max(1, Math.min(9, Math.round(diffDays / 7) + 1));
+      }
+    } else {
+      // Giai đoạn 2: Tính ngược chuẩn xác từ Chúa Nhật XXXIV (Lễ Chúa Kitô Vua, 1 tuần trước Mùa Vọng)
+      const christTheKingSunday = addDaysToDate(adventStart, -7);
+      const currentWeekSunday = addDaysToDate(dateStr, -dayInfo.dayIndex);
+      const diffWeeks = Math.round((new Date(christTheKingSunday).getTime() - new Date(currentWeekSunday).getTime()) / (7 * 86400000));
+      weekNumber = Math.max(1, Math.min(34, 34 - diffWeeks));
+    }
+
     liturgicalWeek = `Tuần ${toRomanNumeral(weekNumber)} Thường Niên`;
 
     // Kiểm tra Lễ Di Động sau Hiện Xuống
     if (dateStr === trinitySunday) {
-      specialTitle = `Chúa Nhật Lễ Chúa Ba Ngôi (${cycleLabel})`;
+      specialTitle = `Chúa Nhật Lễ Chúa Ba Ngôi (Năm ${sundayCycle})`;
       defaultColor = 'WHITE';
       defaultColorName = 'Màu Trắng';
       defaultRank = 'SOLEMNITY';
       defaultRankName = 'Lễ Trọng';
     } else if (dateStr === corpusChristi) {
-      specialTitle = `Chúa Nhật Lễ Mình và Máu Thánh Chúa Kitô (Corpus Christi)`;
+      specialTitle = `Chúa Nhật Lễ Mình và Máu Thánh Chúa Kitô (Corpus Christi - Năm ${sundayCycle})`;
       defaultColor = 'WHITE';
       defaultColorName = 'Màu Trắng';
       defaultRank = 'SOLEMNITY';
@@ -440,7 +461,7 @@ export function getLiturgicalDayMeta(dateStr: string): LiturgicalDayMeta {
       defaultRank = 'SOLEMNITY';
       defaultRankName = 'Lễ Trọng';
     } else if (weekNumber === 34 && isSunday) {
-      specialTitle = `Chúa Nhật XXXIV Thường Niên - Lễ Chúa Kitô Vua Vũ Trụ (${cycleLabel})`;
+      specialTitle = `Chúa Nhật XXXIV Thường Niên - Lễ Chúa Kitô Vua Vũ Trụ (Năm ${sundayCycle})`;
       defaultColor = 'WHITE';
       defaultColorName = 'Màu Trắng';
       defaultRank = 'SOLEMNITY';
@@ -508,14 +529,16 @@ export function getLiturgicalDayMeta(dateStr: string): LiturgicalDayMeta {
   if (!finalTitle) {
     if (isSunday) {
       if (fixedFeast && fixedFeast.rank === 'SOLEMNITY' && season === 'ORDINARY_TIME') {
-        finalTitle = `${fixedFeast.name} (${fixedFeast.rankName} - ${cycleLabel})`;
+        finalTitle = `${fixedFeast.name} (${fixedFeast.rankName} - Năm ${sundayCycle})`;
+      } else if (season === 'ORDINARY_TIME') {
+        finalTitle = `Chúa Nhật ${toRomanNumeral(weekNumber)} Thường Niên - Năm ${sundayCycle}`;
       } else {
-        finalTitle = `${dayInfo.dayName} ${toRomanNumeral(weekNumber)} ${seasonName} (${cycleLabel})`;
+        finalTitle = `Chúa Nhật ${toRomanNumeral(weekNumber)} ${seasonName} - Năm ${sundayCycle}`;
       }
     } else if (fixedFeast && (fixedFeast.rank === 'SOLEMNITY' || fixedFeast.rank === 'FEAST' || fixedFeast.rank === 'MEMORIAL')) {
-      finalTitle = `${dayInfo.dayName} ${toRomanNumeral(weekNumber)} ${seasonName} - ${fixedFeast.name} (${fixedFeast.rankName})`;
+      finalTitle = `${dayInfo.dayName} Tuần ${toRomanNumeral(weekNumber)} ${seasonName} - ${fixedFeast.name} (${fixedFeast.rankName})`;
     } else {
-      finalTitle = `${dayInfo.dayName} ${toRomanNumeral(weekNumber)} ${seasonName}`;
+      finalTitle = `${dayInfo.dayName} Tuần ${toRomanNumeral(weekNumber)} ${seasonName}`;
     }
   }
 

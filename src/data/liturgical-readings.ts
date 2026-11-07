@@ -9,6 +9,151 @@ import { normalizeObject } from '@/lib/utils/vietnamese';
 
 export const LITURGICAL_READINGS_ARCHIVE: DailyLiturgicalReading[] = [
   // --------------------------------------------------------------------------
+  // CHÚA NHẬT: 2026-11-08 (Chúa Nhật XXXII Thường Niên - Năm A)
+  // --------------------------------------------------------------------------
+  {
+    id: 'reading-2026-11-08',
+    date: '2026-11-08',
+    title: 'Chúa Nhật XXXII Thường Niên - Năm A',
+    season: 'ORDINARY_TIME',
+    seasonName: 'Mùa Thường Niên',
+    color: 'GREEN',
+    colorName: 'Màu Xanh',
+    rank: 'SOLEMNITY',
+    rankName: 'Chúa Nhật',
+    cycle: 'Năm A - Năm II',
+    liturgicalWeek: 'Tuần XXXII Thường Niên',
+    saintOfTheDay: 'Chúa Nhật XXXII Mùa Thường Niên (Năm A). Kính nhớ mầu nhiệm Nước Trời và lời mời gọi tỉnh thức sẵn sàng.',
+    firstReading: {
+      reference: 'Kn 6,12-16',
+      passage: 'Trích sách Khôn Ngoan',
+      theme: 'Ai tìm kiếm Đức Khôn Ngoan, thì sẽ gặp được.',
+      text: `Đức Khôn Ngoan sáng chói và không bao giờ tàn tạ; những ai yêu mến Đức Khôn Ngoan thì dễ dàng chiêm ngưỡng, ai tìm kiếm thì sẽ gặp được.
+
+Đức Khôn Ngoan đi bước trước đến với những ai khao khát mình. Ai dậy sớm để tìm Đức Khôn Ngoan thì chẳng phải nhọc nhằn, vì sẽ thấy Người ngồi ngay trước cửa nhà.
+
+Nghĩ đến Đức Khôn Ngoan là sự hoàn hảo của trí thông minh; ai thức khuya vì Đức Khôn Ngoan thì sẽ sớm thoát khỏi mọi lo âu. Vì Đức Khôn Ngoan rảo quanh tìm kiếm những ai xứng đáng với mình, tươi cười hiện ra với họ trên mọi lối đường, và ân cần đón gặp họ trong mọi ý nghĩ tư tưởng.`
+    },
+    responsorialPsalm: {
+      reference: 'Tv 62 (63),2.3-4.5-6.7-8 (Đ. c.2b)',
+      refrain: 'Lạy Thiên Chúa, Ngài là Chúa con thờ, linh hồn con khao khát Chúa.',
+      verses: [
+        'Lạy Thiên Chúa, Ngài là Chúa con thờ, ngay từ rạng đông con tìm kiếm Chúa. Linh hồn con khao khát Ngài, thân xác con mòn mỏi đợi trông, như mảnh đất hoang cằn cỗi không giọt nước.',
+        'Nên con đến ngắm nhìn nhan thánh trong nơi thánh điện, để chiêm ngưỡng uy quyền và vinh hiển của Ngài. Vì ân tình Ngài quý hơn sự sống, môi miệng con sẽ ca tụng tán dương.',
+        'Trọn cả đời con, con sẽ chúc tụng Chúa; con giơ tay cầu khẩn Thánh Danh Ngài. Hồn con sẽ no thỏa như dự tiệc béo bổ, môi miệng con reo mừng hát ca ngợi khen.',
+        'Con tưởng nhớ đến Ngài trên giường ngủ, suốt canh thâu suy niệm về Chúa. Quả thực Ngài đã thương phù trợ, dưới bóng cánh Ngài, con hân hoan reo vui.'
+      ]
+    },
+    secondReading: {
+      reference: '1 Th 4,13-18',
+      passage: 'Thư thứ nhất của Thánh Phaolô Tông đồ gửi tín hữu Thêxalônica',
+      theme: 'Nhờ Đức Giêsu, Thiên Chúa sẽ đưa những người đã an nghỉ đến cùng Người.',
+      text: `Thưa anh em, chúng tôi không muốn anh em chẳng hay biết gì về số phận những người đã an nghỉ, để anh em khỏi buồn phiền như những người khác là những kẻ không có niềm hy vọng.
+
+Quả thế, nếu chúng ta tin rằng Đức Giêsu đã chết và đã sống lại, thì Thiên Chúa cũng sẽ đưa những người đã an nghỉ trong Đức Giêsu đến với Người nhờ Đức Giêsu.
+
+Dựa vào Lời của Chúa, chúng tôi nói với anh em điều này: chúng ta là những người đang sống, những người còn sót lại cho đến ngày Chúa quang lâm, chúng ta sẽ chẳng đi trước những người đã an nghỉ đâu. Vì khi có hiệu lệnh phát ra, khi tiếng tổng lãnh thiên thần vang lên và tiếng kèn của Thiên Chúa vang dội, thì chính Chúa sẽ từ trời ngự xuống, và những người đã chết trong Đức Kitô sẽ sống lại trước tiên.
+
+Sau đó, chúng ta là những người đang sống, những người còn sót lại, sẽ cùng với họ được cất lên các đám mây để nghênh đón Chúa trên không trung. Như vậy, chúng ta sẽ ở cùng Chúa mãi mãi. Vậy anh em hãy dùng những lời ấy mà an ủi nâng đỡ lẫn nhau.`
+    },
+    gospelAcclamation: {
+      verse: 'Mt 24,42a.44',
+      text: 'Al-lê-lui-a. Al-lê-lui-a. Anh em hãy tỉnh thức và sẵn sàng, vì chính giờ phút anh em không ngờ, thì Con Người sẽ đến. Al-lê-lui-a.'
+    },
+    gospel: {
+      reference: 'Mt 25,1-13',
+      passage: 'Tin Mừng Đức Giêsu Kitô theo Thánh Mát-thêu',
+      theme: 'Kìa Chàng Rể đến, hãy ra đón Người! Anh em hãy tỉnh thức vì không biết ngày nào giờ nào.',
+      text: `Khi ấy, Đức Giêsu kể cho các môn đệ dụ ngôn này: "Nước Trời sẽ giống như chuyện mười trinh nữ cầm đèn ra đón chàng rể. Trong số đó, có năm cô khờ dại và năm cô khôn ngoan.
+
+Năm cô khờ dại mang đèn mà không mang dầu theo. Còn những cô khôn ngoan thì vừa mang đèn lại vừa mang bình dầu theo.
+
+Vì chàng rể đến chậm, nên tất cả các cô thiếp đi và ngủ say. Nửa đêm, có tiếng hô to: 'Kìa chú rể đến, hãy ra đón người!'. Bấy giờ tất cả các trinh nữ ấy đều thức dậy và sửa soạn đèn của mình.
+
+Các cô khờ dại bảo các cô khôn ngoan: 'Xin các chị cho chúng tôi chút dầu của các chị, vì đèn của chúng tôi sắp tắt rồi!'. Các cô khôn ngoan đáp: 'E rằng không đủ cho cả chúng tôi lẫn các chị đâu, tốt hơn các chị hãy ra hàng bán dầu mà mua'.
+
+Trong lúc các cô đi mua, thì chàng rể tới. Những cô đã sẵn sàng thì theo chàng rể vào dự tiệc cưới, và cửa đóng lại.
+
+Sau cùng, các trinh nữ kia cũng đến và thưa: 'Thưa Ngài, thưa Ngài, xin mở cửa cho chúng tôi!'. Nhưng người đáp: 'Thầy bảo thật các cô, thầy không biết các cô là ai!'.
+
+Vậy anh em hãy tỉnh thức, vì anh em không biết ngày nào, giờ nào".`
+    },
+    openingPrayer: 'Lạy Thiên Chúa toàn năng nhân hậu, xin xua đuổi mọi trở ngại trên đường chúng con đi, để một khi thanh thản cả hồn lẫn xác, chúng con nhiệt thành phụng sự thánh ý Chúa. Chúng con cầu xin nhờ Đức Giêsu Kitô, Con Chúa, Đấng hằng sống và hiển trị cùng Chúa, hiệp nhất với Chúa Thánh Thần đến muôn thuở muôn đời.',
+    communionPrayer: 'Lạy Chúa, chúng con vừa được bồi dưỡng bằng Bánh Ban Sự Sống; xin ban ơn Thánh Thần ngự trị trong tâm hồn chúng con, để nhờ sức mạnh của bí tích này, chúng con luôn kiên vững tỉnh thức đón chờ ngày Chúa quang lâm. Chúng con cầu xin nhờ Đức Kitô, Chúa chúng con.',
+    prayerOfFaithful: [
+      'Cầu cho Đức Thánh Cha và các Giám mục: Xin Chúa ban cho các ngài sự khôn ngoan thượng giới để dẫn dắt Dân Chúa luôn tỉnh thức trong niềm hy vọng Nước Trời.',
+      'Cầu cho các tín hữu đã qua đời: Nhờ mầu nhiệm Đức Kitô phục sinh, xin Chúa thứ tha mọi lỗi lầm và đưa các linh hồn vào dự tiệc cưới muôn đời trên thiên quốc.',
+      'Cầu cho những ai đang sống buông thả, quên lãng phần rỗi linh hồn: Xin ánh sáng Lời Chúa đánh thức tâm hồn họ, giúp họ chuẩn bị bình dầu đức tin và bác ái trước khi quá muộn.',
+      'Cầu cho cộng đoàn giáo xứ chúng con: Xin cho ngọn đèn đức tin của mỗi người luôn rực sáng bằng những việc lành bác ái và đời sống cầu nguyện trung kiên.'
+    ],
+    closingPrayer: 'Lạy Chúa, chúng con tạ ơn Chúa vì Bàn Tiệc Lời Chúa và Thánh Thể Chúa Nhật hôm nay; xin chúc lành và gìn giữ gia đình chúng con trong bình an của Chúa suốt tuần lễ mới.',
+    sourceNote: 'Trích Sách Bài Đọc Thánh Lễ & Sách Lễ Rôma - Nguồn Ủy Ban Phụng Tự / HĐGMVN.'
+  },
+
+  // --------------------------------------------------------------------------
+  // THỨ BẢY: 2026-11-07 (Thứ Bảy Tuần XXXI Mùa Thường Niên - Năm II)
+  // --------------------------------------------------------------------------
+  {
+    id: 'reading-2026-11-07',
+    date: '2026-11-07',
+    title: 'Thứ Bảy Tuần XXXI Mùa Thường Niên',
+    season: 'ORDINARY_TIME',
+    seasonName: 'Mùa Thường Niên',
+    color: 'GREEN',
+    colorName: 'Màu Xanh',
+    rank: 'WEEKDAY',
+    rankName: 'Ngày Trong Tuần',
+    cycle: 'Năm A - Năm II',
+    liturgicalWeek: 'Tuần XXXI Thường Niên',
+    saintOfTheDay: 'Thứ Bảy Tuần XXXI Thường Niên (Năm II). Thứ Bảy đầu tháng kính nhớ Trái Tim Vô Nhiễm Đức Mẹ.',
+    firstReading: {
+      reference: 'Pl 4,10-19',
+      passage: 'Thư của Thánh Phaolô Tông đồ gửi tín hữu Philípphê',
+      theme: 'Với Đấng ban sức mạnh cho tôi, tôi chịu được hết mọi sự.',
+      text: `Anh em thân mến, tôi rất vui mừng trong Chúa vì thấy cuối cùng mối quan tâm của anh em đối với tôi lại nở hoa. Mối quan tâm đó, anh em vẫn có, nhưng chỉ thiếu dịp thuận tiện thôi. Không phải vì thiếu thốn mà tôi nói thế, bởi lẽ tôi đã học bằng lòng với số phận hiện tại. Tôi biết sống thiếu thốn và cũng biết sống dư dật. Trong mọi hoàn cảnh và mọi sự, tôi đã học biết bí quyết để được no cũng như phải đói, được dư dật cũng như phải thiếu thốn. Với Đấng ban sức mạnh cho tôi, tôi chịu được hết mọi sự.
+
+Tuy nhiên, anh em đã chia sẻ nỗi gian truân của tôi, như thế là điều tốt lành. Người Philípphê anh em biết rõ: vào thời kỳ đầu rao giảng Tin Mừng, lúc tôi rời khỏi Makêđônia, không có một Hội Thánh nào mở sổ thanh toán chi thu với tôi, ngoại trừ một mình anh em; vì ngay khi tôi ở Thêxalônica, anh em đã hơn một lần gửi đồ tiếp trợ cho nhu cầu của tôi. Không phải là tôi tìm kiếm quà tặng, nhưng tôi tìm kiếm hoa trái dồi dào ghi vào sổ của anh em.
+
+Hiện tôi có đầy đủ mọi sự và còn dư dật nữa. Tôi được tràn trề sau khi đã nhận từ tay anh Êpaphơrôđitô những gì anh em gửi đến, như một hương thơm ngào ngạt, một lễ tế được Chúa chấp nhận và đẹp lòng Người. Thiên Chúa của tôi sẽ thỏa mãn mọi nhu cầu của anh em cách vinh hiển và phong phú trong Đức Kitô Giêsu.`
+    },
+    responsorialPsalm: {
+      reference: 'Tv 111 (112),1-2.5-6.8a và 9 (Đ. c.1a)',
+      refrain: 'Phúc thay người kính sợ Chúa!',
+      verses: [
+        'Phúc thay người kính sợ Chúa, người thiết tha tuân giữ mệnh lệnh của Người. Miêu duệ họ sẽ hùng cường trên mặt đất, dòng dõi người chính trực sẽ được Chúa ban phúc lành.',
+        'Phúc thay người biết xót thương và cho vay mượn, biết quản lý công việc mình theo lẽ công minh. Người chính trực sẽ muôn đời không lay chuyển, thiên hạ sẽ muôn đời ghi nhớ người công chính.',
+        'Lòng người ấy vững vàng không khiếp sợ, luôn tin tưởng vào Chúa. Người phân phát và bố thí cho kẻ khó nghèo; đức công chính của người ấy sẽ tồn tại muôn đời; uy danh người ấy sẽ trổi vượt trong vinh quang.'
+      ]
+    },
+    gospelAcclamation: {
+      verse: '2 Cr 8,9',
+      text: 'Al-lê-lui-a. Al-lê-lui-a. Đức Giêsu Kitô vốn giàu sang phú quý, nhưng đã tự ý trở nên nghèo khó vì anh em, để lấy cái nghèo của mình mà làm cho anh em trở nên giàu có. Al-lê-lui-a.'
+    },
+    gospel: {
+      reference: 'Lc 16,9-15',
+      passage: 'Tin Mừng Đức Giêsu Kitô theo Thánh Lu-ca',
+      theme: 'Nếu anh em không trung tín trong việc sử dụng Tiền Của bất chính, thì ai sẽ giao phó của cải chân thật cho anh em?',
+      text: `Khi ấy, Đức Giêsu nói với các môn đệ rằng: "Thầy bảo cho anh em biết: hãy dùng Tiền Của bất chính mà tạo lấy bạn bè, phòng khi tiền của ấy hết đi, thì họ sẽ đón rước anh em vào nơi ở vĩnh cửu.
+
+Ai trung tín trong việc rất nhỏ, thì cũng trung tín trong việc lớn; ai bất lương trong việc rất nhỏ, thì cũng bất lương trong việc lớn. Vậy nếu anh em không trung tín trong việc sử dụng Tiền Của bất chính, thì ai sẽ giao phó của cải chân thật cho anh em? Và nếu anh em không trung tín trong việc sử dụng của cải của người khác, thì ai sẽ ban cho anh em của cải riêng của anh em?
+
+Không gia nhân nào có thể làm tôi hai chủ: vì hoặc sẽ ghét chủ này mà yêu chủ kia, hoặc sẽ gắn bó với chủ này mà khinh dể chủ nọ. Anh em không thể vừa làm tôi Thiên Chúa lại vừa làm tôi Tiền Của được".
+
+Những người Pharisêu vốn ham tiền của, họ nghe tất cả những điều ấy thì cười nhạo Người. Người bảo họ: "Các ông là những kẻ làm ra vẻ công chính trước mặt người đời, nhưng Thiên Chúa thấu suốt lòng các ông; bởi vì điều người đời coi là cao trọng, lại là điều ghê tởm trước mặt Thiên Chúa".`
+    },
+    openingPrayer: 'Lạy Thiên Chúa toàn năng hằng hữu, xin đoái nhìn đoàn con đang khẩn nguyện, và ban cho chúng con lòng trung tín phụng thờ Chúa giữa những thách đố của đời sống trần gian, để chúng con luôn biết dùng của cải tạm bợ mà mưu cầu phúc vinh vĩnh cửu. Chúng con cầu xin nhờ Đức Kitô, Chúa chúng con.',
+    communionPrayer: 'Lạy Chúa, chúng con vừa dự tiệc Thánh Thể nhiệm mầu; xin cho ơn thiêng của bí tích này biến đổi đời sống chúng con, để chúng con luôn sống công chính và bác ái trọn vẹn với tha nhân. Chúng con cầu xin nhờ Đức Kitô, Chúa chúng con.',
+    prayerOfFaithful: [
+      'Cầu cho Hội Thánh: Xin cho các mục tử luôn can đảm làm chứng cho sự thật Tin Mừng, không màng danh lợi trần thế.',
+      'Cầu cho các nhà lãnh đạo xã hội: Xin cho họ biết quản lý tài nguyên và công quỹ với tinh thần công chính và ưu tiên phục vụ người nghèo.',
+      'Cầu cho những ai đang bị cám dỗ bởi lòng tham tiền của: Xin cho họ nhận ra giá trị vĩnh cửu của Nước Trời để kịp thời hoán cải.',
+      'Cầu cho cộng đoàn chúng con: Xin cho mỗi người biết dùng ơn huệ Chúa ban để sinh ích cho linh hồn mình và anh chị em xung quanh.'
+    ],
+    closingPrayer: 'Lạy Chúa, chúng con tạ ơn Chúa đã nuôi dưỡng chúng con bằng Lời Hằng Sống; xin giúp chúng con đem Lời Chúa vào đời sống mỗi ngày.',
+    sourceNote: 'Trích Sách Bài Đọc Thánh Lễ & Sách Lễ Rôma - Nguồn Ủy Ban Phụng Tự / HĐGMVN.'
+  },
+
+  // --------------------------------------------------------------------------
   // HÔM NAY: 2026-11-05 (Thứ Năm Tuần XXXI Mùa Thường Niên)
   // --------------------------------------------------------------------------
   {

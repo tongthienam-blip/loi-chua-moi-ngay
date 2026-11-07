@@ -95,20 +95,69 @@ Và ông chủ khen người quản gia bất lương ấy đã hành động kh
     gospelTheme = 'Kẻ nào bền đỗ đến cùng, kẻ ấy sẽ được cứu độ.';
     gospelText = `Khi ấy, Đức Giêsu phán cùng các môn đệ rằng: "Hãy coi chừng người đời. Họ sẽ nộp anh em cho các hội đồng, và sẽ đánh đòn anh em trong các hội đường của họ...`;
   } else if (isSunday) {
-    firstReadingRef = '1V 17,10-16';
-    firstReadingPassage = 'Trích sách Các Vua quyển thứ nhất';
-    firstReadingTheme = 'Bà góa dùng nắm bột ít ỏi làm bánh dâng cho ngôn sứ Êlia trước.';
-    firstReadingText = `Trong những ngày ấy, ngôn sứ Êlia đứng dậy đi Sarepta. Khi ông đến cổng thành, thấy một bà góa đang nhặt củi...`;
-    psalmRef = 'Tv 145 (146),7.8-9a.9bc-10';
-    psalmRefrain = 'Linh hồn tôi ơi, hãy ngợi khen Chúa!';
-    psalmVerses = [
-      'Chúa là Đấng giữ lòng trung tín muôn đời, xử công minh cho người bị áp bức, ban lương thực cho kẻ đói ăn.',
-      'Chúa giải phóng những kẻ tù đày, Chúa mở mắt những người mù lòa, Chúa nâng dậy những kẻ bị còng lưng.'
-    ];
-    gospelRef = 'Mc 12,38-44';
-    gospelPassage = 'Tin Mừng Đức Giêsu Kitô theo Thánh Mác-cô';
-    gospelTheme = 'Bà góa nghèo này đã bỏ vào thùng tiền nhiều hơn tất cả mọi người.';
-    gospelText = `Khi ấy, Đức Giêsu ngồi đối diện với hòm tiền dâng cúng, quan sát dân chúng bỏ tiền vào hòm. Có nhiều người giàu bỏ nhiều tiền. Nhưng có một bà góa nghèo đến bỏ hai đồng tiền xu nhỏ... Đức Giêsu gọi các môn đệ lại và bảo: 'Thầy bảo thật anh em: bà góa nghèo này đã bỏ vào thùng tiền nhiều hơn tất cả mọi người khác. Vì mọi người đều lấy của dư thừa mà dâng, còn bà này, từ trong cảnh túng thiếu, đã dâng tất cả những gì bà có để nuôi thân'.`;
+    if (meta.sundayCycle === 'A') {
+      if (meta.weekNumber === 32) {
+        firstReadingRef = 'Kn 6,12-16';
+        firstReadingPassage = 'Trích sách Khôn Ngoan';
+        firstReadingTheme = 'Ai tìm kiếm Đức Khôn Ngoan, thì sẽ gặp được.';
+        firstReadingText = `Đức Khôn Ngoan sáng chói và không bao giờ tàn tạ; những ai yêu mến Đức Khôn Ngoan thì dễ dàng chiêm ngưỡng, ai tìm kiếm thì sẽ gặp được. Đức Khôn Ngoan đi bước trước đến với những ai khao khát mình. Ai dậy sớm để tìm Đức Khôn Ngoan thì chẳng phải nhọc nhằn, vì sẽ thấy Người ngồi ngay trước cửa nhà...`;
+        psalmRef = 'Tv 62 (63),2.3-4.5-6.7-8 (Đ. c.2b)';
+        psalmRefrain = 'Lạy Thiên Chúa, Ngài là Chúa con thờ, linh hồn con khao khát Chúa.';
+        psalmVerses = [
+          'Lạy Thiên Chúa, Ngài là Chúa con thờ, ngay từ rạng đông con tìm kiếm Chúa. Linh hồn con khao khát Ngài, thân xác con mòn mỏi đợi trông, như mảnh đất hoang cằn cỗi không giọt nước.',
+          'Nên con đến ngắm nhìn nhan thánh trong nơi thánh điện, để chiêm ngưỡng uy quyền và vinh hiển của Ngài. Vì ân tình Ngài quý hơn sự sống, môi miệng con sẽ ca tụng tán dương.'
+        ];
+        gospelAcclamationVerse = 'Mt 24,42a.44';
+        gospelAcclamationText = 'Al-lê-lui-a. Al-lê-lui-a. Anh em hãy tỉnh thức và sẵn sàng, vì chính giờ phút anh em không ngờ, thì Con Người sẽ đến. Al-lê-lui-a.';
+        gospelRef = 'Mt 25,1-13';
+        gospelPassage = 'Tin Mừng Đức Giêsu Kitô theo Thánh Mát-thêu';
+        gospelTheme = 'Kìa Chàng Rể đến, hãy ra đón Người! Anh em hãy tỉnh thức vì không biết ngày nào giờ nào.';
+        gospelText = `Khi ấy, Đức Giêsu kể cho các môn đệ dụ ngôn này: "Nước Trời sẽ giống như chuyện mười trinh nữ cầm đèn ra đón chàng rể. Trong số đó, có năm cô khờ dại và năm cô khôn ngoan... Vậy anh em hãy tỉnh thức, vì anh em không biết ngày nào, giờ nào".`;
+      } else if (meta.weekNumber === 33) {
+        firstReadingRef = 'Cn 31,10-13.19-20.30-31';
+        firstReadingPassage = 'Trích sách Châm Ngôn';
+        firstReadingTheme = 'Người phụ nữ kính sợ Chúa là người đáng ca tụng.';
+        firstReadingText = `Tìm đâu ra một người vợ đảm đang? Nàng quý giá vượt xa mọi châu ngọc...`;
+        psalmRef = 'Tv 127 (128),1-2.3.4-5';
+        psalmRefrain = 'Hạnh phúc thay bạn nào kính sợ Chúa!';
+        psalmVerses = [
+          'Hạnh phúc thay bạn nào kính sợ Chúa, ăn ở theo đường lối của Người! Công khó tay bạn làm, bạn được an hưởng, bạn thật có phúc và gặp mọi điều may.'
+        ];
+        gospelRef = 'Mt 25,14-30';
+        gospelPassage = 'Tin Mừng Đức Giêsu Kitô theo Thánh Mát-thêu';
+        gospelTheme = 'Hỡi đầy tớ tài giỏi và trung tín, hãy vào hưởng niềm vui của chủ ngươi.';
+        gospelText = `Khi ấy, Đức Giêsu kể cho các môn đệ dụ ngôn này: "Một người kia sắp đi xa, liền gọi các đầy tớ lại mà giao phó của cải mình cho họ..."`;
+      } else {
+        firstReadingRef = 'Ez 34,11-12.15-17';
+        firstReadingPassage = 'Trích sách Ngôn Sứ Êxêkiel';
+        firstReadingTheme = 'Chính Ta sẽ chăn dắt chiên của Ta và dẫn chúng đến nơi an nghỉ.';
+        firstReadingText = `Đây Chúa là Thiên Chúa phán: Chính Ta sẽ chăm sóc chiên của Ta và kiếm tìm chúng...`;
+        psalmRef = 'Tv 22 (23),1-2a.2b-3.5.6';
+        psalmRefrain = 'Chúa là mục tử chăn dắt tôi, tôi chẳng thiếu thốn gì.';
+        psalmVerses = [
+          'Chúa là mục tử chăn dắt tôi, tôi chẳng thiếu thốn gì. Trong đồng cỏ xanh tươi, Người cho tôi nằm nghỉ.'
+        ];
+        gospelRef = 'Mt 25,31-46';
+        gospelPassage = 'Tin Mừng Đức Giêsu Kitô theo Thánh Mát-thêu';
+        gospelTheme = 'Người sẽ ngự trên ngai vinh hiển của Người và tách biệt kẻ này với kẻ nọ.';
+        gospelText = `Khi ấy, Đức Giêsu nói với các môn đệ rằng: "Khi Con Người đến trong vinh quang của Người, có tất cả các thiên thần theo hầu, bấy giờ Người sẽ ngự lên ngai vinh hiển của Người..."`;
+      }
+    } else {
+      firstReadingRef = '1V 17,10-16';
+      firstReadingPassage = 'Trích sách Các Vua quyển thứ nhất';
+      firstReadingTheme = 'Bà góa dùng nắm bột ít ỏi làm bánh dâng cho ngôn sứ Êlia trước.';
+      firstReadingText = `Trong những ngày ấy, ngôn sứ Êlia đứng dậy đi Sarepta. Khi ông đến cổng thành, thấy một bà góa đang nhặt củi...`;
+      psalmRef = 'Tv 145 (146),7.8-9a.9bc-10';
+      psalmRefrain = 'Linh hồn tôi ơi, hãy ngợi khen Chúa!';
+      psalmVerses = [
+        'Chúa là Đấng giữ lòng trung tín muôn đời, xử công minh cho người bị áp bức, ban lương thực cho kẻ đói ăn.',
+        'Chúa giải phóng những kẻ tù đày, Chúa mở mắt những người mù lòa, Chúa nâng dậy những kẻ bị còng lưng.'
+      ];
+      gospelRef = 'Mc 12,38-44';
+      gospelPassage = 'Tin Mừng Đức Giêsu Kitô theo Thánh Mác-cô';
+      gospelTheme = 'Bà góa nghèo này đã bỏ vào thùng tiền nhiều hơn tất cả mọi người.';
+      gospelText = `Khi ấy, Đức Giêsu ngồi đối diện với hòm tiền dâng cúng, quan sát dân chúng bỏ tiền vào hòm...`;
+    }
   }
 
   const generatedReading: DailyLiturgicalReading = {
@@ -136,10 +185,16 @@ Và ông chủ khen người quản gia bất lương ấy đã hành động kh
       verses: psalmVerses
     },
     secondReading: (isSunday || meta.hasSecondReading) ? {
-      reference: 'Dt 9,24-28',
-      passage: 'Thư gửi tín hữu Do Thái',
-      theme: 'Đức Kitô đã dâng hiến chính mình một lần dứt khoát để xóa bỏ tội lỗi muôn người.',
-      text: `Quả thật, Đức Kitô đã chẳng bước vào một cung thánh do tay người phàm làm ra, là hình bóng của cung thánh thật, nhưng Người đã vào chính cõi trời, để giờ đây xuất hiện trước nhan Thiên Chúa vì chúng ta...`
+      reference: (meta.sundayCycle === 'A' && meta.weekNumber === 32) ? '1 Th 4,13-18' : 'Dt 9,24-28',
+      passage: (meta.sundayCycle === 'A' && meta.weekNumber === 32)
+        ? 'Thư thứ nhất của Thánh Phaolô Tông đồ gửi tín hữu Thêxalônica'
+        : 'Thư gửi tín hữu Do Thái',
+      theme: (meta.sundayCycle === 'A' && meta.weekNumber === 32)
+        ? 'Nhờ Đức Giêsu, Thiên Chúa sẽ đưa những người đã an nghỉ đến cùng Người.'
+        : 'Đức Kitô đã dâng hiến chính mình một lần dứt khoát để xóa bỏ tội lỗi muôn người.',
+      text: (meta.sundayCycle === 'A' && meta.weekNumber === 32)
+        ? `Thưa anh em, chúng tôi không muốn anh em chẳng hay biết gì về số phận những người đã an nghỉ, để anh em khỏi buồn phiền như những người khác là những kẻ không có niềm hy vọng. Quả thế, nếu chúng ta tin rằng Đức Giêsu đã chết và đã sống lại, thì Thiên Chúa cũng sẽ đưa những người đã an nghỉ trong Đức Giêsu đến với Người nhờ Đức Giêsu...`
+        : `Quả thật, Đức Kitô đã chẳng bước vào một cung thánh do tay người phàm làm ra, là hình bóng của cung thánh thật, nhưng Người đã vào chính cõi trời, để giờ đây xuất hiện trước nhan Thiên Chúa vì chúng ta...`
     } : undefined,
     gospelAcclamation: {
       verse: gospelAcclamationVerse,

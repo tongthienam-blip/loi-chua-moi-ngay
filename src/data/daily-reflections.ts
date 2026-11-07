@@ -9,6 +9,46 @@ import { normalizeObject } from '@/lib/utils/vietnamese';
 
 export const DAILY_REFLECTIONS_DATABASE: DailyReflectionItem[] = [
   {
+    id: 'refl-2026-11-08',
+    date: '2026-11-08',
+    title: 'Tỉnh Thức & Sẵn Sàng: Đèn Sáng Cùng Dầu Đức Tin Đón Chàng Rể',
+    scriptureReference: 'Mt 25,1-13',
+    scriptureText: 'Các cô khôn ngoan vừa mang đèn lại vừa mang bình dầu theo... Nửa đêm có tiếng hô to: Kìa chú rể đến, hãy ra đón người! Vậy anh em hãy tỉnh thức, vì anh em không biết ngày nào, giờ nào.',
+    background: 'Dụ ngôn Mười Trinh Nữ nằm trong diễn từ cánh chung của Tin Mừng Mátthêu (chương 24-25). Đức Giêsu dùng bối cảnh phong tục đám cưới Do Thái xưa, khi các phù dâu cầm đèn chờ chú rể đến rước dâu vào lúc ban đêm, để dạy về sự tỉnh thức chuẩn bị cho cuộc phán xét và ngày Chúa quang lâm.',
+    explanation: 'Ngọn đèn tượng trưng cho ơn gọi và đức tin ban đầu; bình dầu tượng trưng cho đời sống ân sủng, lòng mến cụ thể và các việc lành bác ái được tích lũy bền bỉ qua từng ngày sống. Dầu không thể "vay mượn" hay chia sẻ vào phút chót, bởi lẽ mỗi cá nhân phải đích thân chịu trách nhiệm trước Thiên Chúa về đức tin và việc làm của chính mình.',
+    coreMessage: 'Tỉnh thức Kitô giáo không phải là thụ động chờ đợi trong sợ hãi, mà là tích cực sống từng phút giây hiện tại với lòng mến nồng nàn, luôn có đủ dầu đức ái và sự thánh thiện để sẵn sàng nghênh đón Chúa Kitô bất kỳ lúc nào.',
+    lifeApplication: 'Chúng ta thường hay trì hoãn việc sám hối, chần chừ làm việc lành hoặc coi nhẹ đời sống nội tâm vì nghĩ "ngày mai vẫn còn kịp". Dụ ngôn cảnh báo: cửa tiệc cưới sẽ đóng lại và không ai biết trước giờ phút của cuộc đời mình. Ngay hôm nay, hãy đổ thêm dầu bác ái và cầu nguyện vào ngọn đèn tâm hồn.',
+    reflectionQuestions: [
+      'Ngọn đèn đức tin của tôi hiện đang cháy sáng rực rỡ hay chỉ còn le lói khói tàn?',
+      'Bình dầu của tôi có chứa đầy những hoa trái yêu thương, tha thứ và phục vụ âm thầm không?',
+      'Nếu Chúa gõ cửa cuộc đời tôi đêm nay, tôi sẽ vui mừng đón Người hay lo sợ hốt hoảng như năm trinh nữ khờ dại?'
+    ],
+    practicalResolution: 'Hôm nay, quyết tâm làm một việc hy sinh bác ái âm thầm giúp đỡ một người đang gặp khó khăn, và dành 10 phút tĩnh tâm xét mình chuẩn bị tâm hồn sốt sắng trước Chúa.',
+    prayer: 'Lạy Chúa Giêsu là Chàng Rể chí thánh của Hội Thánh, xin ban cho con sự khôn ngoan thượng giới để con luôn biết gìn giữ ngọn đèn đức tin luôn rực sáng bằng tình yêu mến cụ thể. Xin đừng để con mê ngủ trong những đam mê trần thế, nhưng biết luôn tỉnh thức hân hoan đón chờ ngày Chúa đến. Amen.',
+    category: 'Mùa Thường Niên - Cánh chung',
+    author: 'Ủy Ban Phụng Tự & Mục Vụ Lời Chúa - HĐGMVN'
+  },
+  {
+    id: 'refl-2026-11-07',
+    date: '2026-11-07',
+    title: 'Khôn Ngoan & Trung Tín Trong Sử Dụng Tiền Của',
+    scriptureReference: 'Lc 16,9-15',
+    scriptureText: 'Hãy dùng Tiền Của bất chính mà tạo lấy bạn bè, phòng khi tiền của ấy hết đi, thì họ sẽ đón rước anh em vào nơi ở vĩnh cửu. Ai trung tín trong việc rất nhỏ, thì cũng trung tín trong việc lớn.',
+    background: 'Sau khi kể dụ ngôn người quản gia bất lương, Đức Giêsu rút ra bài học sâu sắc cho các môn đệ về cách nhìn nhận và quản lý của cải vật chất trần gian dưới ánh sáng của Nước Trời.',
+    explanation: '"Tiền Của bất chính" (Mammon) ở đây chỉ của cải trần thế vốn mang tính phù vân, chóng qua và dễ dẫn con người đến sự quyến luyến bất chính. "Tạo lấy bạn bè" nghĩa là dùng của cải tạm bợ ấy để làm việc bác ái, chia sẻ cho người nghèo khó và túng thiếu - những người sẽ là bạn bè đón tiếp ta vào Nước Chúa.',
+    coreMessage: 'Tiền bạc là đầy tớ tốt nhưng là ông chủ tồi tệ. Người môn đệ đích thực không để tiền của làm chủ con tim mình, nhưng coi mọi của cải như ơn Chúa ủy thác để phục vụ lợi ích thiêng liêng và tình huynh đệ.',
+    lifeApplication: 'Trong cuộc sống mưu sinh hằng ngày, chúng ta dễ bị cuốn vào vòng xoáy tích lũy của cải mà quên đi sự công chính và lòng nhân hậu. Chúa dạy: trung tín từ việc nhỏ nhất (sự liêm chính nơi công sở, trả công xứng đáng, không gian dối) là thước đo cho lòng trung thành trước mặt Thiên Chúa.',
+    reflectionQuestions: [
+      'Tôi đang làm chủ tiền bạc hay tiền bạc đang chi phối suy nghĩ, quyết định và tự do của tôi?',
+      'Tôi có sẵn lòng trích một phần thu nhập để nâng đỡ những anh chị em nghèo khổ xung quanh không?',
+      'Tôi có luôn giữ đức tính trung thực, liêm khiết trong từng việc nhỏ hằng ngày nơi sở làm không?'
+    ],
+    practicalResolution: 'Thực hành sự trung tín trong một việc bổn phận nhỏ bé hôm nay, và chia sẻ một phần tài chánh cụ thể giúp đỡ người nghèo hoặc việc tông đồ của giáo xứ.',
+    prayer: 'Lạy Chúa, mọi sự con có trên đời đều là hồng ân nhưng không do Chúa thương ban. Xin cho con một trái tim tự do thanh thoát, biết dùng của cải chóng qua ở đời này làm phương tiện làm rạng danh Chúa và mưu ích cho tha nhân, ngõ hầu mai sau được Chúa đón vào nơi ở vĩnh hằng. Amen.',
+    category: 'Mùa Thường Niên - Đời sống môn đệ',
+    author: 'Đan viện Biển Đức Thiên Phước'
+  },
+  {
     id: 'refl-today',
     date: '2026-11-04',
     title: 'Điều Kiện Để Trở Nên Môn Đệ Đức Kitô: Từ Bỏ & Vác Thập Giá',
